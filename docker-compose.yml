@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  fffs-web-portal-staging-database:
+    build:
+      context: .
+      args:
+        - SA_PASSWORD
+      dockerfile: Dockerfile
+    image: "fffs-web-portal-staging/fffs-web-portal-staging-database"
+    container_name: "fffs-web-portal-staging-database"
+    ports:
+      - "${FFFS_WEB_PORTAL_STAGING_DB_HOST_PORT:-1433}:${FFFS_WEB_PORTAL_STAGING_DB_CONTAINER_PORT:-1433}"
+    networks:
+      - docker_database
+networks:
+  docker_database:
+    driver: bridge
