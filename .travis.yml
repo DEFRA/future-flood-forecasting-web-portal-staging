@@ -1,8 +1,10 @@
 matrix:
   include:
     - language: java
+      
+      dist: xenial
 
-      jdk: oraclejdk8
+      jdk: openjdk8
 
       sudo: false
 
