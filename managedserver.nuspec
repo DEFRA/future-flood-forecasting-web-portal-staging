@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>DEFRA.FFF.WebPortalStaging</id>
+    <version>1.0.0.0</version>
+    <authors>DEFRA</authors>
+    <owners>DEFRA</owners>
+    <description>DEFRA.FFF.WebPortalStaging - Version control for the staging database of the Future Flood Forecasting Web Portal. The staging database holds data extracted from the core forecasting engine prior to transformation for reporting and visualisation purposes.</description>
+  </metadata>
+  <files>
+    <file src="**/*.*" target="" exclude=".git/**/*.*" />
+  </files>
+</package>
