@@ -22,3 +22,8 @@ ___*
 
 # Maven output
 **/target
+
+# Java IDE related files.
+.classpath
+.project
+.settings
