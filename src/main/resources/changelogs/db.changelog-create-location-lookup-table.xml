@@ -9,11 +9,12 @@
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.LOCATION_LOOKUP', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.LOCATION_LOOKUP
           (
+            ID UNIQUEIDENTIFIER NOT NULL,
             WORKFLOW_ID NVARCHAR(64) NOT NULL,
             PLOT_ID NVARCHAR(64) NOT NULL,
             LOCATION_IDS NVARCHAR(MAX) NOT NULL
 
-            CONSTRAINT PK_LOCATION_LOOKUP PRIMARY KEY (WORKFLOW_ID, PLOT_ID)
+            CONSTRAINT PK_LOCATION_LOOKUP PRIMARY KEY (ID)
           )
     </sql>
 	  <rollback>
