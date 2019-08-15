@@ -13,4 +13,7 @@
   <include file="./changelogs/db.changelog-create-timeseries-end-time-column.xml"/>
   <include file="./changelogs/db.changelog-create-timeseries-start-time-index.xml"/>
   <include file="./changelogs/db.changelog-create-timeseries-end-time-index.xml"/>
+  <include file="./changelogs/db.changelog-create-location-lookup-table.xml"/>
+  <include file="./changelogs/db.changelog-create-location-lookup-plot-id-index.xml"/>
+  <include file="./changelogs/db.changelog-create-location-lookup-workflow-id-index.xml"/>
 </databaseChangeLog> 
