@@ -16,4 +16,7 @@
   <include file="./changelogs/db.changelog-create-location-lookup-table.xml"/>
   <include file="./changelogs/db.changelog-create-location-lookup-plot-id-index.xml"/>
   <include file="./changelogs/db.changelog-create-location-lookup-workflow-id-index.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-id-default-constraint.xml"/>
+  <include file="./changelogs/db.changelog-create-staging-exception-table.xml"/>
+  
 </databaseChangeLog> 
