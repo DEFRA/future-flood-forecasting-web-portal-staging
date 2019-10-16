@@ -8,7 +8,7 @@
 	  <sql>
       IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DRN_ORDER') IS NULL 
           ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            ADD DRN_ORDER NVARCHAR NOT NULL
+            ADD DRN_ORDER INTEGER NOT NULL
     </sql>
 	  <rollback>
 		  <sql>
