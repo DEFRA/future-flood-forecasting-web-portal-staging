@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-forecast-location-table">
+	  <sql>
+IF OBJECT_ID('FFFS_STAGING.FORECAST_LOCATION', 'U') IS NULL
+    CREATE TABLE FFFS_STAGING.FORECAST_LOCATION
+    (
+      ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+      CENTRE NVARCHAR(64) NOT NULL,
+      MFDO_AREA NVARCHAR(Max) NOT NULL,
+      CATCHMENT NVARCHAR(MAX) NOT NULL,
+      FFFS_LOCATION_ID NVARCHAR(64) NOT NULL,
+      FFFS_LOCATION_NAME NVARCHAR(MAX) NOT NULL,
+      PLOT_ID NVARCHAR(64) NOT NULL
+      
+      CONSTRAINT PK_FORECAST_LOCATION PRIMARY KEY (ID)
+    )
+    </sql>
+	  <rollback>
+		  <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
