@@ -5,16 +5,22 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-forecast-location-datum-column">
-	  <sql>
-      IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM') IS NULL 
-          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            ADD DATUM NVARCHAR(Max) NOT NULL
-    </sql>
-	  <rollback>
-		  <sql>
-        IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM') IS NOT NULL 
+  <sql>
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM_ID') IS NULL 
+        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
+          ADD DATUM_ID UNIQUEIDENTIFIER NOT NULL
+          CONSTRAINT FK_DATUM
+          FOREIGN KEY (DATUM_ID)
+          REFERENCES ${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP (ID) 
+  </sql>
+  <rollback>
+  <sql>
+    IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FK_DATUM','F') IS NOT NULL 
+          DROP CONSTRINT FK_DATUM
+
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM_ID') IS NOT NULL 
           DROP COLUMN DATUM
-      </sql>
-	  </rollback>
+  </sql>
+  </rollback>
   </changeSet>
 </databaseChangeLog> 

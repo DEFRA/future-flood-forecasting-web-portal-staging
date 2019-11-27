@@ -20,6 +20,8 @@
   <include file="./changelogs/db.changelog-create-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-drn-order-column.xml"/>
+  <include file="./changelogs/db.changelog-create-datum-lookup-table.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-datum-column.xml"/>
+  <include file="./changelogs/db.changelog-insert-records-into-datum-lookup-table.xml"/>
 
 </databaseChangeLog> 
