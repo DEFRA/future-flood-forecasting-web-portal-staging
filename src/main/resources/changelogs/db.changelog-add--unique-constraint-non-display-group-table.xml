@@ -1,0 +1,21 @@
+
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-add-unique-constraint-non-display-group-table">
+	  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DEF_FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW_COMBINATION', 'D') IS NULL 
+          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW
+            ADD CONSTRAINT DEF_FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW_COMBINATION UNIQUE(WORKFLOW_ID, FILTER_ID)
+    </sql>
+	  <rollback>
+		  <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DEF_FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW_COMBINATION', 'UQ') IS NOT NULL  
+          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW
+            DROP CONSTRAINT DEF_FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW_COMBINATION
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
