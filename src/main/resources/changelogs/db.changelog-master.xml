@@ -22,6 +22,7 @@
   <include file="./changelogs/db.changelog-create-forecast-location-drn-order-column.xml"/>
   <include file="./changelogs/db.changelog-create-fluvial-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-change-location-lookup-table-name.xml"/>
+  <include file="./changelogs/db.changelog-add--unique-constraint-non-display-group-table.xml"/>
 
 </databaseChangeLog>
 
