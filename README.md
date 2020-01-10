@@ -3,10 +3,9 @@
 Version control for the staging database of the Future Flood Forecasting Web Portal.
 The staging database holds data extracted from the core forecasting engine prior to transformation for reporting and visualisation purposes.
 
-## Temporary reporting and visualisation concerns
+## Reporting and visualisation concerns
 
-Reporting and visualisation concerns will be handled by distinct data storage in due course. Until this time the staging database includes
-a temporary schema to provide basic support for these concerns.
+The staging database includes a reporting schema for data transformation activites.
 
 ## Prerequisites
 
@@ -33,7 +32,10 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD      | Password for database version control account         | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string                       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA      | Staging schema name                                   | yes      |         |             |
-| FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The user that owns the staging schema                 | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The user that owns the staging schema                 | yes      |         |
+| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA    | Schema for reporting data transformation activities   | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
 
 ## Docker specific enviroment variables
 

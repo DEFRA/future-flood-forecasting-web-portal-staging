@@ -51,6 +51,8 @@
                         <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
                         <fffsWebPortalStagingDbStagingSchema>${FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA}</fffsWebPortalStagingDbStagingSchema>
                         <fffsWebPortalStagingDbReportingSchema>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA}</fffsWebPortalStagingDbReportingSchema>
+                        <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
+                        <fffsWebPortalStagingDbReportingPassword>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD}</fffsWebPortalStagingDbReportingPassword>
                     </systemProperties>    
                     <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
                 </configuration>

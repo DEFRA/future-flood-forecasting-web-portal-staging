@@ -23,6 +23,16 @@
   <include file="./changelogs/db.changelog-create-fluvial-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-change-location-lookup-table-name.xml"/>
   <include file="./changelogs/db.changelog-add--unique-constraint-non-display-group-table.xml"/>
-
+  <include file="./changelogs/db.changelog-create-reporting-login.xml"/>
+  <include file="./changelogs/db.changelog-create-reporting-user.xml"/>
+  <include file="./changelogs/db.changelog-alter-reporting-schema-authorization.xml"/>
+  <include file="./changelogs/db.changelog-create-reporting-schema-reader-role.xml"/>
+  <include file="./changelogs/db.changelog-create-reporting-schema-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-create-staging-schema-reader-role.xml"/>
+  <include file="./changelogs/db.changelog-create-staging-schema-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-permissions-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-permissions-to-staging-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-add-reporting-user-to-reporting-schema-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-add-reporting-user-to-staging-schema-reader-writer-role.xml"/>
 </databaseChangeLog>
 
