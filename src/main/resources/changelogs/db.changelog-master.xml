@@ -23,7 +23,6 @@
   <include file="./changelogs/db.changelog-create-fluvial-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-change-location-lookup-table-name.xml"/>
   <include file="./changelogs/db.changelog-add--unique-constraint-non-display-group-table.xml"/>
-  <include file="./changelogs/db.changelog-create-reporting-login.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-user.xml"/>
   <include file="./changelogs/db.changelog-alter-reporting-schema-authorization.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-schema-reader-role.xml"/>
