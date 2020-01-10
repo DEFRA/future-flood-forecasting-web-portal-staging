@@ -6,13 +6,11 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-reporting-login">
 	  <sql>
-      IF NOT EXISTS (SELECT * FROM sys.sql_logins WHERE name = '${fffsWebPortalStagingDbReportingUsername}')
-        CREATE LOGIN ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}'
+      CREATE LOGIN ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}'
     </sql>
 	  <rollback>
 		  <sql>
-        IF EXISTS (SELECT * FROM sys.sql_logins WHERE name = '${fffsWebPortalStagingDbReportingUsername}')
-          DROP LOGIN ${fffsWebPortalStagingDbUsername}
+        DROP LOGIN ${fffsWebPortalStagingDbUsername}
       </sql>
 	  </rollback>
   </changeSet>
