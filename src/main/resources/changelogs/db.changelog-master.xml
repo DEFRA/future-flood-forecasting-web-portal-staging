@@ -33,5 +33,6 @@
   <include file="./changelogs/db.changelog-grant-permissions-to-staging-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-reporting-schema-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-staging-schema-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-create-ignored-workflow-table.xml"/>
 </databaseChangeLog>
 
