@@ -37,6 +37,8 @@
   <include file="./changelogs/db.changelog-change-timeseries-table-name.xml"/>
   <include file="./changelogs/db.changelog-create-timeseries-header-table.xml"/>
   <include file="./changelogs/db.changelog-create-new-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fluvial-forecast-location-job-table.xml"/>
 
 </databaseChangeLog>
 
