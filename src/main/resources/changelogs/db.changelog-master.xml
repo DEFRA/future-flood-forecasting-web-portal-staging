@@ -34,5 +34,11 @@
   <include file="./changelogs/db.changelog-add-reporting-user-to-reporting-schema-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-staging-schema-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-create-ignored-workflow-table.xml"/>
+  <include file="./changelogs/db.changelog-change-timeseries-table-name.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-create-new-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fluvial-forecast-location-job-table.xml"/>
+
 </databaseChangeLog>
 
