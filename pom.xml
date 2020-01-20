@@ -14,7 +14,7 @@
     <properties>
         <liquibase.version>3.6.3</liquibase.version>
         <sqlserver.version>7.2.2.jre8</sqlserver.version>
-        <azuread.version>1.3.0</azuread.version>
+        <azuread.version>1.6.4</azuread.version>
     </properties>
 
     <dependencies>
