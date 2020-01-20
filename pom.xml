@@ -13,7 +13,7 @@
 
     <properties>
         <liquibase.version>3.6.3</liquibase.version>
-        <sqlserver.version>7.2.2.jre8</sqlserver.version>
+        <sqlserver.version>8.1.1.jre13-preview</sqlserver.version>
         <azuread.version>1.6.4</azuread.version>
     </properties>
 
