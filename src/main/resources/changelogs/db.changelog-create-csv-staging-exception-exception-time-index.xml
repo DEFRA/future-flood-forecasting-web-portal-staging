@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-csv-staging-exception-exception-time-index.xml">
+	  <sql>
+      IF IndexProperty(Object_Id('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION'), 'IX_CSV_STAGING_EXCEPTION_EXCEPTION_TIME', 'INDEXID') IS NULL
+          CREATE INDEX IX_CSV_STAGING_EXCEPTION_EXCEPTION_TIME ON ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION (EXCEPTION_TIME)
+    </sql>
+	  <rollback>
+		  <sql>
+        IF IndexProperty(Object_Id('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION'), 'IX_CSV_STAGING_EXCEPTION_EXCEPTION_TIME', 'INDEXID') IS NOT NULL
+          DROP INDEX IX_CSV_STAGING_EXCEPTION_EXCEPTION_TIME ON ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
