@@ -39,6 +39,7 @@
   <include file="./changelogs/db.changelog-create-new-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-create-timeseries-job-table.xml"/>
   <include file="./changelogs/db.changelog-create-fluvial-forecast-location-job-table.xml"/>
-
+  <include file="./changelogs/db.changelog-create-csv-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-create-csv-staging-exception-exception-time-index.xml"/>
 </databaseChangeLog>
 
