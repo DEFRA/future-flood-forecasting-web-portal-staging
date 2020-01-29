@@ -11,7 +11,7 @@
     </sql>
 	  <rollback>
 		  <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.LEGACY_TIMESERIES', 'U') IS NOT NULL 
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL 
         EXEC sp_rename '${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW', 'FLUVIAL_NON_DISPLAY_GROUP_WORKFLOW';
       </sql>
 	  </rollback>
