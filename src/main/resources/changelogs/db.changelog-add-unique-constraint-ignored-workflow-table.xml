@@ -1,0 +1,21 @@
+
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-add-unique-constraint-ignored-workflow-table">
+	  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.UNIQUE_IGNORD_WORKFLOW', 'UQ') IS NULL
+          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
+            ADD CONSTRAINT UNIQUE_IGNORD_WORKFLOW UNIQUE(WORKFLOW_ID)
+    </sql>
+	  <rollback>
+		  <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.UNIQUE_IGNORD_WORKFLOW', 'UQ') IS NOT NULL  
+          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
+            DROP CONSTRAINT UNIQUE_IGNORD_WORKFLOW
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
