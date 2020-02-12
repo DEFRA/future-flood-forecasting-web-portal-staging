@@ -22,7 +22,7 @@
   <include file="./changelogs/db.changelog-create-forecast-location-drn-order-column.xml"/>
   <include file="./changelogs/db.changelog-create-fluvial-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-change-location-lookup-table-name.xml"/>
-  <include file="./changelogs/db.changelog-add--unique-constraint-non-display-group-table.xml"/>
+  <include file="./changelogs/db.changelog-add-unique-constraint-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-user.xml"/>
   <include file="./changelogs/db.changelog-alter-reporting-schema-authorization.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-schema-reader-role.xml"/>
@@ -42,5 +42,8 @@
   <include file="./changelogs/db.changelog-create-csv-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-csv-staging-exception-exception-time-index.xml"/>
   <include file="./changelogs/db.changelog-change-fluvial-non-display-group-table-name.xml"/>
+  <include file="./changelogs/db.changelog-add-unique-constraint-fluvial-display-group-table.xml"/>
+  <include file="./changelogs/db.changelog-add-unique-constraint-ignored-workflow-table.xml"/>
+  <include file="./changelogs/db.changelog-add-unique-constraint-forecast-location-table.xml"/>
 </databaseChangeLog>
 
