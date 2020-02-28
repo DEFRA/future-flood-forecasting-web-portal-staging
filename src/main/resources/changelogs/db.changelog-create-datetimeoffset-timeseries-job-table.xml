@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-datetimeoffset-timeseries-job-table">
 	  <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.DATETIMEOFFSET_TIMESERIES_JOB', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbReportingSchema}.DATETIMEOFFSET_TIMESERIES_JOB
+      IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB', 'U') IS NULL 
+          CREATE TABLE ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB
           (
             ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() CONSTRAINT PK_TIMESERIES_JOB PRIMARY KEY,
             TIMESERIES_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_TIMESERIES_JOB_TIMESERIES_ID,
@@ -22,8 +22,8 @@
     </sql>
 	  <rollback>
 		  <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.DATETIMEOFFSET_TIMESERIES_JOB', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbReportingSchema}.DATETIMEOFFSET_TIMESERIES_JOB
+        IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB
       </sql>
 	  </rollback>
   </changeSet>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-copy-data-to-datetimeoffset-fluvial-forecast-location-job-table">
+    <preConditions onFail="HALT">
+      <sqlCheck expectedResult="0">SELECT COUNT(*) FROM ${fffsWebPortalStagingDbReportingSchema}.FLUVIAL_FORECAST_LOCATION_JOB</sqlCheck>
+    </preConditions>
+	  <sql>
+      INSERT INTO ${fffsWebPortalStagingDbReportingSchema}.FLUVIAL_FORECAST_LOCATION_JOB
+        SELECT
+          id,
+          job_id,
+          job_status,
+          job_status_time at time zone 'UTC',
+          description
+        FROM
+          ${fffsWebPortalStagingDbReportingSchema}.DATETIME2_FLUVIAL_FORECAST_LOCATION_JOB
+    </sql>
+	  <rollback>
+		  <sql>
+        DELETE FROM ${fffsWebPortalStagingDbReportingSchema}.FLUVIAL_FORECAST_LOCATION_JOB
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 

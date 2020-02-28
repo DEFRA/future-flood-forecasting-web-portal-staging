@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-datetimeoffset-staging-exception-table">
 	  <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DATETIMEOFFSET_STAGING_EXCEPTION', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.DATETIMEOFFSET_STAGING_EXCEPTION
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION', 'U') IS NULL 
+          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION
           (
             ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() CONSTRAINT PK_STAGING_EXCEPTION PRIMARY KEY,
             PAYLOAD NVARCHAR(MAX) NOT NULL,
@@ -17,8 +17,8 @@
     </sql>
 	  <rollback>
 		  <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DATETIMEOFFSET_STAGING_EXCEPTION', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.DATETIMEOFFSET_STAGING_EXCEPTION
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION
       </sql>
 	  </rollback>
   </changeSet>
