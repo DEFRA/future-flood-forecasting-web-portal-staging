@@ -45,5 +45,27 @@
   <include file="./changelogs/db.changelog-add-unique-constraint-fluvial-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-add-unique-constraint-ignored-workflow-table.xml"/>
   <include file="./changelogs/db.changelog-add-unique-constraint-forecast-location-table.xml"/>
+  <include file="./changelogs/db.changelog-change-timeseries-job-table-primary-key-name.xml"/>
+  <include file="./changelogs/db.changelog-change-fluvial-forecast-location-job-table-primary-key-name.xml"/>
+  <include file="./changelogs/db.changelog-change-timeseries-table-primary-key-name.xml"/>
+  <include file="./changelogs/db.changelog-change-timeseries-header-table-primary-key-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-timeseries-header-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-timeseries-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-timeseries-job-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-fluvial-forecast-location-job-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-staging-exception-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-datetime2-csv-staging-exception-table-name.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-fluvial-forecast-location-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-create-datetimeoffset-csv-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-csv-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-fluvial-forecast-location-job-table.xml"/>
 </databaseChangeLog>
 
