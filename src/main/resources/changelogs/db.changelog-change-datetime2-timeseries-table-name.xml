@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-change-datetime2-timeseries-table-name">
+	  <sql>
+    IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES', 'U') IS NOT NULL 
+      EXEC sp_rename '${fffsWebPortalStagingDbStagingSchema}.TIMESERIES', 'DATETIME2_TIMESERIES';
+    </sql>
+	  <rollback>
+		  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DATETIME2_TIMESERIES', 'U') IS NOT NULL 
+        EXEC sp_rename '${fffsWebPortalStagingDbStagingSchema}.DATETIME2_TIMESERIES', 'TIMESERIES';
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
