@@ -5,11 +5,14 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-insert-records-into-datum-lookup-table.xml">
-	  <sql>
+		  <sql>
+      INSERT INTO ${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP (DATUM, DESCRIPTION)
+        VALUES ('mALD', 'Test')
     </sql>
 	  <rollback>
 		  <sql>
-     </sql>
+      DELETE FROM ${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP
+      </sql>
 	  </rollback>
   </changeSet>
 </databaseChangeLog>

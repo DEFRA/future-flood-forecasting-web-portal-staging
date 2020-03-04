@@ -5,11 +5,19 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-datum-lookup-table">
-	  <sql>
+		  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP', 'U') IS NULL 
+          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP
+          (
+            ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() PRIMARY KEY,
+            DATUM NVARCHAR(10) NOT NULL,
+            DESCRIPTION NVARCHAR(MAX)
+          )
     </sql>
 	  <rollback>
 		  <sql>
-     </sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.DATUM_LOOKUP
+      </sql>
 	  </rollback>
-  </changeSet>
 </databaseChangeLog>

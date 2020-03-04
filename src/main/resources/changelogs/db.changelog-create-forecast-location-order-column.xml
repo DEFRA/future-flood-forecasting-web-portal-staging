@@ -5,11 +5,16 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-forecast-location-order-column.xml">
-	  <sql>
-    </sql>
-	  <rollback>
-		  <sql>
-     </sql>
-	  </rollback>
+  <sql>
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','ORDER') IS NULL 
+        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
+          ADD ORDER UNIQUEIDENTIFIER NOT NULL
+  </sql>
+  <rollback>
+  <sql>
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','ORDER') IS NOT NULL 
+          DROP COLUMN ORDER
+  </sql>
+  </rollback>
   </changeSet>
 </databaseChangeLog>
