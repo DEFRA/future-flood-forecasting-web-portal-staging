@@ -8,11 +8,19 @@
   <sql>
     IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DISPLAY_ORDER') IS NULL 
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-          ADD DISPLAY_ORDER INT UNIQUE NOT NULL
+          ADD 
+            DISPLAY_ORDER INT NOT NULL
+            CONSTRAINT UQ_DISPLAY_ORDER_FORECAST_LOCATION UNIQUE
+            CONSTRAINT DF_DISPLAY_ORDER_FORECAST_LOCATION DEFAULT 0
   </sql>
   <rollback>
   <sql>
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DISPLAY_ORDER') IS NOT NULL 
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DISPLAY_ORDER') IS NOT NULL
+      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
+          DROP CONSTRAINT DF_DISPLAY_ORDER_FORECAST_LOCATION
+      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
+          DROP CONSTRAINT UQ_DISPLAY_ORDER_FORECAST_LOCATION
+      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
           DROP COLUMN DISPLAY_ORDER
   </sql>
   </rollback>
