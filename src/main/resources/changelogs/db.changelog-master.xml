@@ -67,7 +67,6 @@
   <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-csv-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-timeseries-job-table.xml"/>
   <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-fluvial-forecast-location-job-table.xml"/>
-
   <include file="./changelogs/db.changelog-create-forecast-location-datum-column.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-order-column.xml"/>
 </databaseChangeLog>

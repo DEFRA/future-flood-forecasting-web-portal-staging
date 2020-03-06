@@ -10,7 +10,7 @@
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
         ADD 
           DATUM NVARCHAR(64) NOT NULL 
-          CONSTRAINT DF_defaultvalue DEFAULT 'none'
+          CONSTRAINT DF_DATUM_FORECAST_LOCATION DEFAULT 'none'
           CONSTRAINT CHK_Limit_Datum_Input_Values CHECK (DATUM = 'mALD' OR DATUM = 'mAOD' OR DATUM = 'none')
   </sql>
   <rollback>
@@ -19,7 +19,7 @@
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
             DROP CONSTRAINT CHK_Limit_Datum_Input_Values
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            DROP CONSTRAINT DF_defaultvalue
+            DROP CONSTRAINT DF_DATUM_FORECAST_LOCATION
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
             DROP COLUMN DATUM
   </sql>
