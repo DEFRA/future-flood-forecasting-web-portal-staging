@@ -17,11 +17,9 @@
   <sql>
       IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM') IS NOT NULL
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            DROP CONSTRAINT CHK_Limit_Datum_Input_Values
-        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            DROP CONSTRAINT DF_DATUM_FORECAST_LOCATION
-        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
-            DROP COLUMN DATUM
+            DROP CONSTRAINT CHK_Limit_Datum_Input_Values,
+            CONSTRAINT DF_DATUM_FORECAST_LOCATION,
+            COLUMN DATUM
   </sql>
   </rollback>
   </changeSet>
