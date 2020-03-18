@@ -10,15 +10,13 @@
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
         ADD 
           DATUM NVARCHAR(64) NOT NULL 
-          CONSTRAINT DF_DATUM_FORECAST_LOCATION DEFAULT 'none'
-          CONSTRAINT CHK_LIMIT_DATUM_INPUT_VALUES CHECK (DATUM = 'mALD' OR DATUM = 'mAOD' OR DATUM = 'none')
+          CONSTRAINT CHK_LIMIT_DATUM_INPUT_VALUES CHECK (DATUM = 'mALD' OR DATUM = 'mAOD')
   </sql>
   <rollback>
   <sql>
       IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DATUM') IS NOT NULL
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
             DROP CONSTRAINT CHK_LIMIT_DATUM_INPUT_VALUES,
-            CONSTRAINT DF_DATUM_FORECAST_LOCATION,
             COLUMN DATUM
   </sql>
   </rollback>
