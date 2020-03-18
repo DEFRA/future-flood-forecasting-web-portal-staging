@@ -69,6 +69,6 @@
   <include file="./changelogs/db.changelog-copy-data-to-datetimeoffset-fluvial-forecast-location-job-table.xml"/>
   <include file="./changelogs/db.changelog-truncate-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-datum-column.xml"/>
-  <include file="./changelogs/db.changelog-create-forecast-location-order-column.xml"/>
+  <include file="./changelogs/db.changelog-create-forecast-location-display-order-column.xml"/>
 </databaseChangeLog>
 

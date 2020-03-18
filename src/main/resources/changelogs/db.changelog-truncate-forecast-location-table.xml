@@ -5,6 +5,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-truncate-forecast-location-table">
+   <comment>The rollback tag is absent in this changeset because in the event of a failed truncation, timeseries data will still be in place and the next changesets (add both datum column and display order column to the forecast location table) will fail and rollback if required.</comment>
 	  <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION', 'U') IS NOT NULL 
           TRUNCATE TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION

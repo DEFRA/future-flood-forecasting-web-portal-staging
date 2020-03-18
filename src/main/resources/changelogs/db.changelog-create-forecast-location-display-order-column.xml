@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="awallace" id="changelog-create-forecast-location-order-column.xml">
+  <changeSet author="awallace" id="changelog-create-forecast-location-display-order-column.xml">
   <sql>
     IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION','DISPLAY_ORDER') IS NULL 
         ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION
