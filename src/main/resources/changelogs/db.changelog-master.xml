@@ -70,5 +70,6 @@
   <include file="./changelogs/db.changelog-truncate-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-datum-column.xml"/>
   <include file="./changelogs/db.changelog-create-forecast-location-display-order-column.xml"/>
+  <include file="./changelogs/db.changelog-change-timeseries-header-task-id-column-name.xml"/>
 </databaseChangeLog>
 
