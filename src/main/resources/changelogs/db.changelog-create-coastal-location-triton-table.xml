@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-coastal-location-triton-table">
+	  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_LOCATION_TRITON', 'U') IS NULL 
+          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_LOCATION_TRITON
+          (
+            ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
+            FFFS_LOC_ID NVARCHAR(64) NOT NULL,
+            COASTAL_ORDER INT NOT NULL,
+            CENTRE NVARCHAR(64) NOT NULL,
+            MFDO_AREA NVARCHAR(64) NOT NULL,
+            TA_NAME NVARCHAR(64) NOT NULL,
+            COASTAL_TYPE NVARCHAR(64) NOT NULL
+            CONSTRAINT CHK_Triton_Coastal_Type CHECK (COASTAL_TYPE = 'Triton')
+            CONSTRAINT UC_Triton UNIQUE (COASTAL_ORDER)
+          )
+    </sql>
+	  <rollback>
+		  <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_LOCATION_TRITON', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_LOCATION_TRITON
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
