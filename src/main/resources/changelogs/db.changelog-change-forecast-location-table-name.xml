@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-change-forecast-location-table-name">
+	  <sql>
+    IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION', 'U') IS NOT NULL 
+      EXEC sp_rename '${fffsWebPortalStagingDbStagingSchema}.FORECAST_LOCATION', 'FLUVIAL_FORECAST_LOCATION';
+    </sql>
+	  <rollback>
+		  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION', 'U') IS NOT NULL 
+        EXEC sp_rename '${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION', 'FORECAST_LOCATION';
+      </sql>
+	  </rollback>
+  </changeSet>
+</databaseChangeLog> 
