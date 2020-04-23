@@ -18,7 +18,6 @@
             TA_NAME NVARCHAR(MAX),
             COASTAL_TYPE NVARCHAR(64) NOT NULL
             CONSTRAINT CHK_Tidal_Coastal_Forecasting_Type CHECK (COASTAL_TYPE = 'Coastal Forecasting' OR COASTAL_TYPE = 'Multivariate Thresholds' OR COASTAL_TYPE = 'Triton')
-            <!-- CONSTRAINT UC_COASTAL_FORECAST_LOCATION UNIQUE (COASTAL_ORDER) -->
           )
     </sql>
 	  <rollback>
