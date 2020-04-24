@@ -15,7 +15,7 @@
             COASTAL_ORDER INT NOT NULL,
             CENTRE NVARCHAR(64) NOT NULL,
             MFDO_AREA NVARCHAR(64) NOT NULL,
-            TA_NAME NVARCHAR(MAX),
+            TA_NAME NVARCHAR(MAX) NOT NULL,
             COASTAL_TYPE NVARCHAR(64) NOT NULL
             CONSTRAINT CHK_Tidal_Coastal_Forecasting_Type CHECK (COASTAL_TYPE = 'Coastal Forecasting' OR COASTAL_TYPE = 'Multivariate Thresholds' OR COASTAL_TYPE = 'Triton')
           )
