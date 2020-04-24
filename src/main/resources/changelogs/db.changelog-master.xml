@@ -72,5 +72,7 @@
   <include file="./changelogs/db.changelog-create-forecast-location-display-order-column.xml"/>
   <include file="./changelogs/db.changelog-change-timeseries-header-task-id-column-name.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-timeseries-composite-index.xml"/>
+  <include file="./changelogs/db.changelog-truncate-non-display-group-table.xml"/>
+  <include file="./changelogs/db.changelog-create-non-display-group-workflow-forecast-column.xml"/>
 </databaseChangeLog>
 
