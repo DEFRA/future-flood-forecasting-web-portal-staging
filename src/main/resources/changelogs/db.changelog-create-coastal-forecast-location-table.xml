@@ -17,7 +17,7 @@
             MFDO_AREA NVARCHAR(64) NOT NULL,
             TA_NAME NVARCHAR(MAX) NOT NULL,
             COASTAL_TYPE NVARCHAR(64) NOT NULL
-            CONSTRAINT CHK_Tidal_Coastal_Forecasting_Type CHECK (COASTAL_TYPE = 'Coastal Forecasting' OR COASTAL_TYPE = 'Multivariate Thresholds' OR COASTAL_TYPE = 'Triton')
+            CONSTRAINT CHK_TIDAL_COASTAL_FORECASTING_TYPE CHECK (COASTAL_TYPE = 'Coastal Forecasting' OR COASTAL_TYPE = 'Multivariate Thresholds' OR COASTAL_TYPE = 'Triton')
           )
     </sql>
 	  <rollback>
