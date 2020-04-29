@@ -14,10 +14,13 @@
             FFFS_LOC_NAME	NVARCHAR(64),
             COASTAL_ORDER INT NOT NULL,
             CENTRE NVARCHAR(64) NOT NULL,
-            MFDO_AREA NVARCHAR(64) NOT NULL,
-            TA_NAME NVARCHAR(MAX) NOT NULL,
-            COASTAL_TYPE NVARCHAR(64) NOT NULL
-            CONSTRAINT CHK_TIDAL_COASTAL_FORECASTING_TYPE CHECK (COASTAL_TYPE = 'Coastal Forecasting' OR COASTAL_TYPE = 'Multivariate Thresholds' OR COASTAL_TYPE = 'Triton')
+            MFDO_AREA NVARCHAR(64),
+            TA_NAME NVARCHAR(MAX),
+            COASTAL_TYPE NVARCHAR(64) NOT NULL,
+            CONSTRAINT CHK_TIDAL_COASTAL_FORECASTING_TYPE CHECK (COASTAL_TYPE = 'Coastal Forecasting'
+            OR ( COASTAL_TYPE = 'Triton' AND ( TA_NAME IS NOT NULL AND MFDO_AREA IS NOT NULL ) )
+            OR ( COASTAL_TYPE = 'Multivariate Thresholds' AND ( TA_NAME IS NOT NULL AND MFDO_AREA IS NOT NULL ) )
+            )
           )
     </sql>
 	  <rollback>
