@@ -74,5 +74,7 @@
   <include file="./changelogs/db.changelog-create-reporting-timeseries-composite-index.xml"/>
   <include file="./changelogs/db.changelog-truncate-non-display-group-table.xml"/>
   <include file="./changelogs/db.changelog-create-non-display-group-workflow-forecast-column.xml"/>
+  <include file="./changelogs/db.changelog-create-coastal-display-group-workflow-table.xml"/>
+  <include file="./changelogs/db.changelog-create-coastal-forecast-location-table.xml"/>
+  <include file="./changelogs/db.changelog-change-forecast-location-table-name.xml"/>
 </databaseChangeLog>
-
