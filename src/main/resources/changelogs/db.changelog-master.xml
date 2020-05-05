@@ -77,4 +77,5 @@
   <include file="./changelogs/db.changelog-create-coastal-display-group-workflow-table.xml"/>
   <include file="./changelogs/db.changelog-create-coastal-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-change-forecast-location-table-name.xml"/>
+  <include file="./changelogs/db.changelog-change-coastal-workflow-location-column-name.xml"/>
 </databaseChangeLog>
