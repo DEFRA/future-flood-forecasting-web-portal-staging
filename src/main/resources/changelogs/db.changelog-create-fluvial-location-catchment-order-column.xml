@@ -13,7 +13,7 @@
 	  <rollback>
 		  <sql>
         IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION','CATCHMENT_ORDER') IS NOT NULL 
-          DROP COLUMN CATCHMENT_ORDER
+          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION DROP COLUMN CATCHMENT_ORDER
       </sql>
 	  </rollback>
   </changeSet>
