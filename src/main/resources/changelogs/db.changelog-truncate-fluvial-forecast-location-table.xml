@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-truncate-fluvial-forecast-location-table">
+   <comment>The rollback tag is absent in this changeset because in the event of a failed truncation, fluvial forecast location data will still be in place and the next changeset (add catchment order column to the fluvial forecast location table) will fail and rollback if required.</comment>
+	  <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION', 'U') IS NOT NULL 
+          TRUNCATE TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION
+    </sql>
+  </changeSet>
+</databaseChangeLog> 
