@@ -4,23 +4,24 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="awallace" id="changelog-create-csv-staging-exception-table">
-	  <sql>
+  <changeSet author="pwadmore" id="changelog-create-csv-staging-exception-table">
+    <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION
           (
-            ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_CSV_STAGING_EXCEPTION_ID DEFAULT NEWID(),
             CSV_SOURCE_FILE NVARCHAR(64) NOT NULL,
             ROW_DATA NVARCHAR(MAX) NOT NULL,
             DESCRIPTION NVARCHAR(MAX) NOT NULL,
-            EXCEPTION_TIME DATETIME2 NOT NULL DEFAULT GETUTCDATE()
+            EXCEPTION_TIME DATETIMEOFFSET NOT NULL CONSTRAINT DF_CSV_STAGING_EXCEPTION_EXCEPTION_TIME DEFAULT GETUTCDATE() INDEX IX_CSV_STAGING_EXCEPTION_EXCEPTION_TIME,
+            CONSTRAINT PK_CSV_STAGING_EXCEPTION PRIMARY KEY CLUSTERED (ID)
           )
     </sql>
-	  <rollback>
-		  <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION', 'U') IS NOT NULL 
+    <rollback>
+      <sql>
+         IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION', 'U') IS NOT NULL
           DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 

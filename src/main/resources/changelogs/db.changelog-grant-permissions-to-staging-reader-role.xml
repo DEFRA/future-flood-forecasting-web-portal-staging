@@ -4,15 +4,13 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="pwadmore" id="changelog-reporting-reader-writer-role">
+  <changeSet author="pwadmore" id="changelog-grant-permissions-to-staging-reader-role">
     <sql>
-      IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'REPORTING_READER_WRITER' and type = 'R')
-        CREATE ROLE REPORTING_READER_WRITER AUTHORIZATION dbo
+      GRANT SELECT ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER
     </sql>
     <rollback>
       <sql>
-        IF EXISTS (SELECT * FROM sys.database_principals WHERE name = 'REPORTING_READER_WRITER' and type = 'R')
-          DROP ROLE REPORTING_READER_WRITER
+        REVOKE SELECT ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER
       </sql>
     </rollback>
   </changeSet>

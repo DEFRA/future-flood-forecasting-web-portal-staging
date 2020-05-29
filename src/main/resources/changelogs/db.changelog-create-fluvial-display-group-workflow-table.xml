@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-fluvial-display-group-workflow-table">
+    <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL
+        CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_DISPLAY_GROUP_WORKFLOW
+        (
+          ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_FLUVIAL_DISPLAY_GROUP_WORKFLOW_ID DEFAULT NEWID(),
+          WORKFLOW_ID NVARCHAR(64) NOT NULL,
+          PLOT_ID NVARCHAR(64) NOT NULL,
+          LOCATION_IDS NVARCHAR(MAX) NOT NULL
+          CONSTRAINT PK_FLUVIAL_DISPLAY_GROUP_WORKFLOW PRIMARY KEY CLUSTERED (ID),
+          CONSTRAINT UQ_FLUVIAL_DISPLAY_GROUP_WORKFLOW_WORKFLOW_ID_PLOT_ID UNIQUE(WORKFLOW_ID, PLOT_ID)
+        )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_DISPLAY_GROUP_WORKFLOW
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

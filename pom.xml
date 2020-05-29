@@ -47,6 +47,7 @@
                     <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
                     <username>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME}</username>
                     <password>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD}</password>
+                    <schemas>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA},${FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA}</schemas>
                     <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
                     <systemProperties>
                         <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>

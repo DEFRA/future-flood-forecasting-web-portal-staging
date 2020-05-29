@@ -5,13 +5,13 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-grant-permissions-to-staging-reader-writer-role">
-	  <sql>
+    <sql>
       GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER_WRITER
     </sql>
-	  <rollback>
-		  <sql>
-        REVOKE SELECT ON SCHEMA, INSERT, UPDATE, DELETE :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER_WRITER
+    <rollback>
+      <sql>
+        REVOKE SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER_WRITER
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 
