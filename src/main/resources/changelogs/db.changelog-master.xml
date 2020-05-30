@@ -24,7 +24,8 @@
   <include file="./changelogs/db.changelog-create-reporting-schema.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-user.xml"/>
   <include file="./changelogs/db.changelog-create-reporting-reader-role.xml"/>
-  <include file="./changelogs/db.changelog-create-reporting-schema-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-create-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-permissions-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-staging-reader-role.xml"/>
   <include file="./changelogs/db.changelog-add-staging-user-to-reporting-reader-writer-role.xml"/>
