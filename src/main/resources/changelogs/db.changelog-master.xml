@@ -32,4 +32,5 @@
   <include file="./changelogs/db.changelog-create-timeseries-job-table.xml"/>
   <include file="./changelogs/db.changelog-create-coastal-forecast-location-job-table.xml"/>
   <include file="./changelogs/db.changelog-create-fluvial-forecast-location-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-view.xml"/>
 </databaseChangeLog>
