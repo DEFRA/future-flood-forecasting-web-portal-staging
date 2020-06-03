@@ -15,10 +15,10 @@
             JOB_STATUS INTEGER NOT NULL,
             JOB_STATUS_TIME DATETIMEOFFSET NOT NULL,
             DESCRIPTION NVARCHAR(MAX),
-            CONSTRAINT PK_TIMESERIES_JOB PRIMARY KEY CLUSTERED (ID),
+            CONSTRAINT PK_TIMESERIES_JOB PRIMARY KEY CLUSTERED ([ID]),
             CONSTRAINT FK_TIMESERIES_JOB_TIMESERIES
             FOREIGN KEY (TIMESERIES_ID)
-            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES (ID) 
+            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES ([ID]) 
           )
     </sql>
     <rollback>
