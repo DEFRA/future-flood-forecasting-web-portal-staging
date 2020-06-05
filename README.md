@@ -45,24 +45,23 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_HOST_PORT           | Host port for the database                            | no       | 1433    |             |
 | SA_PASSWORD                                    | System administrator password                         | yes      |         |             |
 
-## Temporary enviroment variables
-
-| name                                           | description                                           | required | default | valid       |
-|------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
-| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA    | Temporary schema for reporting/visualisation purposes | yes      |         |             |
-
-## Azure SQL based build
+## Azure SQL based incremental build
 
 * Ensure the required environment variables are set.
-* Run ./bootstrap.sh from the directory containing this file. This adds a database called **fffswebportalstaging** to an existing Azure SQL
-  instance. The staging schema will contain a table called TIMESERIES.
+* Run ./bootstrap.sh from the directory containing this file. This script runs Liquibase changesets on an incremental basis.
+
+## Azure SQL based clean build (NON-PRODUCTION USE ONLY)
+
+* Ensure the required environment variables are set.
+* Run ./tear-down.sh from the directory containing this file. FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA and FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA
+  will be **dropped** allowing a fresh run of all Liquibase changesets.
+* Run ./bootstrap.sh from the directory containing this file. All Liquibase changesets will be run.
   
 ## Local Linux Host Based Docker Build
 
 * Ensure the required environment variables are set.
 * Run ./local-bootstrap.sh from  the directory containing this file. This creates a SQL Server 2017 instance containing a database called
-  **fffswebportalstaging** running in a Docker container. Volumes are not used at present. The staging schema will contain a table called
-  TIMESERIES.
+  **fffswebportalstaging** running in a Docker container. Volumes are not used at present. All Liquibase changesets will be run.
 
 ## Contributing to this project
 

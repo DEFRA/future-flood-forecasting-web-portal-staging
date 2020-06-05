@@ -4,16 +4,16 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="pwadmore" id="changelog-create-contained-reporting-user">
-	  <sql>
+  <changeSet author="pwadmore" id="changelog-create-reporting-user">
+    <sql>
       IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbReportingUsername}')
-        CREATE USER ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}'
+        CREATE USER ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}', DEFAULT_SCHEMA = ${fffsWebPortalStagingDbReportingSchema}
     </sql>
-	  <rollback>
-		  <sql>
+    <rollback>
+      <sql>
         IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbReportingUsername}')
           DROP USER ${fffsWebPortalStagingDbReportingUsername}
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 

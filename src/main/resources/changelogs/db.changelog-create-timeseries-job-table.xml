@@ -5,26 +5,27 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-timeseries-job-table">
-	  <sql>
+    <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB
           (
-            ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID() CONSTRAINT PK_TIMESERIES_JOB PRIMARY KEY,
-            TIMESERIES_ID UNIQUEIDENTIFIER NOT NULL INDEX INDEX_TIMESERIES_JOB_TIMESERIES_ID,
-            JOB_ID BIGINT NOT NULL INDEX INDEX_TIMESERIES_JOB_ID,
-            JOB_STATUS INTEGER NOT NULL,
-            JOB_STATUS_TIME DATETIME2 NOT NULL,
-            DESCRIPTION NVARCHAR(MAX)
-            CONSTRAINT FK_TIMESERIES_JOB_TIMESERIES_ID
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TIMESERIES_JOB_ID DEFAULT NEWID(), 
+            TIMESERIES_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_TIMESERIES_JOB_TIMESERIES_ID,
+            JOB_ID BIGINT NOT NULL INDEX IX_TIMESERIES_JOB_JOB_ID,
+            JOB_STATUS INTEGER NOT NULL INDEX IX_TIMESERIES_JOB_JOB_STATUS,
+            JOB_STATUS_TIME DATETIMEOFFSET NOT NULL,
+            DESCRIPTION NVARCHAR(MAX),
+            CONSTRAINT PK_TIMESERIES_JOB PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT FK_TIMESERIES_JOB_TIMESERIES
             FOREIGN KEY (TIMESERIES_ID)
-            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES (ID) 
+            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES ([ID]) 
           )
     </sql>
-	  <rollback>
-		  <sql>
+    <rollback>
+      <sql>
         IF OBJECT_ID('${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB', 'U') IS NOT NULL 
           DROP TABLE ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 
