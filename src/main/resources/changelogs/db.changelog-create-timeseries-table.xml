@@ -5,19 +5,24 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-timeseries-table">
-	  <sql>
+    <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES
           (
-            ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
-            FEWS_DATA NVARCHAR(MAX) NOT NULL
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TIMESERIES_ID DEFAULT NEWID(),
+            FEWS_DATA VARBINARY(MAX) NOT NULL,
+            FEWS_PARAMETERS NVARCHAR(MAX) NOT NULL,
+            TIMESERIES_HEADER_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_TIMESERIES_TIMESERIES_HEADER_ID,
+            CONSTRAINT PK_TIMESERIES PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT FK_TIMESERIES_TIMESERIES_HEADER FOREIGN KEY (TIMESERIES_HEADER_ID)
+            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER ([ID]) 
           )
     </sql>
-	  <rollback>
-		  <sql>
+    <rollback>
+      <sql>
         IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES', 'U') IS NOT NULL 
           DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 

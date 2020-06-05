@@ -5,19 +5,20 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-ignored-workflow-table">
-	  <sql>
+    <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
           (
-            ID UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(),
-            WORKFLOW_ID NVARCHAR(64) NOT NULL
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_IGNORED_WORKFLOW_ID DEFAULT NEWID(),
+            WORKFLOW_ID NVARCHAR(64) NOT NULL INDEX IX_IGNORED_WORKFLOW_WORKFLOW_ID,
+            CONSTRAINT UQ_IGNORED_WORKFLOW_WORKFLOW_ID UNIQUE(WORKFLOW_ID)
           )
     </sql>
-	  <rollback>
-		  <sql>
+    <rollback>
+      <sql>
         IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW', 'U') IS NOT NULL 
           DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 

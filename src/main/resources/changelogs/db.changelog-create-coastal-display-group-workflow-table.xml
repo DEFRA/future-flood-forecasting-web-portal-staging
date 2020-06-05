@@ -5,22 +5,23 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-coastal-display-group-workflow-table">
-	  <sql>
+    <sql>
       IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL 
           CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW
           (
-              ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-              FFFS_LOC_IDS NVARCHAR(MAX) NOT NULL,
-              WORKFLOW_ID NVARCHAR(64) NOT NULL,
+              ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_COASTAL_DISPLAY_GROUP_WORKFLOW_ID DEFAULT NEWID(),
+              LOCATION_IDS NVARCHAR(MAX) NOT NULL,
+              WORKFLOW_ID NVARCHAR(64) NOT NULL INDEX IX_COASTAL_DISPLAY_GROUP_WORKFLOW_WORKFLOW_ID,
               PLOT_ID NVARCHAR(64) NOT NULL,
-              CONSTRAINT UNIQUE_COASTAL_DISPLAY_GROUP_WORKFLOW_COMBINATION UNIQUE(WORKFLOW_ID, PLOT_ID)
+              CONSTRAINT PK_COASTAL_DISPLAY_GROUP_WORKFLOW PRIMARY KEY CLUSTERED([ID]),
+              CONSTRAINT UQ_COASTAL_DISPLAY_GROUP_WORKFLOW_WORKFLOW_ID_PLOT_ID UNIQUE(WORKFLOW_ID, PLOT_ID)
           )
     </sql>
-	  <rollback>
-		  <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL 
+    <rollback>
+      <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL
           DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW
       </sql>
-	  </rollback>
+    </rollback>
   </changeSet>
 </databaseChangeLog> 
