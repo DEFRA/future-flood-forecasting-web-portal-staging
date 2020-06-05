@@ -13,7 +13,7 @@
 
     <properties>
         <liquibase.version>3.9.0</liquibase.version>
-        <sqlserver.version>7.4.1.jre8</sqlserver.version>
+        <sqlserver.version>8.3.1.jre14-preview</sqlserver.version>
         <azuread.version>1.6.5</azuread.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
