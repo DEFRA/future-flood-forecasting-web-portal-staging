@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-timeseries-staging-exception-table">
+    <sql>
+      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_STAGING_EXCEPTION', 'U') IS NULL 
+          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_STAGING_EXCEPTION
+          (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TIMESERIES_STAGING_EXCEPTION_ID DEFAULT NEWID(),
+            SOURCE_ID NVARCHAR(64) NOT NULL,
+            SOURCE_TYPE NVARCHAR(1) NOT NULL,
+            CSV_ERROR BIT NOT NULL,
+            DESCRIPTION NVARCHAR(MAX) NOT NULL,
+            EXCEPTION_TIME DATETIMEOFFSET NOT NULL CONSTRAINT DF_TIMESERIES_STAGING_EXCEPTION_EXCEPTION_TIME DEFAULT GETUTCDATE() INDEX IX_TIMESERIES_STAGING_EXCEPTION_EXCEPTION_TIME,
+            TIMESERIES_HEADER_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER_ID,
+            CONSTRAINT PK_TIMESERIES_STAGING_EXCEPTION PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT FK_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER FOREIGN KEY (TIMESERIES_HEADER_ID)
+            REFERENCES ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER ([ID]),
+            CONSTRAINT CHK_TIMESERIES_STAGING_EXCEPTION_SOURCE_TYPE CHECK (SOURCE_TYPE IN ('F', 'P')) 
+          )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_STAGING_EXCEPTION', 'U') IS NOT NULL 
+          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_STAGING_EXCEPTION
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

@@ -42,4 +42,5 @@
   <include file="./changelogs/db.changelog-non-display-group-drop-forecast-column.xml"/>
   <include file="./changelogs/db.changelog-timeseries-header-drop-start-time-column.xml"/>
   <include file="./changelogs/db.changelog-timeseries-header-drop-end-time-column.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-staging-exception-table.xml"/>
 </databaseChangeLog>
