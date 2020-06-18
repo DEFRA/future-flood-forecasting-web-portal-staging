@@ -4,6 +4,7 @@ export FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD='#{webPortalStagingDbAdminPassw
 export FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING='#{webPortalStagingDbConnectionString}'
 export FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA='#{webPortalStagingDbStagingSchema}'
 export FFFS_WEB_PORTAL_STAGING_DB_USERNAME='#{webPortalStagingDbUsername}'
+export FFFS_WEB_PORTAL_STAGING_DB_PASSWORD='#{webPortalStagingDbPassword}'
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA='#{webPortalStagingDbReportingSchema}'
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME='#{webPortalStagingDbReportingUsername}'
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD='#{webPortalStagingDbReportingPassword}'
