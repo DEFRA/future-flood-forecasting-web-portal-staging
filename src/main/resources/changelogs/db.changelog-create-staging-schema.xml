@@ -8,7 +8,7 @@
     <sql>
       IF (NOT EXISTS (SELECT * FROM sys.schemas WHERE name = '${fffsWebPortalStagingDbStagingSchema}'))
         BEGIN
-          EXEC ('CREATE SCHEMA ${fffsWebPortalStagingDbStagingSchema} AUTHORIZATION ${fffsWebPortalStagingDbUsername}')
+          EXEC ('CREATE SCHEMA ${fffsWebPortalStagingDbStagingSchema} AUTHORIZATION dbo')
         END
     </sql>
     <rollback>
