@@ -29,6 +29,7 @@
   <include file="./changelogs/db.changelog-grant-permissions-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-reporting-user-to-staging-reader-role.xml"/>
+  <include file="./changelogs/db.changelog-add-staging-user-to-staging-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-add-staging-user-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-create-timeseries-job-table.xml"/>
   <include file="./changelogs/db.changelog-create-coastal-forecast-location-job-table.xml"/>

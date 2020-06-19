@@ -32,7 +32,8 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD      | Password for database version control account         | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string                       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA      | Staging schema name                                   | yes      |         |             |
-| FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The user that owns the staging schema                 | yes      |         |
+| FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The staging schema user                               | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_PASSWORD            | Password for the staging schema user                  | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA    | Schema for reporting data transformation activities   | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
