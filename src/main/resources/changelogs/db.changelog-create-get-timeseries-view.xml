@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-get-timeseries-view">
+    <sql>
+      CREATE OR ALTER VIEW ${fffsWebPortalStagingDbStagingSchema}.V_GET_TIMESERIES_QUEUE AS
+      SELECT
+        t.ID,
+        h.IMPORT_TIME,
+        t.TIMESERIES_HEADER_ID
+      FROM
+        ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES t
+        INNER JOIN ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
+      WHERE
+        NOT EXISTS
+        (
+          SELECT
+            1
+           FROM 
+             ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB j 
+           WHERE
+             j.TIMESERIES_ID = t.ID
+        )
+        OR EXISTS
+        (
+          SELECT
+            1
+          FROM
+            ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB tj
+          WHERE
+            tj.TIMESERIES_ID = t.ID 
+            AND DESCRIPTION = 'Job Failed'
+            AND JOB_STATUS_TIME = 
+            (
+              SELECT
+                MAX(tjb.JOB_STATUS_TIME) 
+              FROM
+                ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB tjb 
+              WHERE
+                tjb.TIMESERIES_ID = tj.TIMESERIES_ID
+            )
+        )
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = '${fffsWebPortalStagingDbStagingSchema}' AND TABLE_NAME = 'V_GET_TIMESERIES_QUEUE')
+          DROP VIEW ${fffsWebPortalStagingDbStagingSchema}.V_GET_TIMESERIES_QUEUE
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
