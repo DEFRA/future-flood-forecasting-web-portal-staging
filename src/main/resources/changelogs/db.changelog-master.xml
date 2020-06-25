@@ -37,4 +37,6 @@
   <include file="./changelogs/db.changelog-create-timeseries-view.xml"/>
   <include file="./changelogs/db.changelog-create-decompression-function.xml"/>
   <include file="./changelogs/db.changelog-grant-decompression-permission-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-create-get-timeseries-view.xml"/>
+  
 </databaseChangeLog>
