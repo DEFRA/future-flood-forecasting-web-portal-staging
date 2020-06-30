@@ -24,7 +24,7 @@
             CONSTRAINT CHK_TIMESERIES_STAGING_EXCEPTION_CSV_TYPE CHECK
               (
                 (CSV_TYPE IS NULL AND CSV_ERROR = 0)
-                OR (CSV_TYPE IN ('C', 'F') AND CSV_ERROR = 1 AND SOURCE_TYPE = 'P')
+                OR (CSV_TYPE IN ('C', 'F', 'U') AND CSV_ERROR = 1 AND SOURCE_TYPE = 'P')
                 OR (CSV_TYPE = 'N' AND CSV_ERROR = 1 AND SOURCE_TYPE = 'F')
               )
           )
