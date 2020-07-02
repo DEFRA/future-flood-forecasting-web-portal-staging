@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-non-display-group-add-timeseries-type-column">
+  <sql>
+    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW','TIMESERIES_TYPE') IS NULL 
+      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+        ADD TIMESERIES_TYPE NVARCHAR(64)
+        CONSTRAINT DF_NON_DISPLAY_GROUP_TIMESERIES_TYPE DEFAULT 'Not specified' NOT NULL
+  </sql>
+  <rollback>
+  <sql>
+      IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW','TIMESERIES_TYPE') IS NOT NULL
+        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+          DROP COLUMN TIMESERIES_TYPE
+  </sql>
+  </rollback>
+  </changeSet>
+</databaseChangeLog> 
