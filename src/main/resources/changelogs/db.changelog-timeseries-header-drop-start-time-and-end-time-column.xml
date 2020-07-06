@@ -6,20 +6,20 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-timeseries-header-drop-start-time-and-end-time-column">
   <sql>
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','START_TIME') IS NOT NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','START_TIME') IS NOT NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
         DROP COLUMN START_TIME
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','END_TIME') IS NOT NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','END_TIME') IS NOT NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
         DROP COLUMN END_TIME
   </sql>
   <rollback>
   <sql>
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','START_TIME') IS NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','START_TIME') IS NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
        ADD START_TIME DATETIMEOFFSET
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','END_TIME') IS NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','END_TIME') IS NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
        ADD END_TIME DATETIMEOFFSET
   </sql>
     </rollback>

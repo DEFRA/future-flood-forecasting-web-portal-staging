@@ -6,14 +6,14 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-non-display-group-drop-forecast-column">
   <sql>
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NOT NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+    IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NOT NULL 
+      ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
         DROP COLUMN FORECAST
   </sql>
   <rollback>
   <sql>
-    IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NULL 
-      ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+    IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NULL 
+      ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
        ADD FORECAST BIT 
        CONSTRAINT DF_NON_DISPLAY_GROUP_FORECAST DEFAULT 0 NOT NULL
   </sql>
