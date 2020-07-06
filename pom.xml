@@ -47,13 +47,11 @@
                     <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
                     <username>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME}</username>
                     <password>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD}</password>
-                    <schemas>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA},${FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA}</schemas>
+                    <schemas>FFF_REPORTING,FFF_STAGING</schemas>
                     <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
                     <systemProperties>
                         <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
                         <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
-                        <fffsWebPortalStagingDbStagingSchema>${FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA}</fffsWebPortalStagingDbStagingSchema>
-                        <fffsWebPortalStagingDbReportingSchema>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA}</fffsWebPortalStagingDbReportingSchema>
                         <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
                         <fffsWebPortalStagingDbReportingPassword>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD}</fffsWebPortalStagingDbReportingPassword>
                     </systemProperties>    

@@ -6,11 +6,11 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-grant-decompression-permission-to-reporting-reader-writer-role">
     <sql>
-      GRANT EXECUTE ON OBJECT :: ${fffsWebPortalStagingDbReportingSchema}.GET_FEWS_DATA TO REPORTING_READER_WRITER
+      GRANT EXECUTE ON OBJECT :: FFF_REPORTING.GET_FEWS_DATA TO REPORTING_READER_WRITER
     </sql>
     <rollback>
       <sql>
-        REVOKE EXECUTE ON OBJECT :: ${fffsWebPortalStagingDbReportingSchema}.GET_FEWS_DATA TO REPORTING_READER_WRITER
+        REVOKE EXECUTE ON OBJECT :: FFF_REPORTING.GET_FEWS_DATA TO REPORTING_READER_WRITER
       </sql>
     </rollback>
   </changeSet>

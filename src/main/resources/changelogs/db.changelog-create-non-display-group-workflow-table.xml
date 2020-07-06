@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-non-display-group-workflow-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+      IF OBJECT_ID('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_NON_DISPLAY_GROUP_WORKFLOW_ID DEFAULT NEWID(),
             WORKFLOW_ID NVARCHAR(64) NOT NULL INDEX IX_NON_DISPLAY_GROUP_WORKFLOW_WORKFLOW_ID,
@@ -22,8 +22,8 @@
     </sql>
     <rollback>
       <sql>
-         IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL 
-           DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.NON_DISPLAY_GROUP_WORKFLOW
+         IF OBJECT_ID('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL
+           DROP TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
       </sql>
     </rollback>
   </changeSet>
