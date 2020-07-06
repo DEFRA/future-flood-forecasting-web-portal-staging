@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-coastal-display-group-workflow-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW
+      IF OBJECT_ID('FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW
           (
               ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_COASTAL_DISPLAY_GROUP_WORKFLOW_ID DEFAULT NEWID(),
               LOCATION_IDS NVARCHAR(MAX) NOT NULL,
@@ -19,8 +19,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.COASTAL_DISPLAY_GROUP_WORKFLOW
+        IF OBJECT_ID('FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW
       </sql>
     </rollback>
   </changeSet>

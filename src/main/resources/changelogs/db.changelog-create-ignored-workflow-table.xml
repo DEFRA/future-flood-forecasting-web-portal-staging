@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-ignored-workflow-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
+      IF OBJECT_ID('FFF_STAGING.IGNORED_WORKFLOW', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.IGNORED_WORKFLOW
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_IGNORED_WORKFLOW_ID DEFAULT NEWID(),
             WORKFLOW_ID NVARCHAR(64) NOT NULL INDEX IX_IGNORED_WORKFLOW_WORKFLOW_ID,
@@ -16,8 +16,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.IGNORED_WORKFLOW
+        IF OBJECT_ID('FFF_STAGING.IGNORED_WORKFLOW', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.IGNORED_WORKFLOW
       </sql>
     </rollback>
   </changeSet>

@@ -6,11 +6,11 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-grant-permissions-to-staging-reader-role">
     <sql>
-      GRANT SELECT ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER
+      GRANT SELECT ON SCHEMA :: FFF_STAGING TO STAGING_READER
     </sql>
     <rollback>
       <sql>
-        REVOKE SELECT ON SCHEMA :: ${fffsWebPortalStagingDbStagingSchema} TO STAGING_READER
+        REVOKE SELECT ON SCHEMA :: FFF_STAGING TO STAGING_READER
       </sql>
     </rollback>
   </changeSet>

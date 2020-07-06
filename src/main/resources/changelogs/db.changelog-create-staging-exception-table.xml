@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-staging-exception-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION
+      IF OBJECT_ID('FFF_STAGING.STAGING_EXCEPTION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.STAGING_EXCEPTION
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_STAGING_EXCEPTION_ID DEFAULT NEWID(),
             TASK_RUN_ID NVARCHAR(64) INDEX IX_STAGING_EXCEPTION_TASK_RUN_ID,
@@ -19,8 +19,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.STAGING_EXCEPTION
+        IF OBJECT_ID('FFF_STAGING.STAGING_EXCEPTION', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.STAGING_EXCEPTION
       </sql>
     </rollback>
   </changeSet>
