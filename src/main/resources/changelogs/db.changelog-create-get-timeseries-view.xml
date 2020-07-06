@@ -6,21 +6,21 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-get-timeseries-view">
     <sql>
-      CREATE OR ALTER VIEW ${fffsWebPortalStagingDbStagingSchema}.V_GET_TIMESERIES_QUEUE AS
+      CREATE OR ALTER VIEW FFF_STAGING.V_GET_TIMESERIES_QUEUE AS
       SELECT
         t.ID,
         h.IMPORT_TIME,
         t.TIMESERIES_HEADER_ID
       FROM
-        ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES t
-        INNER JOIN ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
+        FFF_STAGING.TIMESERIES t
+        INNER JOIN FFF_STAGING.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
       WHERE
         NOT EXISTS
         (
           SELECT
             1
            FROM 
-             ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB j 
+             FFF_REPORTING.TIMESERIES_JOB j
            WHERE
              j.TIMESERIES_ID = t.ID
         )
@@ -29,7 +29,7 @@
           SELECT
             1
           FROM
-            ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB tj
+            FFF_REPORTING.TIMESERIES_JOB tj
           WHERE
             tj.TIMESERIES_ID = t.ID 
             AND DESCRIPTION = 'Job Failed'
@@ -38,7 +38,7 @@
               SELECT
                 MAX(tjb.JOB_STATUS_TIME) 
               FROM
-                ${fffsWebPortalStagingDbReportingSchema}.TIMESERIES_JOB tjb 
+                FFF_REPORTING.TIMESERIES_JOB tjb
               WHERE
                 tjb.TIMESERIES_ID = tj.TIMESERIES_ID
             )
@@ -46,8 +46,8 @@
     </sql>
     <rollback>
       <sql>
-        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = '${fffsWebPortalStagingDbStagingSchema}' AND TABLE_NAME = 'V_GET_TIMESERIES_QUEUE')
-          DROP VIEW ${fffsWebPortalStagingDbStagingSchema}.V_GET_TIMESERIES_QUEUE
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FFF_STAGING' AND TABLE_NAME = 'V_GET_TIMESERIES_QUEUE')
+          DROP VIEW FFF_STAGING.V_GET_TIMESERIES_QUEUE
       </sql>
     </rollback>
   </changeSet>

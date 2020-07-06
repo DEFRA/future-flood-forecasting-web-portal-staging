@@ -31,10 +31,8 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME      | Username for database version control account         | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD      | Password for database version control account         | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string                       | yes      |         |             |
-| FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA      | Staging schema name                                   | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The staging schema user                               | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_PASSWORD            | Password for the staging schema user                  | yes      |         |             |
-| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA    | Schema for reporting data transformation activities   | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
 
@@ -46,6 +44,16 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_HOST_PORT           | Host port for the database                            | no       | 1433    |             |
 | SA_PASSWORD                                    | System administrator password                         | yes      |         |             |
 
+## Redundant Legacy Environment Variables
+
+The following environment variables below are no longer used. It is recommended that they should be removed from any existing installation
+accordingly.
+
+| name                                           | description                                           | required | default | valid       |
+|------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
+| FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA      | Staging schema name                                   | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA    | Schema for reporting data transformation activities   | yes      |         |             |
+
 ## Azure SQL based incremental build
 
 * Ensure the required environment variables are set.
@@ -54,8 +62,10 @@ If using Docker
 ## Azure SQL based clean build (NON-PRODUCTION USE ONLY)
 
 * Ensure the required environment variables are set.
-* Run ./tear-down.sh from the directory containing this file. FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA and FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA
-  will be **dropped** allowing a fresh run of all Liquibase changesets.
+* Run ./tear-down.sh from the directory containing this file. The reporting and staging schemas
+  will be **dropped** allowing a fresh run of all associated Liquibase changesets. Note that tear down does
+  **not** drop things that cannot be included in a snapshot (such as users and user defined functions). Items
+  excluded from tear down **must** be rolled back separately.
 * Run ./bootstrap.sh from the directory containing this file. All Liquibase changesets will be run.
   
 ## Local Linux Host Based Docker Build

@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-csv-staging-exception-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION
+      IF OBJECT_ID('FFF_STAGING.CSV_STAGING_EXCEPTION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.CSV_STAGING_EXCEPTION
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_CSV_STAGING_EXCEPTION_ID DEFAULT NEWID(),
             CSV_SOURCE_FILE NVARCHAR(64) NOT NULL,
@@ -20,8 +20,8 @@
     </sql>
     <rollback>
       <sql>
-         IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION', 'U') IS NOT NULL
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.CSV_STAGING_EXCEPTION
+         IF OBJECT_ID('FFF_STAGING.CSV_STAGING_EXCEPTION', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.CSV_STAGING_EXCEPTION
       </sql>
     </rollback>
   </changeSet>

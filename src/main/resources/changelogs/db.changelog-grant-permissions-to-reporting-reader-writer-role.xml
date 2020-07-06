@@ -6,11 +6,11 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-grant-permissions-to-reporting-reader-writer-role">
     <sql>
-      GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: ${fffsWebPortalStagingDbReportingSchema} TO REPORTING_READER_WRITER
+      GRANT SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: FFF_REPORTING TO REPORTING_READER_WRITER
     </sql>
     <rollback>
       <sql>
-        REVOKE SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: ${fffsWebPortalStagingDbReportingSchema} TO REPORTING_READER_WRITER
+        REVOKE SELECT, INSERT, UPDATE, DELETE ON SCHEMA :: FFF_REPORTING TO REPORTING_READER_WRITER
       </sql>
     </rollback>
   </changeSet>

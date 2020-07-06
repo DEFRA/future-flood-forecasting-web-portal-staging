@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-fluvial-forecast-location-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION
+      IF OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_FLUVIAL_FORECAST_LOCATION_ID DEFAULT NEWID(),
             CENTRE NVARCHAR(64) NOT NULL,
@@ -27,8 +27,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.FLUVIAL_FORECAST_LOCATION
+        IF OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION
       </sql>
     </rollback>
   </changeSet>

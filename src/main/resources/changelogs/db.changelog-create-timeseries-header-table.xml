@@ -6,8 +6,8 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-timeseries-header-table">
     <sql>
-      IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER', 'U') IS NULL 
-          CREATE TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+      IF OBJECT_ID('FFF_STAGING.TIMESERIES_HEADER', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.TIMESERIES_HEADER
           (
             ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_TIMESERIES_HEADER_ID DEFAULT NEWID(),
             START_TIME DATETIMEOFFSET NOT NULL,
@@ -22,8 +22,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER', 'U') IS NOT NULL 
-          DROP TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER
+        IF OBJECT_ID('FFF_STAGING.TIMESERIES_HEADER', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.TIMESERIES_HEADER
       </sql>
     </rollback>
   </changeSet>

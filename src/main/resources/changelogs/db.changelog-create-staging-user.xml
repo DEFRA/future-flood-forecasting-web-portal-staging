@@ -7,7 +7,7 @@
   <changeSet author="pwadmore" id="changelog-create-staging-user">
     <sql>
       IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbUsername}')
-        CREATE USER ${fffsWebPortalStagingDbUsername} WITH PASSWORD = '${fffsWebPortalStagingDbPassword}', DEFAULT_SCHEMA = ${fffsWebPortalStagingDbStagingSchema}
+        CREATE USER ${fffsWebPortalStagingDbUsername} WITH PASSWORD = '${fffsWebPortalStagingDbPassword}', DEFAULT_SCHEMA = FFF_STAGING
     </sql>
     <rollback>
       <sql>

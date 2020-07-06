@@ -7,7 +7,7 @@
   <changeSet author="pwadmore" id="changelog-create-reporting-user">
     <sql>
       IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbReportingUsername}')
-        CREATE USER ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}', DEFAULT_SCHEMA = ${fffsWebPortalStagingDbReportingSchema}
+        CREATE USER ${fffsWebPortalStagingDbReportingUsername} WITH PASSWORD = '${fffsWebPortalStagingDbReportingPassword}', DEFAULT_SCHEMA = FFF_REPORTING
     </sql>
     <rollback>
       <sql>

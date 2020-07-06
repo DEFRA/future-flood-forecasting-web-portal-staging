@@ -6,16 +6,16 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-staging-schema">
     <sql>
-      IF (NOT EXISTS (SELECT * FROM sys.schemas WHERE name = '${fffsWebPortalStagingDbStagingSchema}'))
+      IF (NOT EXISTS (SELECT * FROM sys.schemas WHERE name = 'FFF_STAGING'))
         BEGIN
-          EXEC ('CREATE SCHEMA ${fffsWebPortalStagingDbStagingSchema} AUTHORIZATION dbo')
+          EXEC ('CREATE SCHEMA FFF_STAGING AUTHORIZATION dbo')
         END
     </sql>
     <rollback>
       <sql>
-        IF (EXISTS (SELECT * FROM sys.schemas WHERE name = '${fffsWebPortalStagingDbStagingSchema}')) 
+        IF (EXISTS (SELECT * FROM sys.schemas WHERE name = 'FFF_STAGING'))
           BEGIN
-            EXEC ('DROP SCHEMA ${fffsWebPortalStagingDbStagingSchema}')
+            EXEC ('DROP SCHEMA FFF_STAGING')
           END
       </sql>
     </rollback>
