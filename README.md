@@ -62,8 +62,10 @@ accordingly.
 ## Azure SQL based clean build (NON-PRODUCTION USE ONLY)
 
 * Ensure the required environment variables are set.
-* Run ./tear-down.sh from the directory containing this file. FFFS_WEB_PORTAL_STAGING_DB_STAGING_SCHEMA and FFFS_WEB_PORTAL_STAGING_DB_REPORTING_SCHEMA
-  will be **dropped** allowing a fresh run of all Liquibase changesets.
+* Run ./tear-down.sh from the directory containing this file. The reporting and staging schemas
+  will be **dropped** allowing a fresh run of all associated Liquibase changesets. Note that tear down does
+  **not** drop things that cannot be included in a snapshot (such as users and user defined functions). Items
+  excluded from tear down **must** be rolled back separately.
 * Run ./bootstrap.sh from the directory containing this file. All Liquibase changesets will be run.
   
 ## Local Linux Host Based Docker Build
