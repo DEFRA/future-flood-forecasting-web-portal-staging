@@ -6,13 +6,13 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-add-forecast-column-to-timeseries-header-table">
     <sql>
-      IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','FORECAST') IS NULL
-        ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER ADD FORECAST BIT
+      IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','FORECAST') IS NULL
+        ALTER TABLE FFF_STAGING.TIMESERIES_HEADER ADD FORECAST BIT
     </sql>
     <rollback>
       <sql>
-        IF COL_LENGTH('${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER','FORECAST') IS NOT NULL
-          ALTER TABLE ${fffsWebPortalStagingDbStagingSchema}.TIMESERIES_HEADER DROP COLUMN FORECAST
+        IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','FORECAST') IS NOT NULL
+          ALTER TABLE FFF_STAGING.TIMESERIES_HEADER DROP COLUMN FORECAST
       </sql>
     </rollback>
   </changeSet>
