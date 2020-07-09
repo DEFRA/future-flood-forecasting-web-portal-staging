@@ -5,6 +5,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-timeseries-header-drop-start-time-column">
+  <comment>A nullable start-time is allowed as the column is not used in the most recent version of the function app</comment>  
   <sql>
     IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','START_TIME') IS NOT NULL 
       ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
@@ -12,7 +13,6 @@
   </sql>
   <rollback>
   <sql>
-  <!-- A nullable start-time is allowed as the column is not used in the most recent version of the function app -->
     IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','START_TIME') IS NULL 
       ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
        ADD START_TIME DATETIMEOFFSET
