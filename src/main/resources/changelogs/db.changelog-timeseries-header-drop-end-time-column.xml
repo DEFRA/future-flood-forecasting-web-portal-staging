@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-timeseries-header-drop-end-time-column">
+  <comment>A nullable end-time is allowed on rollback as the column is not used in the most recent version of the function app</comment>  
+  <sql>
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','END_TIME') IS NOT NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
+        DROP COLUMN END_TIME
+  </sql>
+  <rollback>
+  <sql>
+    IF COL_LENGTH('FFF_STAGING.TIMESERIES_HEADER','END_TIME') IS NULL 
+      ALTER TABLE FFF_STAGING.TIMESERIES_HEADER
+       ADD END_TIME DATETIMEOFFSET
+  </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
