@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-non-display-group-add-timeseries-type-column">
+  <sql>
+    IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','TIMESERIES_TYPE') IS NULL 
+      ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+        ADD TIMESERIES_TYPE NVARCHAR(64)
+        CONSTRAINT DF_NON_DISPLAY_GROUP_TIMESERIES_TYPE DEFAULT 'Not specified' NOT NULL
+        CONSTRAINT CK_NON_DISPLAY_GROUP_TIMESERIES_TYPE CHECK(TIMESERIES_TYPE='simulated_forecasting' OR TIMESERIES_TYPE='external_forecasting' OR TIMESERIES_TYPE='external_historical' OR TIMESERIES_TYPE='Not specified')
+  </sql>
+  <rollback>
+  <sql>
+      IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','TIMESERIES_TYPE') IS NOT NULL
+        IF (OBJECT_ID('FFF_STAGING.CK_NON_DISPLAY_GROUP_TIMESERIES_TYPE', 'C') IS NOT NULL)
+          ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+            DROP CONSTRAINT CK_NON_DISPLAY_GROUP_TIMESERIES_TYPE
+
+        IF (OBJECT_ID('FFF_STAGING.DF_NON_DISPLAY_GROUP_TIMESERIES_TYPE', 'D') IS NOT NULL)
+          ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+            DROP CONSTRAINT DF_NON_DISPLAY_GROUP_TIMESERIES_TYPE
+
+        ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+          DROP COLUMN TIMESERIES_TYPE
+  </sql>
+  </rollback>
+  </changeSet>
+</databaseChangeLog> 

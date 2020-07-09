@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-non-display-group-drop-forecast-column">
+  <comment>The table data needs reloading if a rollback is performed. The 'forecast' column was non-nullable prior to this changeset, this changesets rollback will allow null values.</comment>  
+  <sql>
+    IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NOT NULL
+      ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+        DROP COLUMN FORECAST
+  </sql>
+  <rollback>
+  <sql>
+    IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NULL 
+      ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+       ADD FORECAST BIT 
+  </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

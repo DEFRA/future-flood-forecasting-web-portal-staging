@@ -38,5 +38,8 @@
   <include file="./changelogs/db.changelog-create-decompression-function.xml"/>
   <include file="./changelogs/db.changelog-grant-decompression-permission-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-create-get-timeseries-view.xml"/>
-  
+  <include file="./changelogs/db.changelog-non-display-group-add-timeseries-type-column.xml"/>
+  <include file="./changelogs/db.changelog-non-display-group-drop-forecast-column.xml"/>
+  <include file="./changelogs/db.changelog-timeseries-header-drop-start-time-column.xml"/>
+  <include file="./changelogs/db.changelog-timeseries-header-drop-end-time-column.xml"/>
 </databaseChangeLog>
