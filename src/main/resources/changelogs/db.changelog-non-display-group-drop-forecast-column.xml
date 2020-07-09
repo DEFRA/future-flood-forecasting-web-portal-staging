@@ -12,6 +12,7 @@
   </sql>
   <rollback>
   <sql>
+  <!-- The table data needs reloading if a rollback is performed -->
     IF COL_LENGTH('FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW','FORECAST') IS NULL 
       ALTER TABLE FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
        ADD FORECAST BIT 
