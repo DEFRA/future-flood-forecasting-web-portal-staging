@@ -42,4 +42,10 @@
   <include file="./changelogs/db.changelog-non-display-group-drop-forecast-column.xml"/>
   <include file="./changelogs/db.changelog-timeseries-header-drop-start-time-column.xml"/>
   <include file="./changelogs/db.changelog-timeseries-header-drop-end-time-column.xml"/>
+  <include file="./changelogs/db.changelog-create-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-forecast-column-to-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-add-approved-column-to-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-add-task-start-time-column-to-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-add-import-time-column-to-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-add-import-time-index-to-timeseries-table.xml"/>
 </databaseChangeLog>
