@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-add-import-time-column-to-timeseries-table">
+    <comment>A nullable import time is allowed so that historic data imported at the same time as the timeseries header does not need truncating</comment>  
+    <sql>
+      IF COL_LENGTH('FFF_STAGING.TIMESERIES','IMPORT_TIME') IS NULL
+        ALTER TABLE FFF_STAGING.TIMESERIES ADD IMPORT_TIME DATETIMEOFFSET CONSTRAINT DF_TIMESERIES_IMPORT_TIME DEFAULT GETUTCDATE()
+    </sql>
+    <rollback>
+      <sql>
+        IF (OBJECT_ID('FFF_STAGING.DF_TIMESERIES_IMPORT_TIME', 'D') IS NOT NULL)
+          ALTER TABLE FFF_STAGING.TIMESERIES
+            DROP CONSTRAINT DF_TIMESERIES_IMPORT_TIME
+
+        IF COL_LENGTH('FFF_STAGING.TIMESERIES','IMPORT_TIME') IS NOT NULL
+          ALTER TABLE FFF_STAGING.TIMESERIES DROP COLUMN IMPORT_TIME
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
