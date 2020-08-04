@@ -1,2 +1,5 @@
 # !/bin/bash
-mvn clean process-resources
+mvn clean
+# Create the target/test-classes directory expected by Liquibase
+mkdir -p target/test-classes
+mvn process-resources
