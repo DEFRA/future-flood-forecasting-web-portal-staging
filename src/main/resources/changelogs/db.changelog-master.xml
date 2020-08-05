@@ -49,4 +49,5 @@
   <include file="./changelogs/db.changelog-add-import-time-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-import-time-index-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-create-workflow-refresh-table.xml"/>
+  <include file="./changelogs/db.changelog-create-workflow-view.xml"/>
 </databaseChangeLog>
