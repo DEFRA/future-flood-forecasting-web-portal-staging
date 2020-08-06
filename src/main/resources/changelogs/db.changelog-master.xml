@@ -50,4 +50,5 @@
   <include file="./changelogs/db.changelog-add-import-time-index-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-create-workflow-refresh-table.xml"/>
   <include file="./changelogs/db.changelog-create-workflow-view.xml"/>
+  <include file="./changelogs/db.changelog-add-source-id-source-type-index-to-timeseries-staging-exception-table.xml"/>
 </databaseChangeLog>
