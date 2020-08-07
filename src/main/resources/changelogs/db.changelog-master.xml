@@ -51,5 +51,5 @@
   <include file="./changelogs/db.changelog-create-workflow-refresh-table.xml"/>
   <include file="./changelogs/db.changelog-create-workflow-view.xml"/>
   <include file="./changelogs/db.changelog-add-source-id-source-type-index-to-timeseries-staging-exception-table.xml"/>
-  <include file="./changelogs/db.changelog-add-source_function-column-to-staging-exception-table"/>
+  <include file="./changelogs/db.changelog-add-source-function-column-to-staging-exception-table.xml"/>
 </databaseChangeLog>
