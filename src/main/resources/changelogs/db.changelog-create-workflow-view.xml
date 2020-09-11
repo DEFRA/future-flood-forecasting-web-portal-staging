@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-workflow-view">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_WORKFLOW AS
+      SELECT
+        WORKFLOW_ID,
+        FILTER_ID AS SOURCE_ID,
+        'F' AS SOURCE_TYPE,
+        'N' AS CSV_TYPE
+      FROM
+        FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW
+      WITH
+        (TABLOCK, HOLDLOCK)  
+      UNION
+      SELECT
+        WORKFLOW_ID,
+        PLOT_ID AS SOURCE_ID,
+        'P' AS SOURCE_TYPE,
+        'C' AS CSV_TYPE
+      FROM
+        FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW
+      WITH
+        (TABLOCK, HOLDLOCK)  
+      UNION
+      SELECT
+        WORKFLOW_ID,
+        PLOT_ID AS SOURCE_ID,
+        'P' AS SOURCE_TYPE,
+        'F' AS CSV_TYPE
+      FROM
+        FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW
+      WITH
+        (TABLOCK, HOLDLOCK)  
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FFF_STAGING' AND TABLE_NAME = 'V_WORKFLOW')
+          DROP VIEW FFF_STAGING.V_WORKFLOW
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
