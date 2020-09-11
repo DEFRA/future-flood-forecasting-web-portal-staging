@@ -48,4 +48,14 @@
   <include file="./changelogs/db.changelog-add-task-start-time-column-to-timeseries-header-table.xml"/>
   <include file="./changelogs/db.changelog-add-import-time-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-import-time-index-to-timeseries-table.xml"/>
+  <include file="./changelogs/db.changelog-create-workflow-refresh-table.xml"/>
+  <include file="./changelogs/db.changelog-create-workflow-view.xml"/>
+  <include file="./changelogs/db.changelog-add-source-id-source-type-index-to-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-source-function-column-to-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-active-column-to-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-active-index-to-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-active-column-to-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-active-index-to-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-create-active-staging-exception-view.xml"/>
+  <include file="./changelogs/db.changelog-create-active-timeseries-staging-exception-view.xml"/>
 </databaseChangeLog>

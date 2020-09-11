@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-workflow-refresh-table">
+    <sql>
+      IF OBJECT_ID('FFF_STAGING.WORKFLOW_REFRESH', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.WORKFLOW_REFRESH
+          (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_WORKFLOW_REFRESH_ID DEFAULT NEWID(),
+            CSV_TYPE NVARCHAR(1) NOT NULL INDEX IX_WORKFLOW_REFRESH_CSV_TYPE,
+            REFRESH_TIME DATETIMEOFFSET NOT NULL CONSTRAINT DF_WORKFLOW_REFRESH_REFRESH_TIME DEFAULT GETUTCDATE()
+            CONSTRAINT PK_WORKFLOW_REFRESH PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT UNQ_WORKFLOW_REFRESH_CSV_TYPE UNIQUE(CSV_TYPE),
+            CONSTRAINT CHK_WORKFLOW_REFRESH_CSV_TYPE CHECK
+              (CSV_TYPE IN ('C', 'F', 'I', 'N'))
+          )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_STAGING.WORKFLOW_REFRESH', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.WORKFLOW_REFRESH
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
