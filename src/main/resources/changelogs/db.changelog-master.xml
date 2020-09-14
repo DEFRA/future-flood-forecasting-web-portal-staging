@@ -58,4 +58,6 @@
   <include file="./changelogs/db.changelog-add-active-index-to-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-active-staging-exception-view.xml"/>
   <include file="./changelogs/db.changelog-create-active-timeseries-staging-exception-view.xml"/>
+  <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-new-status-values.xml"/>
+  <include file="./changelogs/db.changelog-alter-timeseries-view-for-new-status-values.xml"/>
 </databaseChangeLog>
