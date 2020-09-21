@@ -76,4 +76,5 @@
   <include file="./changelogs/db.changelog-remove-active-index-from-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-remove-active-column-from-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-remove-active-column-from-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-create-multivariant-thresholds-table.xml"/>
 </databaseChangeLog>
