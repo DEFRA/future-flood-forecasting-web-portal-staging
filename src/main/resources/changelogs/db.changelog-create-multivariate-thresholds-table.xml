@@ -4,12 +4,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="awallace" id="changelog-create-multivariant_thresholds-table">
+  <changeSet author="awallace" id="changelog-create-multivariate_thresholds-table">
     <sql>
-      IF OBJECT_ID('FFF_STAGING.MULTIVARIANT_THRESHOLDS', 'U') IS NULL
-          CREATE TABLE FFF_STAGING.MULTIVARIANT_THRESHOLDS
+      IF OBJECT_ID('FFF_STAGING.MULTIVARIATE_THRESHOLDS', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.MULTIVARIATE_THRESHOLDS
           (
-            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_MULTIVARIANT_ID DEFAULT NEWID(),
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_MULTIVARIATE_ID DEFAULT NEWID(),
             CENTRE NVARCHAR(64) NOT NULL,
             CRITICAL_CONDITION_ID NVARCHAR(64) NOT NULL,
             INPUT_LOCATION_ID NVARCHAR(64) NOT NULL,
@@ -26,8 +26,8 @@
     </sql>
     <rollback>
       <sql>
-        IF OBJECT_ID('FFF_STAGING.MULTIVARIANT_THRESHOLDS', 'U') IS NOT NULL
-          DROP TABLE FFF_STAGING.MULTIVARIANT_THRESHOLDS
+        IF OBJECT_ID('FFF_STAGING.MULTIVARIATE_THRESHOLDS', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.MULTIVARIATE_THRESHOLDS
       </sql>
     </rollback>
   </changeSet>
