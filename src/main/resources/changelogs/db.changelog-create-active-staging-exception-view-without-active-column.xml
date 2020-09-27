@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-create-active-staging-exception-view-without-active-column">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTIONS AS
+        WITH sf_cte (ID, SOURCE_FUNCTION) AS (
+          SELECT
+          ID,
+           COALESCE(
+              SOURCE_FUNCTION,
+              CONVERT(NVARCHAR(1), CASE
+                WHEN PAYLOAD LIKE '%description%' THEN 'P'
+                WHEN PAYLOAD LIKE '%taskrunid%' THEN 'I'
+                ELSE 'U'
+              END)
+            ) AS SOURCE_FUNCTION
+          FROM
+            FFF_STAGING.STAGING_EXCEPTION se
+        )
+
+        -- Staging exceptions with no associated timeseries header record and the source function is unknown (legacy records)
+        -- or created by the ProcessFewsEventCode function.
+        SELECT
+          se.*
+        FROM
+          FFF_STAGING.STAGING_EXCEPTION se
+          INNER JOIN sf_cte ON se.ID = sf_cte.ID
+        WHERE
+          sf_cte.SOURCE_FUNCTION IN ('P', 'U') AND
+          NOT EXISTS
+            (
+              SELECT
+                1
+              FROM
+                FFF_STAGING.TIMESERIES_HEADER th
+              WHERE
+                th.TASK_RUN_ID = se.TASK_RUN_ID
+            )
+        UNION
+        -- Staging exceptions with no associated timeseries staging exception record and
+        -- and the source function is unknown (legacy records) or created by the ImportFromFews function.
+        SELECT
+          se.*
+        FROM
+          FFF_STAGING.STAGING_EXCEPTION se
+          INNER JOIN sf_cte ON se.ID = sf_cte.ID
+        WHERE
+          sf_cte.SOURCE_FUNCTION IN ('I', 'U') AND
+          NOT EXISTS
+            (
+              SELECT
+                1
+              FROM
+                FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+                INNER JOIN FFF_STAGING.TIMESERIES_HEADER th
+                  ON tse.TIMESERIES_HEADER_ID = th.ID
+              WHERE
+                th.TASK_RUN_ID = se.TASK_RUN_ID
+            )
+    </sql>
+    <rollback>
+      <sql>
+        CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTION AS
+        SELECT
+          se.*
+        FROM
+          FFF_STAGING.STAGING_EXCEPTION se
+        WHERE
+          se.ACTIVE = 1
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-remove-active-column-from-staging-exception-table">
+    <sql>
+      IF (OBJECT_ID('FFF_STAGING.DF_STAGING_EXCEPTION_ACTIVE', 'D') IS NOT NULL)
+        ALTER TABLE FFF_STAGING.STAGING_EXCEPTION
+          DROP CONSTRAINT DF_STAGING_EXCEPTION_ACTIVE
+      IF COL_LENGTH('FFF_STAGING.STAGING_EXCEPTION','ACTIVE') IS NOT NULL
+        ALTER TABLE FFF_STAGING.STAGING_EXCEPTION DROP COLUMN ACTIVE
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_STAGING.STAGING_EXCEPTION','ACTIVE') IS NULL
+          ALTER TABLE FFF_STAGING.STAGING_EXCEPTION ADD ACTIVE BIT CONSTRAINT DF_STAGING_EXCEPTION_ACTIVE DEFAULT 1;
+          UPDATE FFF_STAGING.STAGING_EXCEPTION SET ACTIVE = 1;
+          ALTER TABLE FFF_STAGING.STAGING_EXCEPTION ALTER COLUMN ACTIVE BIT NOT NULL;
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
