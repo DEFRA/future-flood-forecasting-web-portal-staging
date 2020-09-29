@@ -50,8 +50,8 @@
           WHERE
             tr.DENSE_RANK = 1
       ),
-      -- The latest timeseries staging exception for each plot associated with a current forecast.
-      lfptse_cte (TIMESERIES_STAGING_EXCEPTION_ID, TIMESERIES_HEADER_ID, SOURCE_ID, SOURCE_TYPE, DESCRIPTION, EXCEPTION_TIME) AS
+      -- The latest timeseries staging exception associated with a current forecast.
+      lftse_cte (TIMESERIES_STAGING_EXCEPTION_ID, TIMESERIES_HEADER_ID, SOURCE_ID, SOURCE_TYPE, DESCRIPTION, EXCEPTION_TIME) AS
       (
         SELECT
           rtse.ID AS TIMESERIES_STAGING_EXCEPTION_ID,

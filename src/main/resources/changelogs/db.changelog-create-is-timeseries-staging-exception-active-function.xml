@@ -70,8 +70,8 @@
             WHERE
               tr.DENSE_RANK = 1
         ),
-        -- The latest timeseries staging exception for each plot associated with a current forecast.
-        lfptse_cte (TIMESERIES_STAGING_EXCEPTION_ID, TIMESERIES_HEADER_ID, SOURCE_ID, SOURCE_TYPE, DESCRIPTION, EXCEPTION_TIME) AS
+        -- The latest timeseries staging exception associated with a current forecast.
+        lftse_cte (TIMESERIES_STAGING_EXCEPTION_ID, TIMESERIES_HEADER_ID, SOURCE_ID, SOURCE_TYPE, DESCRIPTION, EXCEPTION_TIME) AS
         (
           SELECT
             rtse.ID AS TIMESERIES_STAGING_EXCEPTION_ID,
@@ -202,30 +202,30 @@
                   (
                     -- The set of coastal locations linked to the latest timeseries staging exception for each plot.
                     SELECT
-                      lfptse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
+                      lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                       lfth_cte.ID AS TIMESERIES_HEADER_ID,
                       cdgw.WORKFLOW_ID,
                       VALUE AS LOCATION_ID
                     FROM
                       lfth_cte 
-                      INNER JOIN lfptse_cte ON lfptse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                      INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                       INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
-                        ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lfptse_cte.SOURCE_ID = cdgw.PLOT_ID
+                        ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
                           CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
                     WHERE
                       cdgw.PLOT_ID = @sourceId
                     UNION
                     -- The set of fluvial locations linked to the latest timeseries staging exception for each plot.
                     SELECT
-                      lfptse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
+                      lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                       lfth_cte.ID AS TIMESERIES_HEADER_ID,
                       fdgw.WORKFLOW_ID,
                       VALUE AS LOCATION_ID
                     FROM
                       lfth_cte
-                      INNER JOIN lfptse_cte ON lfptse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                      INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                       INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
-                        ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lfptse_cte.SOURCE_ID = fdgw.PLOT_ID
+                        ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
                           CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
                     WHERE
                       fdgw.PLOT_ID = @sourceId
@@ -233,16 +233,16 @@
                   EXCEPT
                   -- The set of imported locations linked to the latest timeseries staging exception for each plot.
                   SELECT
-                    lfptse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
+                    lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                     lfth_cte.ID AS TIMESERIES_HEADER_ID,
                     lfth_cte.WORKFLOW_ID,
                     VALUE AS LOCATION_ID
                   FROM
                     lfth_cte -- The latest task run (timeseries header) for each forecast workflow.
-                    INNER JOIN lfptse_cte ON lfptse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                    INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                     INNER JOIN FFF_STAGING.TIMESERIES t
                       ON t.TIMESERIES_HEADER_ID = lfth_cte.ID AND
-                      t.TIMESERIES_HEADER_ID = lfptse_cte.TIMESERIES_HEADER_ID AND
+                      t.TIMESERIES_HEADER_ID = lftse_cte.TIMESERIES_HEADER_ID AND
                       t.TIMESERIES_HEADER_ID = lfth_cte.ID
                     CROSS APPLY STRING_SPLIT(
                       REPLACE(
@@ -253,7 +253,7 @@
                       ';'
                     )
                   WHERE
-                    lfptse_cte.TIMESERIES_HEADER_ID = @timeseriesHeaderId
+                    lftse_cte.TIMESERIES_HEADER_ID = @timeseriesHeaderId
                 ) ml -- Missing locations
           ) a -- Active timeseries staging exceptions
         RETURN @active;
