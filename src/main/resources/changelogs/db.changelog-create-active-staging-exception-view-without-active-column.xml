@@ -6,62 +6,292 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
   <changeSet author="pwadmore" id="changelog-create-active-staging-exception-view-without-active-column">
     <sql>
-      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTIONS AS
+      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTION AS
+        -- The function which created each timeseries staging exception (if known).
         WITH sf_cte (ID, SOURCE_FUNCTION) AS (
           SELECT
-          ID,
-           COALESCE(
+            ID,
+            COALESCE(
               SOURCE_FUNCTION,
               CONVERT(NVARCHAR(1), CASE
-                WHEN PAYLOAD LIKE '%description%' THEN 'P'
-                WHEN PAYLOAD LIKE '%taskrunid%' THEN 'I'
-                ELSE 'U'
+                 WHEN PAYLOAD LIKE '%description%' THEN 'P'
+                 WHEN PAYLOAD LIKE '%taskrunid%' THEN 'I'
+                 ELSE 'U'
               END)
             ) AS SOURCE_FUNCTION
           FROM
             FFF_STAGING.STAGING_EXCEPTION se
+        ),
+        -- The latest staging exception by source function associated with each forecast workflow.
+        lfwse_cte (ID, TASK_RUN_ID) AS (
+          SELECT
+            lfwse.id,
+            lfwse.TASK_RUN_ID
+          FROM
+            (
+              SELECT
+                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID, se.SOURCE_FUNCTION ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
+                se.id,
+                se.TASK_RUN_ID
+              FROM
+                FFF_STAGING.STAGING_EXCEPTION se
+                INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                  ON se.WORKFLOW_ID = cdgw.WORKFLOW_ID
+              UNION
+              SELECT
+                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
+                se.id,
+                se.TASK_RUN_ID
+              FROM
+                FFF_STAGING.STAGING_EXCEPTION se
+                INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                  ON se.WORKFLOW_ID = fdgw.WORKFLOW_ID
+              UNION
+              SELECT
+                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
+                se.id,
+                se.TASK_RUN_ID
+              FROM
+                FFF_STAGING.STAGING_EXCEPTION se
+                INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                  ON se.WORKFLOW_ID = ndgw.WORKFLOW_ID
+              WHERE
+                ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting')
+            ) lfwse
+          WHERE
+            lfwse.DENSE_RANK = 1
+        ),
+        -- The latest timeseries header for each forecast workflow.
+        lfth_cte (ID, TASK_RUN_ID, WORKFLOW_ID) AS
+        (
+          SELECT
+            tr.ID,
+            tr.TASK_RUN_ID,
+            tr.WORKFLOW_ID
+          FROM
+            (
+              SELECT
+                DENSE_RANK() OVER(PARTITION BY WORKFLOW_ID ORDER BY TASK_COMPLETION_TIME DESC) AS DENSE_RANK,
+	              ID,
+                TASK_RUN_ID,
+	              WORKFLOW_ID
+              FROM
+                FFF_STAGING.TIMESERIES_HEADER
+              WHERE
+	              FORECAST = 1
+		          UNION
+		          SELECT
+                DENSE_RANK() OVER(PARTITION BY th1.WORKFLOW_ID ORDER BY th1.TASK_COMPLETION_TIME DESC) AS DENSE_RANK,
+		            th1.ID,
+                TASK_RUN_ID,
+		            th1.WORKFLOW_ID
+		          FROM
+		            FFF_STAGING.TIMESERIES_HEADER th1
+		          WHERE
+		            th1.FORECAST = 0 AND
+		            EXISTS
+			          (
+			            SELECT
+				            1
+			            FROM
+				            FFF_STAGING.TIMESERIES_HEADER th2
+				            INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
+			            WHERE
+                    ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting') AND
+                    th1.ID = th2.ID
+			          )
+            ) AS tr -- All task runs (timeseries headers) for each forecast workflow
+            WHERE
+              tr.DENSE_RANK = 1
         )
 
-        -- Staging exceptions with no associated timeseries header record and the source function is unknown (legacy records)
-        -- or created by the ProcessFewsEventCode function.
         SELECT
           se.*
         FROM
-          FFF_STAGING.STAGING_EXCEPTION se
-          INNER JOIN sf_cte ON se.ID = sf_cte.ID
-        WHERE
-          sf_cte.SOURCE_FUNCTION IN ('P', 'U') AND
-          NOT EXISTS
-            (
-              SELECT
-                1
-              FROM
-                FFF_STAGING.TIMESERIES_HEADER th
-              WHERE
-                th.TASK_RUN_ID = se.TASK_RUN_ID
-            )
-        UNION
-        -- Staging exceptions with no associated timeseries staging exception record and
-        -- and the source function is unknown (legacy records) or created by the ImportFromFews function.
-        SELECT
-          se.*
-        FROM
-          FFF_STAGING.STAGING_EXCEPTION se
-          INNER JOIN sf_cte ON se.ID = sf_cte.ID
-        WHERE
-          sf_cte.SOURCE_FUNCTION IN ('I', 'U') AND
-          NOT EXISTS
-            (
-              SELECT
-                1
-              FROM
-                FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
-                INNER JOIN FFF_STAGING.TIMESERIES_HEADER th
-                  ON tse.TIMESERIES_HEADER_ID = th.ID
-              WHERE
-                th.TASK_RUN_ID = se.TASK_RUN_ID
-            )
-    </sql>
+          (
+            -- For each forecast workflow retrieve the latest staging exception with no associated timeseries header record
+            -- where the source function is unknown (legacy records) or the ProcessFewsEventCode function.
+            SELECT
+              lfwse_cte.ID
+            FROM
+              lfwse_cte
+              INNER JOIN sf_cte ON lfwse_cte.ID = sf_cte.ID
+             WHERE
+              sf_cte.SOURCE_FUNCTION IN ('P', 'U') AND
+              NOT EXISTS
+                (
+                  SELECT
+                    1
+                  FROM
+                    FFF_STAGING.TIMESERIES_HEADER th
+                  WHERE
+                    th.TASK_RUN_ID = lfwse_cte.TASK_RUN_ID
+                )
+            UNION
+            -- For each non-forecast workflow retrieve all staging exceptions with no associated timeseries header record
+            -- where the source function is unknown (legacy records) or the ProcessFewsEventCode function.
+            SELECT
+              se.id
+            FROM
+              FFF_STAGING.STAGING_EXCEPTION se
+              INNER JOIN sf_cte
+                ON se.ID = sf_cte.ID
+              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                ON se.WORKFLOW_ID = ndgw.WORKFLOW_ID
+            WHERE
+              ndgw.TIMESERIES_TYPE = 'external_historical' AND
+              sf_cte.SOURCE_FUNCTION IN ('P', 'U') AND
+              NOT EXISTS
+                (
+                  SELECT
+                    1
+                  FROM
+                    FFF_STAGING.TIMESERIES_HEADER th
+                  WHERE
+                    th.TASK_RUN_ID = se.TASK_RUN_ID
+                )
+            UNION
+            -- Retrieve all staging exceptions with no associated workflow
+            -- where the source function is unknown (legacy records) or the ProcessFewsEventCode function.
+            SELECT
+              se.id
+            FROM
+              FFF_STAGING.STAGING_EXCEPTION se
+              INNER JOIN sf_cte
+                ON se.ID = sf_cte.ID
+             WHERE
+               NOT EXISTS
+                 (
+                   SELECT
+                     WORKFLOW_ID
+                   FROM
+                     FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                   WHERE
+                     cdgw.WORKFLOW_ID = se.WORKFLOW_ID
+                   UNION
+                   SELECT
+                     WORKFLOW_ID
+                   FROM
+                     FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                   WHERE
+                     fdgw.WORKFLOW_ID = se.WORKFLOW_ID
+                   UNION
+                   SELECT
+                     WORKFLOW_ID
+                   FROM
+                     FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                   WHERE
+                     ndgw.WORKFLOW_ID = se.WORKFLOW_ID
+                 )
+            UNION
+             -- Staging exceptions created by the ImportFromFews function for current forecast task runs
+             -- where a timeseries or timeseries staging exception record does not exist for all plots/filters.
+            SELECT
+              se.id
+            FROM
+              FFF_STAGING.STAGING_EXCEPTION se
+              INNER JOIN sf_cte ON se.ID = sf_cte.ID
+            WHERE
+              sf_cte.SOURCE_FUNCTION = 'I' AND
+              EXISTS
+                (
+                  (
+                    SELECT
+                      cdgw.PLOT_ID AS SOURCE_ID,
+                      'P' AS SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                    WHERE
+                      cdgw.WORKFLOW_ID = se.WORKFLOW_ID
+                    UNION
+                    SELECT
+                      fdgw.PLOT_ID AS SOURCE_ID,
+                      'P' AS SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                    WHERE
+                      fdgw.WORKFLOW_ID = se.WORKFLOW_ID
+                    UNION
+                    SELECT
+                      ndgw.FILTER_ID AS SOURCE_ID,
+                      'F' AS SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                    WHERE
+                      ndgw.WORKFLOW_ID = se.WORKFLOW_ID AND
+                      ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting')
+                  )
+                  EXCEPT
+                    SELECT
+                      tse.SOURCE_ID,
+                      tse.SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+                      INNER JOIN lfth_cte ON tse.TIMESERIES_HEADER_ID = lfth_cte.ID AND
+                      se.TASK_RUN_ID = lfth_cte.TASK_RUN_ID
+                  EXCEPT
+                    SELECT
+                      t.SOURCE_ID,
+                      t.SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.TIMESERIES t
+                      INNER JOIN lfth_cte ON t.TIMESERIES_HEADER_ID = lfth_cte.ID AND
+                      se.TASK_RUN_ID = lfth_cte.TASK_RUN_ID
+                )
+            UNION
+             -- Staging exceptions created by the ImportFromFews function for non-forecast task runs
+             -- where a timeseries or timeseries staging exception record does not exist for all filters.
+            SELECT
+              se.id
+            FROM
+              FFF_STAGING.STAGING_EXCEPTION se
+              INNER JOIN sf_cte ON se.ID = sf_cte.ID
+            WHERE
+              sf_cte.SOURCE_FUNCTION = 'I' AND
+              EXISTS
+                (
+                  SELECT
+                    ndgw.FILTER_ID AS SOURCE_ID,
+                    'F' AS SOURCE_TYPE
+                  FROM
+                    FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                  WHERE
+                    ndgw.WORKFLOW_ID = se.WORKFLOW_ID AND
+                    ndgw.TIMESERIES_TYPE = 'external_historical'
+                  EXCEPT
+                    SELECT
+                      tse.SOURCE_ID,
+                      tse.SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+                      INNER JOIN FFF_STAGING.TIMESERIES_HEADER th
+                        ON tse.TIMESERIES_HEADER_ID = th.ID  AND
+                        se.TASK_RUN_ID = th.TASK_RUN_ID
+                      INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                        ON tse.SOURCE_ID = ndgw.FILTER_ID AND
+                        th.WORKFLOW_ID = ndgw.WORKFLOW_ID
+                    WHERE
+                      th.FORECAST = 0 AND
+                      ndgw.TIMESERIES_TYPE = 'external_historical'
+                  EXCEPT
+                    SELECT
+                      t.SOURCE_ID,
+                      t.SOURCE_TYPE
+                    FROM
+                      FFF_STAGING.TIMESERIES t
+                      INNER JOIN FFF_STAGING.TIMESERIES_HEADER th
+                        ON t.TIMESERIES_HEADER_ID = th.ID  AND
+                        se.TASK_RUN_ID = th.TASK_RUN_ID
+                      INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                        ON t.SOURCE_ID = ndgw.FILTER_ID AND
+                        th.WORKFLOW_ID = ndgw.WORKFLOW_ID
+                    WHERE
+                      th.FORECAST = 0 AND
+                      ndgw.TIMESERIES_TYPE = 'external_historical'                )
+          ) asei -- Active staging exception identifiers
+          INNER JOIN FFF_STAGING.STAGING_EXCEPTION se
+            ON asei.ID = se.ID
+     </sql>
     <rollback>
       <sql>
         CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTION AS
