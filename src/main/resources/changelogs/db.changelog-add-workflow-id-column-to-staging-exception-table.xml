@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-add-workflow-id-column-to-staging-exception-table">
+    <sql>
+      IF COL_LENGTH('FFF_STAGING.STAGING_EXCEPTION','WORKFLOW_ID') IS NULL
+        ALTER TABLE FFF_STAGING.STAGING_EXCEPTION ADD WORKFLOW_ID NVARCHAR(64); 
+        UPDATE FFF_STAGING.STAGING_EXCEPTION
+          SET WORKFLOW_ID = RIGHT(DESCRIPTION, LEN(DESCRIPTION)-33)
+        WHERE
+          DESCRIPTION LIKE 'Missing PI Server input data for%'
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_STAGING.STAGING_EXCEPTION','WORKFLOW_ID') IS NOT NULL
+          ALTER TABLE FFF_STAGING.STAGING_EXCEPTION DROP COLUMN WORKFLOW_ID
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

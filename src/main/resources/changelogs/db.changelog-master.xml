@@ -68,11 +68,19 @@
   <include file="./changelogs/db.changelog-remove-active-index-from-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-remove-active-column-from-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-remove-active-column-from-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-workflow-id-column-to-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-id-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-type-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-type-index-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-forecast-index-to-timeseries-header-table.xml"/>
+  <include file="./changelogs/db.changelog-create-active-staging-exception-view-without-active-column.xml"/>
   <include file="./changelogs/db.changelog-create-active-timeseries-staging-exception-for-missing-location-view.xml"/>
   <include file="./changelogs/db.changelog-create-active-timeseries-staging-exception-for-missing-timeseries-view.xml"/>
   <include file="./changelogs/db.changelog-create-is-timeseries-staging-exception-active-function.xml"/>
+  <include file="./changelogs/db.changelog-remove-active-index-from-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-active-index-from-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-active-column-from-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-active-column-from-timeseries-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-grant-is-timeseries-active-permission-to-staging-reader-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-is-timeseries-active-permission-to-staging-reader-writer-role.xml"/>
 </databaseChangeLog>
