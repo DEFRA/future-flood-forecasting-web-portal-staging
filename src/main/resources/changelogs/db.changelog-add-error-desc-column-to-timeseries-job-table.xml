@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-add-error-desc-column-to-timeseries-job-table">
+    <sql>
+      IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','ERROR_DESC') IS NULL
+        ALTER TABLE FFF_REPORTING.TIMESERIES_JOB ADD ERROR_DESC NVARCHAR(MAX) NULL
+    </sql>
+    <rollback>
+      <sql>
+         IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','ERROR_DESC') IS NOT NULL
+          ALTER TABLE FFF_REPORTING.TIMESERIES_JOB DROP COLUMN ERROR_DESC
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
