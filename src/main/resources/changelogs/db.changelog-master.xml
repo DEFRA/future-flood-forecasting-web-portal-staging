@@ -60,4 +60,6 @@
   <include file="./changelogs/db.changelog-create-active-timeseries-staging-exception-view.xml"/>
   <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-new-status-values.xml"/>
   <include file="./changelogs/db.changelog-alter-timeseries-view-for-new-status-values.xml"/>
+  <include file="./changelogs/db.changelog-add-error-desc-column-to-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-add-job-stats-column-to-timeseries-job-table.xml"/>
 </databaseChangeLog>
