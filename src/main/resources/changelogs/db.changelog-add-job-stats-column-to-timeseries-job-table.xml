@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="pwadmore" id="db.changelog-add-error-desc-column-to-timeseries-job-table">
+  <changeSet author="pwadmore" id="changelog-add-job-stats-column-to-timeseries-job-table">
     <sql>
       IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','JOB_STATS') IS NULL
         ALTER TABLE FFF_REPORTING.TIMESERIES_JOB ADD JOB_STATS NVARCHAR(MAX) NULL
