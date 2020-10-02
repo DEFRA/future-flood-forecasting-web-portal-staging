@@ -34,7 +34,8 @@
 		        FROM
 		          FFF_STAGING.TIMESERIES_HEADER th1
 		        WHERE
-		          th1.FORECAST = 0 AND
+              -- If a workflow spans plots and filters the forecast flag in the timeseries header
+              -- record is set to 1. As such, do not include it when filtering data.
 		          EXISTS
 			        (
 			          SELECT

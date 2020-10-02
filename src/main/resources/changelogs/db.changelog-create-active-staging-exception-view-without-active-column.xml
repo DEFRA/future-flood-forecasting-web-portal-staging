@@ -39,7 +39,7 @@
                   ON se.WORKFLOW_ID = cdgw.WORKFLOW_ID
               UNION
               SELECT
-                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
+                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID, se.SOURCE_FUNCTION ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
                 se.id,
                 se.TASK_RUN_ID
               FROM
@@ -48,7 +48,7 @@
                   ON se.WORKFLOW_ID = fdgw.WORKFLOW_ID
               UNION
               SELECT
-                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
+                DENSE_RANK() OVER(PARTITION BY se.WORKFLOW_ID, se.SOURCE_FUNCTION ORDER BY EXCEPTION_TIME DESC) AS DENSE_RANK,
                 se.id,
                 se.TASK_RUN_ID
               FROM
