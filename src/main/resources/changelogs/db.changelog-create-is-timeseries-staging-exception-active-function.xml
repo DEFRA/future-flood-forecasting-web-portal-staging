@@ -31,37 +31,37 @@
             (
               SELECT
                 DENSE_RANK() OVER(PARTITION BY WORKFLOW_ID ORDER BY TASK_COMPLETION_TIME DESC) AS DENSE_RANK,
-	              ID,
+                ID,
                 TASK_RUN_ID,
-	              WORKFLOW_ID
+                WORKFLOW_ID
               FROM
                 FFF_STAGING.TIMESERIES_HEADER
               WHERE
                 WORKFLOW_ID = @workflowId AND
-	              FORECAST = 1
-		          UNION
-		          SELECT
+                FORECAST = 1
+              UNION
+              SELECT
                 DENSE_RANK() OVER(PARTITION BY th1.WORKFLOW_ID ORDER BY th1.TASK_COMPLETION_TIME DESC) AS DENSE_RANK,
-		            th1.ID,
+                th1.ID,
                 TASK_RUN_ID,
-		            th1.WORKFLOW_ID
-		          FROM
-		            FFF_STAGING.TIMESERIES_HEADER th1
-		          WHERE
+                th1.WORKFLOW_ID
+              FROM
+                FFF_STAGING.TIMESERIES_HEADER th1
+              WHERE
                 -- If a workflow spans plots and filters the forecast flag in the timeseries header
                 -- record is set to 1. As such, do not include it when filtering data.
                 WORKFLOW_ID = @workflowId AND
-		            EXISTS
-			          (
-			            SELECT
-				            1
-			            FROM
-				            FFF_STAGING.TIMESERIES_HEADER th2
-				            INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
-			            WHERE
+                EXISTS
+                (
+                  SELECT
+                    1
+                  FROM
+                    FFF_STAGING.TIMESERIES_HEADER th2
+                    INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
+                  WHERE
                     ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting') AND
                     th1.ID = th2.ID
-			          )
+                )
             ) AS tr -- All task runs (timeseries headers) for each forecast workflow
             WHERE
               tr.DENSE_RANK = 1
@@ -138,10 +138,22 @@
                   t.SOURCE_ID = tse.SOURCE_ID
                 )
             UNION
-            -- All timeseries staging exceptions associated with unknown plots/filters. Known CSV related
-            -- timeseries staging exceptions must have been created before the corresponding CSV workflow
-            -- file was last refreshed. Unknown CSV related timeseries staging exceptions must have been
-            -- created before all CSV workflow files were last refreshed. If the timeseries staging
+            -- All timeseries staging exceptions associated with unknown plots/filters.
+            -- Known CSV related timeseries staging exceptions must have been created after the corresponding
+            -- CSV workflow file was last refreshed.
+            SELECT
+              tse.ID AS TIMESERIES_STAGING_EXCEPTION_ID
+            FROM
+              FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+              INNER JOIN FFF_STAGING.WORKFLOW_REFRESH wr
+                ON tse.CSV_TYPE = wr.CSV_TYPE
+            WHERE
+              tse.ID = @id AND
+              tse.CSV_ERROR = 1 AND
+              tse.EXCEPTION_TIME > wr.REFRESH_TIME
+            UNION
+            -- Unknown CSV related timeseries staging exceptions must have been
+            -- created after all CSV workflow files were last refreshed. If the timeseries staging
             -- exception was created at an earlier time, treat the unknown plot/filter as a
             -- corrected typo.
             SELECT
@@ -150,37 +162,16 @@
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
             WHERE
               tse.ID = @id AND
-              NOT EXISTS
+              tse.CSV_ERROR = 1 AND
+              tse.CSV_TYPE = 'U' AND
+              tse.EXCEPTION_TIME >
                 (
-                  SELECT
-                    1
+                  SELECT TOP(1)
+                    REFRESH_TIME
                   FROM
-                    FFF_STAGING.V_WORKFLOW w
-                    INNER JOIN FFF_STAGING.WORKFLOW_REFRESH wr
-                      ON w.CSV_TYPE = wr.CSV_TYPE
-                  WHERE
-                    tse.CSV_TYPE = w.CSV_TYPE AND
-                    tse.EXCEPTION_TIME < wr.REFRESH_TIME AND
-                    tse.SOURCE_ID = w.SOURCE_ID AND
-                    tse.SOURCE_TYPE = w.SOURCE_TYPE
-                  UNION
-                  SELECT
-                    1
-                  FROM
-                    FFF_STAGING.V_WORKFLOW w
-                  WHERE
-                    tse.CSV_TYPE = 'U' AND
-                    tse.SOURCE_ID = w.SOURCE_ID AND
-                    tse.SOURCE_TYPE = w.SOURCE_TYPE AND
-                    tse.EXCEPTION_TIME <
-                      (
-                        SELECT TOP(1)
-                          REFRESH_TIME
-                        FROM
-                          FFF_STAGING.WORKFLOW_REFRESH
-                        ORDER BY
-                          REFRESH_TIME
-                      )
+                    FFF_STAGING.WORKFLOW_REFRESH
+                  ORDER BY
+                    REFRESH_TIME
                 )
             UNION
             -- All timeseries staging exceptions for each current coastal forecast without associated timeseries.
@@ -257,59 +248,59 @@
               TIMESERIES_STAGING_EXCEPTION_ID
             FROM
               (
-                  (
-                    -- The set of coastal locations linked to the latest timeseries staging exception for each plot.
-                    SELECT
-                      lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
-                      lfth_cte.ID AS TIMESERIES_HEADER_ID,
-                      cdgw.WORKFLOW_ID,
-                      VALUE AS LOCATION_ID
-                    FROM
-                      lfth_cte 
-                      INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
-                      INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
-                        ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
-                          CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
-                    WHERE
-                      cdgw.PLOT_ID = lftse_cte.SOURCE_ID
-                    UNION
-                    -- The set of fluvial locations linked to the latest timeseries staging exception for each plot.
-                    SELECT
-                      lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
-                      lfth_cte.ID AS TIMESERIES_HEADER_ID,
-                      fdgw.WORKFLOW_ID,
-                      VALUE AS LOCATION_ID
-                    FROM
-                      lfth_cte
-                      INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
-                      INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
-                        ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
-                          CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
-                    WHERE
-                      fdgw.PLOT_ID = lftse_cte.SOURCE_ID
-                   )
-                  EXCEPT
-                  -- The set of imported locations linked to the latest timeseries staging exception for each plot.
+                (
+                  -- The set of coastal locations linked to the latest timeseries staging exception for each plot.
                   SELECT
                     lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                     lfth_cte.ID AS TIMESERIES_HEADER_ID,
-                    lfth_cte.WORKFLOW_ID,
+                    cdgw.WORKFLOW_ID,
                     VALUE AS LOCATION_ID
                   FROM
-                    lfth_cte -- The latest task run (timeseries header) for each forecast workflow.
+                    lfth_cte
                     INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
-                    INNER JOIN FFF_STAGING.TIMESERIES t
-                      ON t.TIMESERIES_HEADER_ID = lfth_cte.ID AND
-                      t.TIMESERIES_HEADER_ID = lftse_cte.TIMESERIES_HEADER_ID AND
-                      t.TIMESERIES_HEADER_ID = lfth_cte.ID
-                    CROSS APPLY STRING_SPLIT(
-                      REPLACE(
-                        SUBSTRING(t.FEWS_PARAMETERS, CHARINDEX('&amp;locationIds=', t.FEWS_PARAMETERS),  CHARINDEX('&amp;startTime=', t.FEWS_PARAMETERS) - CHARINDEX('&amp;locationIds=', t.FEWS_PARAMETERS)),
-                        '&amp;locationIds=',
-                        ';'
-                      ),
+                    INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                      ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
+                        CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
+                  WHERE
+                    lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID = @id
+                  UNION
+                  -- The set of fluvial locations linked to the latest timeseries staging exception for each plot.
+                  SELECT
+                    lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
+                    lfth_cte.ID AS TIMESERIES_HEADER_ID,
+                    fdgw.WORKFLOW_ID,
+                    VALUE AS LOCATION_ID
+                  FROM
+                    lfth_cte
+                    INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                    INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                      ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
+                        CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
+                  WHERE
+                    lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID = @id
+                 )
+                EXCEPT
+                -- The set of imported locations linked to the latest timeseries staging exception for each plot.
+                SELECT
+                  lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
+                  lfth_cte.ID AS TIMESERIES_HEADER_ID,
+                  lfth_cte.WORKFLOW_ID,
+                  VALUE AS LOCATION_ID
+                FROM
+                  lfth_cte -- The latest task run (timeseries header) for each forecast workflow.
+                  INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                  INNER JOIN FFF_STAGING.TIMESERIES t
+                    ON t.TIMESERIES_HEADER_ID = lfth_cte.ID AND
+                    t.TIMESERIES_HEADER_ID = lftse_cte.TIMESERIES_HEADER_ID AND
+                    t.TIMESERIES_HEADER_ID = lfth_cte.ID
+                  CROSS APPLY STRING_SPLIT(
+                    REPLACE(
+                      SUBSTRING(t.FEWS_PARAMETERS, CHARINDEX('&locationIds=', t.FEWS_PARAMETERS),  CHARINDEX('&startTime=', t.FEWS_PARAMETERS) - CHARINDEX('&locationIds=', t.FEWS_PARAMETERS)),
+                      '&locationIds=',
                       ';'
-                    )
+                    ),
+                    ';'
+                  )
                   WHERE
                     lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID = @id
                 ) ml -- Missing locations

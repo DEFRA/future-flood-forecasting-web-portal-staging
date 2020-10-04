@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
   <changeSet author="pwadmore" id="changelog-create-active-timeseries-staging-exception-for-missing-location-view">
     <sql>
-      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTIONS_FOR_MISSING_LOCATIONS AS
+      <![CDATA[CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTIONS_FOR_MISSING_LOCATIONS AS
       -- The latest timeseries header for each forecast workflow.
       WITH lfth_cte (ID, TASK_RUN_ID, WORKFLOW_ID) AS
       (
@@ -99,11 +99,10 @@
                 lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                 lfth_cte.ID AS TIMESERIES_HEADER_ID,
                 cdgw.WORKFLOW_ID,
-                lfth_cte.TASK_RUN_ID,
                 VALUE AS LOCATION_ID
               FROM
                 lfth_cte
-                LEFT OUTER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                 INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
                   ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
                     CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
@@ -113,13 +112,12 @@
                 lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
                 lfth_cte.ID AS TIMESERIES_HEADER_ID,
                 fdgw.WORKFLOW_ID,
-                lfth_cte.TASK_RUN_ID,
                 VALUE AS LOCATION_ID
               FROM
                 lfth_cte
-                LEFT OUTER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+                INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                 INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
-                   ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
+                  ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
                     CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
              )
             EXCEPT
@@ -128,19 +126,18 @@
               lftse_cte.TIMESERIES_STAGING_EXCEPTION_ID,
               lfth_cte.ID AS TIMESERIES_HEADER_ID,
               lfth_cte.WORKFLOW_ID,
-              lfth_cte.TASK_RUN_ID,
               VALUE AS LOCATION_ID
             FROM
               lfth_cte -- The latest task run (timeseries header) for each forecast workflow.
-              LEFT OUTER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
+              INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
               INNER JOIN FFF_STAGING.TIMESERIES t
                 ON t.TIMESERIES_HEADER_ID = lfth_cte.ID AND
                 t.TIMESERIES_HEADER_ID = lftse_cte.TIMESERIES_HEADER_ID AND
                 t.TIMESERIES_HEADER_ID = lfth_cte.ID
               CROSS APPLY STRING_SPLIT(
                 REPLACE(
-                  SUBSTRING(t.FEWS_PARAMETERS, CHARINDEX('&amp;locationIds=', t.FEWS_PARAMETERS),  CHARINDEX('&amp;startTime=', t.FEWS_PARAMETERS) - CHARINDEX('&amp;locationIds=', t.FEWS_PARAMETERS)),
-                  '&amp;locationIds=',
+                  SUBSTRING(t.FEWS_PARAMETERS, CHARINDEX('&locationIds=', t.FEWS_PARAMETERS),  CHARINDEX('&startTime=', t.FEWS_PARAMETERS) - CHARINDEX('&locationIds=', t.FEWS_PARAMETERS)),
+                  '&locationIds=',
                   ';'
                 ),
                 ';'
@@ -151,7 +148,7 @@
           INNER JOIN FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
             ON ml.TIMESERIES_STAGING_EXCEPTION_ID = tse.ID AND
             ml.TIMESERIES_HEADER_ID = tse.TIMESERIES_HEADER_ID AND
-            th.ID = tse.TIMESERIES_HEADER_ID
+            th.ID = tse.TIMESERIES_HEADER_ID]]>
     </sql>
     <rollback>
       <sql>

@@ -71,29 +71,51 @@
         tse.SOURCE_TYPE = 'F' AND
         ndgw.TIMESERIES_TYPE NOT IN ('external_forecasting', 'external_historical', 'simulated_forecasting')
       UNION
-      -- All timeseries staging exceptions associated with unknown plots/filters.
-      SELECT
-        th.TASK_RUN_ID,
-        tse.SOURCE_ID,
-        tse.SOURCE_TYPE,
-        tse.DESCRIPTION,
-        tse.EXCEPTION_TIME,
-        tse.ID AS TIMESERIES_STAGING_EXCEPTION_ID,
-        tse.TIMESERIES_HEADER_ID
-      FROM
-        FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
-        INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
-      WHERE
-        NOT EXISTS
-          (
-            SELECT
-              1
-            FROM
-              FFF_STAGING.V_WORKFLOW w
-            WHERE
-              tse.SOURCE_ID = w.SOURCE_ID AND
-              tse.SOURCE_TYPE = w.SOURCE_TYPE
-          )
+        -- All timeseries staging exceptions associated with unknown plots/filters.
+        -- Known CSV related timeseries staging exceptions must have been created after the corresponding
+        -- CSV workflow file was last refreshed.
+        SELECT
+          th.TASK_RUN_ID,
+          tse.SOURCE_ID,
+          tse.SOURCE_TYPE,
+          tse.DESCRIPTION,
+          tse.EXCEPTION_TIME,
+          tse.ID AS TIMESERIES_STAGING_EXCEPTION_ID,
+          tse.TIMESERIES_HEADER_ID
+        FROM
+          FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+          INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
+          INNER JOIN FFF_STAGING.WORKFLOW_REFRESH wr
+            ON tse.CSV_TYPE = wr.CSV_TYPE
+        WHERE
+          tse.EXCEPTION_TIME > wr.REFRESH_TIME
+        UNION
+        -- Unknown CSV related timeseries staging exceptions must have been
+        -- created after all CSV workflow files were last refreshed. If the timeseries staging
+        -- exception was created at an earlier time, treat the unknown plot/filter as a
+        -- corrected typo.
+        SELECT
+          th.TASK_RUN_ID,
+          tse.SOURCE_ID,
+          tse.SOURCE_TYPE,
+          tse.DESCRIPTION,
+          tse.EXCEPTION_TIME,
+          tse.ID AS TIMESERIES_STAGING_EXCEPTION_ID,
+          tse.TIMESERIES_HEADER_ID
+        FROM
+          FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+          INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
+        WHERE
+          tse.CSV_TYPE = 'U' AND
+          tse.EXCEPTION_TIME >
+            (
+              SELECT TOP(1)
+                REFRESH_TIME
+              FROM
+                FFF_STAGING.WORKFLOW_REFRESH
+              ORDER BY
+                REFRESH_TIME
+            )
       UNION
       -- All timeseries staging exceptions for each non-forecast without associated timeseries.
       SELECT
