@@ -42,7 +42,10 @@
 				          1
 			          FROM
 				          FFF_STAGING.TIMESERIES_HEADER th2
-				          INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
+				          INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                    WITH
+                      (TABLOCK HOLDLOCK)
+                    ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
 			          WHERE
                   ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting') AND
                   th1.ID = th2.ID
@@ -104,6 +107,8 @@
                 lfth_cte
                 INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                 INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                  WITH
+                    (TABLOCK HOLDLOCK)
                   ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
                     CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
               UNION
@@ -117,6 +122,8 @@
                 lfth_cte
                 INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                 INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                  WITH
+                    (TABLOCK HOLDLOCK)
                   ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
                     CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
              )

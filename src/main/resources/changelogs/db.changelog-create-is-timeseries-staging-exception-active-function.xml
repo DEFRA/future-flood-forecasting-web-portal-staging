@@ -57,7 +57,10 @@
                     1
                   FROM
                     FFF_STAGING.TIMESERIES_HEADER th2
-                    INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
+                    INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                      WITH
+                        (TABLOCK HOLDLOCK)
+                      ON ndgw.WORKFLOW_ID = th2.WORKFLOW_ID
                   WHERE
                     ndgw.TIMESERIES_TYPE IN ('external_forecasting', 'simulated_forecasting') AND
                     th1.ID = th2.ID
@@ -106,7 +109,10 @@
             FROM
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
               INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
-              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON tse.SOURCE_ID = ndgw.FILTER_ID AND th.WORKFLOW_ID = ndgw.WORKFLOW_ID
+              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                WITH
+                  (TABLOCK HOLDLOCK)
+                ON tse.SOURCE_ID = ndgw.FILTER_ID AND th.WORKFLOW_ID = ndgw.WORKFLOW_ID
             WHERE
               -- If a workflow spans plots and filters the forecast flag in the timeseries header
               -- record is set to 1. As such, do not include it when filtering data.
@@ -120,7 +126,11 @@
             FROM
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
               INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
-              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON tse.SOURCE_ID = ndgw.FILTER_ID AND th.WORKFLOW_ID = ndgw.WORKFLOW_ID
+              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                WITH
+                  (TABLOCK HOLDLOCK)
+                ON tse.SOURCE_ID = ndgw.FILTER_ID
+                AND th.WORKFLOW_ID = ndgw.WORKFLOW_ID
             WHERE
               -- If a workflow spans plots and filters the forecast flag in the timeseries header
               -- record is set to 1. As such, do not include it when filtering data.
@@ -140,7 +150,9 @@
             UNION
             -- All timeseries staging exceptions associated with unknown plots/filters.
             -- Known CSV related timeseries staging exceptions must have been created after the corresponding
-            -- CSV workflow file was last refreshed.
+            -- CSV workflow file was last refreshed.  If the timeseries staging
+            -- exception was created at an earlier time, treat the unknown plot/filter as a
+            -- corrected typo.
             SELECT
               tse.ID AS TIMESERIES_STAGING_EXCEPTION_ID
             FROM
@@ -181,7 +193,10 @@
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
               INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
               INNER JOIN lfth_cte ON tse.TIMESERIES_HEADER_ID = lfth_cte.ID AND th.ID = lfth_cte.ID 
-              INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw ON tse.SOURCE_ID = cdgw.PLOT_ID AND lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID
+              INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                WITH
+                  (TABLOCK HOLDLOCK)
+                ON tse.SOURCE_ID = cdgw.PLOT_ID AND lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID
             WHERE
               tse.ID = @id AND
               tse.SOURCE_TYPE = 'P' AND
@@ -203,7 +218,10 @@
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
               INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
               INNER JOIN lfth_cte ON tse.TIMESERIES_HEADER_ID = lfth_cte.ID AND th.ID = lfth_cte.ID 
-              INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw ON tse.SOURCE_ID = fdgw.PLOT_ID AND lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID
+              INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                WITH
+                  (TABLOCK HOLDLOCK)
+                ON tse.SOURCE_ID = fdgw.PLOT_ID AND lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID
             WHERE
               tse.ID = @id AND
               tse.SOURCE_TYPE = 'P' AND
@@ -226,7 +244,10 @@
               FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
               INNER JOIN FFF_STAGING.TIMESERIES_HEADER th ON tse.TIMESERIES_HEADER_ID = th.ID
               INNER JOIN lfth_cte ON tse.TIMESERIES_HEADER_ID = lfth_cte.ID AND th.ID = lfth_cte.ID 
-              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw ON tse.SOURCE_ID = ndgw.FILTER_ID AND lfth_cte.WORKFLOW_ID = ndgw.WORKFLOW_ID
+              INNER JOIN FFF_STAGING.NON_DISPLAY_GROUP_WORKFLOW ndgw
+                WITH
+                  (TABLOCK HOLDLOCK)
+                ON tse.SOURCE_ID = ndgw.FILTER_ID AND lfth_cte.WORKFLOW_ID = ndgw.WORKFLOW_ID
             WHERE
               tse.ID = @id AND
               tse.SOURCE_TYPE = 'F' AND
@@ -259,6 +280,8 @@
                     lfth_cte
                     INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                     INNER JOIN FFF_STAGING.COASTAL_DISPLAY_GROUP_WORKFLOW cdgw
+                      WITH
+                        (TABLOCK HOLDLOCK)
                       ON lfth_cte.WORKFLOW_ID = cdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = cdgw.PLOT_ID
                         CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
                   WHERE
@@ -274,6 +297,8 @@
                     lfth_cte
                     INNER JOIN lftse_cte ON lftse_cte.TIMESERIES_HEADER_ID = lfth_cte.ID
                     INNER JOIN FFF_STAGING.FLUVIAL_DISPLAY_GROUP_WORKFLOW fdgw
+                      WITH
+                        (TABLOCK HOLDLOCK)
                       ON lfth_cte.WORKFLOW_ID = fdgw.WORKFLOW_ID AND lftse_cte.SOURCE_ID = fdgw.PLOT_ID
                         CROSS APPLY STRING_SPLIT(LOCATION_IDS, ';')
                   WHERE
