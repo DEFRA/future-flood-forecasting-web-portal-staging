@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-active-timeseries-staging-exception-view">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTION AS
+        SELECT
+          tse.*
+        FROM
+          FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+        WHERE
+          NOT EXISTS
+            (
+              SELECT
+                itse.id
+              FROM
+                FFF_STAGING.INACTIVE_TIMESERIES_STAGING_EXCEPTION itse
+              WHERE
+                itse.TIMESERIES_STAGING_EXCEPTION_ID = tse.ID  
+            )
+    </sql>
+    <rollback>
+      <sql>
+        CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTION AS
+          SELECT
+            tse.*
+          FROM
+            FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+          WHERE
+            tse.ACTIVE = 1
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
