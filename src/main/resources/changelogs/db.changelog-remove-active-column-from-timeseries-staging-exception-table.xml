@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-remove-active-column-from-timeseries-staging-exception-table">
+    <sql>
+      IF (OBJECT_ID('FFF_STAGING.DF_TIMESERIES_STAGING_EXCEPTION_ACTIVE', 'D') IS NOT NULL)
+        ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION
+          DROP CONSTRAINT DF_TIMESERIES_STAGING_EXCEPTION_ACTIVE
+      IF COL_LENGTH('FFF_STAGING.TIMESERIES_STAGING_EXCEPTION','ACTIVE') IS NOT NULL
+        ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION DROP COLUMN ACTIVE
+        EXEC SP_REFRESHVIEW 'FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTION';
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_STAGING.TIMESERIES_STAGING_EXCEPTION','ACTIVE') IS NULL
+          ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION ADD ACTIVE BIT CONSTRAINT DF_TIMESERIES_STAGING_EXCEPTION_ACTIVE DEFAULT 1;
+          UPDATE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION SET ACTIVE = 1;
+          ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION ALTER COLUMN ACTIVE BIT NOT NULL;
+          EXEC SP_REFRESHVIEW 'FFF_STAGING.V_ACTIVE_TIMESERIES_STAGING_EXCEPTION';
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

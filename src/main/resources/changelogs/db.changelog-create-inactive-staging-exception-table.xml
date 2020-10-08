@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-inactive-staging-exception-table">
+    <sql>
+      IF OBJECT_ID('FFF_STAGING.INACTIVE_STAGING_EXCEPTION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.INACTIVE_STAGING_EXCEPTION
+          (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_INACTIVE_STAGING_EXCEPTION_ID DEFAULT NEWID(),
+            STAGING_EXCEPTION_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION_ID,
+            DEACTIVATION_TIME DATETIMEOFFSET NOT NULL CONSTRAINT DF_INACTIVE_STAGING_EXCEPTION_DEACTIVATION_TIME DEFAULT GETUTCDATE() INDEX IX_INACTIVE_STAGING_EXCEPTION_DEACTIVATION_TIME,
+            CONSTRAINT PK_INACTIVE_STAGING_EXCEPTION PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT FK_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION FOREIGN KEY (STAGING_EXCEPTION_ID)
+            REFERENCES FFF_STAGING.STAGING_EXCEPTION ([ID])
+          )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_STAGING.INACTIVE_STAGING_EXCEPTION', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.INACTIVE_STAGING_EXCEPTION
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

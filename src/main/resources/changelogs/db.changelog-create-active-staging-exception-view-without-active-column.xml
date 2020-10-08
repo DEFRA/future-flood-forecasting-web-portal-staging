@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-create-active-staging-exception-view-without-active-column">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTION AS
+        SELECT
+          se.*
+        FROM
+          FFF_STAGING.STAGING_EXCEPTION se
+        WHERE
+          NOT EXISTS
+            (
+              SELECT
+                ise.id
+              FROM
+                FFF_STAGING.INACTIVE_STAGING_EXCEPTION ise
+              WHERE
+                ise.STAGING_EXCEPTION_ID = se.ID
+            )
+    </sql>
+    <rollback>
+      <sql>
+        CREATE OR ALTER VIEW FFF_STAGING.V_ACTIVE_STAGING_EXCEPTION AS
+        SELECT
+          se.*
+        FROM
+          FFF_STAGING.STAGING_EXCEPTION se
+        WHERE
+          se.ACTIVE = 1
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

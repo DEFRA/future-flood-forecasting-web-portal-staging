@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-add-source-id-column-to-timeseries-table">
+    <sql>
+      IF COL_LENGTH('FFF_STAGING.TIMESERIES','SOURCE_ID') IS NULL
+        ALTER TABLE FFF_STAGING.TIMESERIES ADD SOURCE_ID AS
+          (
+            CASE
+              WHEN FEWS_PARAMETERS LIKE '&amp;plotId=%' THEN SUBSTRING(FEWS_PARAMETERS, 9, CHARINDEX('&amp;', FEWS_PARAMETERS, 2) - 9)
+              WHEN FEWS_PARAMETERS LIKE '&amp;filterId=%' THEN SUBSTRING(FEWS_PARAMETERS, 11, CHARINDEX('&amp;', FEWS_PARAMETERS, 2) - 11)
+            END
+          ) PERSISTED;
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_STAGING.TIMESERIES','SOURCE_ID') IS NOT NULL
+          ALTER TABLE FFF_STAGING.TIMESERIES DROP COLUMN SOURCE_ID
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
