@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-add-forecast-index-to-timeseries-header-table">
+    <sql>
+      IF IndexProperty(Object_Id('FFF_STAGING.TIMESERIES_HEADER'), 'IX_TIMESERIES_HEADER_FORECAST', 'INDEXID') IS NULL
+        CREATE INDEX IX_TIMESERIES_HEADER_FORECAST ON FFF_STAGING.TIMESERIES_HEADER (FORECAST)
+          INCLUDE (TASK_COMPLETION_TIME, TASK_RUN_ID, WORKFLOW_ID)
+    </sql>
+    <rollback>
+      <sql>
+        IF IndexProperty(Object_Id('FFF_STAGING.TIMESERIES_HEADER'), 'IX_TIMESERIES_HEADER_FORECAST', 'INDEXID') IS NOT NULL
+          DROP INDEX IX_TIMESERIES_HEADER_FORECAST ON FFF_STAGING.TIMESERIES_HEADER
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

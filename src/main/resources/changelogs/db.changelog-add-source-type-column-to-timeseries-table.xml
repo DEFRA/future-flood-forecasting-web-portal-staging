@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-add-source-type-column-to-timeseries-table">
+    <sql>
+      IF COL_LENGTH('FFF_STAGING.TIMESERIES','SOURCE_TYPE') IS NULL
+        ALTER TABLE FFF_STAGING.TIMESERIES ADD SOURCE_TYPE AS
+          (
+            CASE
+              WHEN FEWS_PARAMETERS LIKE '&amp;plotId=%' THEN 'P'
+              WHEN FEWS_PARAMETERS LIKE '&amp;filterId=%' THEN 'F'
+            END
+  ) PERSISTED;
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_STAGING.TIMESERIES','SOURCE_TYPE') IS NOT NULL
+          ALTER TABLE FFF_STAGING.TIMESERIES DROP COLUMN SOURCE_TYPE
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
