@@ -65,6 +65,7 @@
   <include file="./changelogs/db.changelog-create-inactive-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-inactive-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-add-workflow-id-column-to-staging-exception-table.xml"/>
+  <include file="./changelogs/db.changelog-add-workflow-id-index-to-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-id-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-type-column-to-timeseries-table.xml"/>
   <include file="./changelogs/db.changelog-add-source-type-index-to-timeseries-table.xml"/>
