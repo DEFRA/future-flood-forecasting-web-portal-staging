@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-fme-timeseries-audit-table">
+    <sql>
+      IF OBJECT_ID('FFF_REPORTING.FME_TIMESERIES_AUDIT', 'U') IS NULL
+        CREATE TABLE FFF_REPORTING.FME_TIMESERIES_AUDIT
+        (
+          ID BIGINT IDENTITY(1,1) NOT NULL,
+	        TS_ID UNIQUEIDENTIFIER NOT NULL INDEX IX_FME_TIMESERIES_AUDIT_TS_ID,
+	        TS_OBJECT_COUNT INT NOT NULL,
+	        FME_STATUS INT NOT NULL,
+	        TS_WORKFLOW NVARCHAR(64) NULL,
+	        TS_STAGED_TIME DATETIMEOFFSET(7) NULL,
+	        TS_PROCESSED_OBJECT_COUNT INT NULL,
+	        FME_LOAD_STARTED DATETIMEOFFSET(7) NULL,
+	        FME_LOAD_FINISHED DATETIMEOFFSET(7) NULL
+          CONSTRAINT PK_FME_TIMESERIES_AUDIT PRIMARY KEY CLUSTERED ([ID])
+        )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_REPORTING.FME_TIMESERIES_AUDIT', 'U') IS NOT NULL
+          DROP TABLE FFF_REPORTING.FME_TIMESERIES_AUDIT
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

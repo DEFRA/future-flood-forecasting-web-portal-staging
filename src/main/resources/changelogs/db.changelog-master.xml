@@ -78,4 +78,7 @@
   <include file="./changelogs/db.changelog-remove-active-column-from-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-multivariate-thresholds-table.xml"/>
   <include file="./changelogs/db.changelog-create-multivariate-thresholds-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-timeseries-audit-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-timeseries-object-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-job-audit-table.xml"/>
 </databaseChangeLog>
