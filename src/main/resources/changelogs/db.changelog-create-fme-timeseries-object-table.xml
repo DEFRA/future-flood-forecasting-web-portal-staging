@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="pwadmore" id="changelog-create-fme-timeseries-audit-table">
+  <changeSet author="pwadmore" id="changelog-create-fme-timeseries-object-table">
     <sql>
       IF OBJECT_ID('FFF_REPORTING.FME_TIMESERIES_OBJECT', 'U') IS NULL
         CREATE TABLE FFF_REPORTING.FME_TIMESERIES_OBJECT
