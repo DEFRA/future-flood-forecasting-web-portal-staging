@@ -4,7 +4,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
-  <changeSet author="pwadmore" id="changelog-remove-job-id-column-from-timeseries-staging-exception-table">
+  <changeSet author="pwadmore" id="changelog-remove-job-id-column-from-timeseries-job-table">
     <sql>
       IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','JOB_ID') IS NOT NULL
         ALTER TABLE FFF_REPORTING.TIMESERIES_JOB DROP COLUMN JOB_ID
