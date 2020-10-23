@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-maintain-timeseries-job-trigger">
+    <sql splitStatements="false">
+      <![CDATA[
+        CREATE OR ALTER TRIGGER FFF_REPORTING.MAINTAIN_TIMESERIES_JOB
+        ON FFF_REPORTING.FME_TIMESERIES_AUDIT 
+        AFTER INSERT,UPDATE
+        AS 
+        BEGIN
+          -- SET NOCOUNT ON added to prevent extra result sets from
+          -- interfering with SELECT statements.
+          SET NOCOUNT ON;
+          DECLARE @Action AS CHAR(1);
+          DECLARE @STATUS AS INT;
+          DECLARE @FME_FINISHED AS DATETIMEOFFSET(7);
+          DECLARE @OBCT AS INT;
+          DECLARE @PROC_OBCT AS INT;
+          DECLARE @CHUNKS AS SMALLINT;
+          DECLARE @CT SMALLINT;
+          SET @Action = (
+            CASE
+              WHEN
+                EXISTS(SELECT * FROM INSERTED)
+                AND EXISTS(SELECT * FROM DELETED) THEN 'U'  -- Set Action to Updated.
+              WHEN
+                EXISTS(SELECT * FROM INSERTED) THEN 'I'  -- Set Action to Insert.
+            END
+          )
+          IF @Action = 'I' 
+            BEGIN
+              -- new row for this time series, set timeseries_job to "in progress"
+              SELECT
+                @CHUNKS = TS_OBJECT_COUNT
+              FROM
+                INSERTED
+  
+              SELECT
+                @CT = COUNT(*)
+              FROM
+                FFF_REPORTING.TIMESERIES_JOB
+              WHERE
+                TIMESERIES_ID =
+                  (
+                    SELECT
+                      TS_ID
+                    FROM
+                      INSERTED
+                  )
+                AND JOB_STATUS = 1
+  
+              IF @CT = 0
+                BEGIN
+                  INSERT INTO
+                    FFF_REPORTING.TIMESERIES_JOB
+                  SELECT
+                    NEWID(),
+                    INSERTED.TS_ID,
+                    1,
+                    GETDATE(),
+                    'In Progress'
+                  FROM
+                    INSERTED
+        
+                  IF @CHUNKS = 0
+                    INSERT INTO
+                      FFF_REPORTING.TIMESERIES_JOB
+                    SELECT
+                      NEWID(),
+                      INSERTED.TS_ID,
+                      6,
+                      GETDATE(),
+                      'Completed'
+                    FROM
+                      INSERTED
+                END
+            END
+          ELSE
+            BEGIN
+              -- update, may still be in progress, may be finshed successfully, maybe failed
+              SELECT
+                @STATUS=FME_STATUS,
+                @FME_FINISHED=FME_LOAD_FINISHED,
+                @OBCT=TS_OBJECT_COUNT,
+                @PROC_OBCT=TS_PROCESSED_OBJECT_COUNT
+              FROM
+                INSERTED
+  
+              IF @OBCT <> @PROC_OBCT AND @STATUS <> -1
+                -- still in progress
+                SELECT 1
+              ELSE
+                IF @STATUS = -1
+                  INSERT INTO
+                    FFF_REPORTING.TIMESERIES_JOB
+                  SELECT
+                    NEWID(),
+                    INSERTED.TS_ID,
+                    6,
+                    INSERTED.FME_LOAD_FINISHED,
+                    'Job Failed'
+                  FROM
+                    INSERTED
+                ELSE
+                  IF @STATUS = 2 AND @OBCT = @PROC_OBCT
+                    INSERT INTO
+                      FFF_REPORTING.TIMESERIES_JOB
+                    SELECT
+                      NEWID(),
+                      INSERTED.TS_ID,
+                      6,
+                      INSERTED.FME_LOAD_FINISHED,
+                      'Completed'
+                    FROM
+                      INSERTED
+            END
+          END
+        ]]>
+      </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT OBJECT_ID FROM sys.triggers WHERE name = 'MAINTAIN_TIMESERIES_JOB')
+          DROP TRIGGER FFF_REPORTING.MAINTAIN_TIMESERIES_JOB
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

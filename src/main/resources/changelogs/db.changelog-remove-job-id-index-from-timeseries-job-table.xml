@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-remove-job-id-index-from-timeseries-job-table">
+    <sql>
+      IF IndexProperty(Object_Id('FFF_REPORTING.TIMESERIES_JOB'), 'IX_TIMESERIES_JOB_JOB_ID', 'INDEXID') IS NOT NULL
+        DROP INDEX IX_TIMESERIES_JOB_JOB_ID ON FFF_REPORTING.TIMESERIES_JOB    
+     </sql>
+    <rollback>
+      <sql>
+        IF IndexProperty(Object_Id('FFF_REPORTING.TIMESERIES_JOB'), 'IX_TIMESERIES_JOB_JOB_ID', 'INDEXID') IS NULL
+          CREATE INDEX IX_TIMESERIES_JOB_JOB_ID ON FFF_REPORTING.TIMESERIES_JOB (JOB_ID)
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

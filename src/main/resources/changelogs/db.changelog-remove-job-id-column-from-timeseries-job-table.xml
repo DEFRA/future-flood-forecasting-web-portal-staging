@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-remove-job-id-column-from-timeseries-staging-exception-table">
+    <sql>
+      IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','JOB_ID') IS NOT NULL
+        ALTER TABLE FFF_REPORTING.TIMESERIES_JOB DROP COLUMN JOB_ID
+    </sql>
+    <rollback>
+      <comment>Add a dummy JOB_ID if rollback is used. This is not ideal and a database restore is recommended instead.</comment>
+      <sql>
+        IF COL_LENGTH('FFF_REPORTING.TIMESERIES_JOB','JOB_ID') IS NULL
+          ALTER TABLE FFF_REPORTING.TIMESERIES_JOB ADD JOB_ID BIGINT;
+          UPDATE FFF_REPORTING.TIMESERIES_JOB SET JOB_ID = 0;
+          ALTER TABLE FFF_REPORTING.TIMESERIES_JOB ALTER COLUMN JOB_ID BIT NOT NULL;
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
