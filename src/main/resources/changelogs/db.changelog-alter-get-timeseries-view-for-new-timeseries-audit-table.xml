@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-alter-get-timeseries-view-for-new-timeseries-audit-table">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_GET_TIMESERIES_QUEUE AS
+        SELECT
+          t.ID,
+          t.TIMESERIES_HEADER_ID,
+          h.IMPORT_TIME
+        FROM
+          FFF_STAGING.TIMESERIES t
+          INNER JOIN FFF_STAGING.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
+          LEFT OUTER JOIN FFF_REPORTING.FME_TIMESERIES_AUDIT fta ON t.ID = fta.TS_ID          
+        WHERE
+          fta.ID IS NULL
+    </sql>
+    <rollback>
+      <sql>
+        CREATE OR ALTER VIEW FFF_STAGING.V_GET_TIMESERIES_QUEUE AS
+          SELECT
+            t.ID,
+            h.IMPORT_TIME,
+            t.TIMESERIES_HEADER_ID
+          FROM
+            FFF_STAGING.TIMESERIES t
+            INNER JOIN FFF_STAGING.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
+          WHERE
+            (
+              NOT EXISTS
+              (
+                SELECT
+                  1
+                FROM
+                  FFF_REPORTING.TIMESERIES_JOB j
+                WHERE
+                  j.TIMESERIES_ID = t.ID
+              )
+            )
+            OR
+            (
+              EXISTS
+              (
+                SELECT
+                  1
+                FROM
+                  FFF_REPORTING.TIMESERIES_JOB tj
+                WHERE
+                  tj.TIMESERIES_ID = t.ID
+                AND DESCRIPTION IN ('Job Failed', 'Not Selected')
+                AND NOT EXISTS
+                (
+                  SELECT
+                    1
+                  FROM
+                    FFF_REPORTING.TIMESERIES_JOB tjb
+                  WHERE
+                    tjb.DESCRIPTION IN ('Completed', 'Cannot Process')
+                    AND tjb.TIMESERIES_ID = tj.TIMESERIES_ID
+                )
+                AND NOT EXISTS
+                (
+                  SELECT
+                    1
+                  FROM
+                    FFF_REPORTING.TIMESERIES_JOB tjb2
+                  WHERE
+                    tjb2.DESCRIPTION = 'In Progress'
+                    AND tjb2.JOB_STATUS_TIME =
+                    (
+                      SELECT
+                        MAX(JOB_STATUS_TIME)
+                      FROM
+                        FFF_REPORTING.TIMESERIES_JOB tjb3
+                      WHERE
+                        tjb3.TIMESERIES_ID = tjb2.TIMESERIES_ID
+                    )
+                    AND tjb2.TIMESERIES_ID = tj.TIMESERIES_ID
+                )
+              )
+            )
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

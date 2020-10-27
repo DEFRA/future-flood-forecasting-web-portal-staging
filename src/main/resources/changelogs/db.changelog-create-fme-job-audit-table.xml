@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-fme-job-audit-table">
+    <sql>
+      IF OBJECT_ID('FFF_REPORTING.FME_JOB_AUDIT', 'U') IS NULL
+        CREATE TABLE FFF_REPORTING.FME_JOB_AUDIT
+        (
+          ID BIGINT IDENTITY(1,1) NOT NULL,
+          JOB_ID BIGINT NOT NULL,
+          WHERE_CLAUSE NVARCHAR(200) NOT NULL,
+          OUTPUT_COUNT SMALLINT NULL,
+          TIME_REQUESTED DATETIME NULL,
+          TIME_STARTED DATETIME NULL,
+          TIME_FINISHED DATETIME NULL,
+          JOB_DURATION_SECONDS SMALLINT NULL,
+          STATUS NVARCHAR(50) NULL,
+          STATUS_MSG NVARCHAR(254) NULL
+          CONSTRAINT PK_FME_JOB_AUDIT PRIMARY KEY CLUSTERED ([ID])
+        )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_REPORTING.FME_JOB_AUDIT', 'U') IS NOT NULL
+          DROP TABLE FFF_REPORTING.FME_JOB_AUDIT
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 

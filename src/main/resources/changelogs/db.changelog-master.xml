@@ -78,4 +78,14 @@
   <include file="./changelogs/db.changelog-remove-active-column-from-timeseries-staging-exception-table.xml"/>
   <include file="./changelogs/db.changelog-create-multivariate-thresholds-table.xml"/>
   <include file="./changelogs/db.changelog-create-multivariate-thresholds-job-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-timeseries-audit-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-timeseries-object-table.xml"/>
+  <include file="./changelogs/db.changelog-create-fme-job-audit-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-job-id-index-from-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-job-id-column-from-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-error-desc-column-from-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-remove-job-stats-column-from-timeseries-job-table.xml"/>
+  <include file="./changelogs/db.changelog-alter-timeseries-view-for-new-timeseries-audit-table.xml"/>
+  <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-new-timeseries-audit-table.xml"/>
+  <include file="./changelogs/db.changelog-create-maintain-timeseries-job-trigger.xml"/>
 </databaseChangeLog>
