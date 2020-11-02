@@ -88,4 +88,24 @@
   <include file="./changelogs/db.changelog-alter-timeseries-view-for-new-timeseries-audit-table.xml"/>
   <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-new-timeseries-audit-table.xml"/>
   <include file="./changelogs/db.changelog-create-maintain-timeseries-job-trigger.xml"/>
+  <include file="./changelogs/db.changelog-drop-constraint-fk-timeseries-timeseries-header-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-drop-constraint-fk-timeseries-staging-exception-timeseries-header-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-drop-constraint-fk-timeseries-job-timeseries-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-drop-constraint-fk-inactive-staging-exception-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-drop-constraint-fk-inactive-timeseries-staging-exception-timeseries-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-inactive-timeseries-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-inactive-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-timeseries-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-timeseries-job-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-timeseries-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-timeseries-header-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-fme-job-audit-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-fme-timeseries-audit-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-truncate-fme-timeseries-object-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-fk-inactive-timeseries-staging-exception-timeseries-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-fk-inactive-staging-exception-staging-exception-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-job-timeseries-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-staging-exception-timeseries-header-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-timeseries-header-for-fme-performance-improvements.xml"/>
 </databaseChangeLog>

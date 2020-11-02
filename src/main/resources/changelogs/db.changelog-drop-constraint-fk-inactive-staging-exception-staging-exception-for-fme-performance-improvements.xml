@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-drop-constraint-fk-inactive-staging-exception-staging-exception-for-fme-performance-improvements">
+    <sql>
+      IF (OBJECT_ID('FFF_STAGING.FK_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION', 'F') IS NOT NULL)
+        ALTER TABLE FFF_STAGING.INACTIVE_STAGING_EXCEPTION DROP CONSTRAINT FK_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION;
+    </sql>
+    <rollback>
+      <sql>
+        IF (OBJECT_ID('FFF_STAGING.FK_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION', 'F') IS NULL)
+          ALTER TABLE FFF_STAGING.INACTIVE_STAGING_EXCEPTION WITH CHECK ADD CONSTRAINT FK_INACTIVE_STAGING_EXCEPTION_STAGING_EXCEPTION FOREIGN KEY(STAGING_EXCEPTION_ID)
+            REFERENCES FFF_STAGING.STAGING_EXCEPTION (ID);
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
