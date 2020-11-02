@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="db.changelog-add-constraint-fk-timeseries-staging-exception-timeseries-header-for-fme-performance-improvements">
+    <sql>
+      IF (OBJECT_ID('FFF_STAGING.FK_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER', 'F') IS NULL)
+        ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION WITH CHECK ADD CONSTRAINT FK_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER FOREIGN KEY(TIMESERIES_HEADER_ID)
+          REFERENCES FFF_STAGING.TIMESERIES_HEADER (ID); 
+    </sql>
+    <rollback>
+      <sql>
+        IF (OBJECT_ID('FFF_STAGING.FK_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER', 'F') IS NOT NULL)
+          ALTER TABLE FFF_STAGING.TIMESERIES_STAGING_EXCEPTION DROP CONSTRAINT FK_TIMESERIES_STAGING_EXCEPTION_TIMESERIES_HEADER;      
+      </sql>            
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
