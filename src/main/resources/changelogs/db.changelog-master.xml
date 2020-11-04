@@ -108,4 +108,5 @@
   <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-job-timeseries-for-fme-performance-improvements.xml"/>
   <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-staging-exception-timeseries-header-for-fme-performance-improvements.xml"/>
   <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-timeseries-header-for-fme-performance-improvements.xml"/>
+  <include file="./changelogs/db.changelog-create-task-import-times-view.xml"/>
 </databaseChangeLog>

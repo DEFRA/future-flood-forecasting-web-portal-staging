@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-task-import-times-view">
+    <sql>
+    <![CDATA[
+      CREATE OR ALTER VIEW FFF_REPORTING.TASK_IMPORT_TIMES AS
+      SELECT
+        TH.TASK_RUN_ID,
+        TH.WORKFLOW_ID,
+        T.ID AS TS_ID,
+        LEN(T.FEWS_DATA) AS SIZE,
+        TH.TASK_COMPLETION_TIME,
+        DATEDIFF(s, TH.TASK_COMPLETION_TIME, TH.IMPORT_TIME) AS STAGING_TIME,
+        TH.IMPORT_TIME,
+        DATEDIFF(s, TH.IMPORT_TIME, TJ.JOB_STATUS_TIME) AS FME_QUEUE_TIME,
+        TJ.JOB_STATUS_TIME AS FME_START_TIME,
+        TJ.ID AS JOB_ID,
+        DATEDIFF(s, TJ.JOB_STATUS_TIME, TJ2.JOB_STATUS_TIME) AS FME_PROCESS_TIME,
+        TJ2.JOB_STATUS_TIME AS FME_END_TIME,
+        TJ2.JOB_STATUS,
+        TJ2.DESCRIPTION
+      FROM
+        FFF_STAGING.TIMESERIES AS T INNER JOIN
+        FFF_STAGING.TIMESERIES_HEADER AS TH ON T.TIMESERIES_HEADER_ID = TH.ID INNER JOIN
+        FFF_REPORTING.TIMESERIES_JOB AS TJ ON T.ID = TJ.TIMESERIES_ID INNER JOIN
+        FFF_REPORTING.TIMESERIES_JOB AS TJ2 ON TJ.TIMESERIES_ID = TJ2.TIMESERIES_ID
+      WHERE
+        TJ.JOB_STATUS = 1 AND TJ2.JOB_STATUS <> 1
+    ]]>
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FFF_REPORTING' AND TABLE_NAME = 'TASK_IMPORT_TIMES')
+          DROP VIEW FFF_REPORTING.TASK_IMPORT_TIMES
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
