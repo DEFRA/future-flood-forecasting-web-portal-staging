@@ -6,6 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-delete-timseries-job-audit-stored-procedure">
     <sql>
+    <![CDATA[
     CREATE PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_JOB_AUDIT
     (
         @AUDIT_DAYS INT = 30
@@ -17,8 +18,9 @@
       SET NOCOUNT ON
       -- PROCEDURE STATEMENTS
     	DELETE FROM FFF_REPORTING.FME_JOB_AUDIT
-    	  WHERE TIME_STARTED < DATEADD(DAY, -@AUDIT_DAYS, GETDATE());
+    	  WHERE TIME_STARTED < DATEADD(DAY, -@AUDIT_DAYS, GETDATE())
     END
+    ]]>
     </sql>
     <rollback>
       <sql>
