@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-create-delete-timseries-object-stored-procedure">
+    <sql>
+    CREATE PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_OBJECT 
+    (
+      @TS_ID VARCHAR(256)
+    )
+    AS
+    BEGIN
+      -- SET NOCOUNT ON ADDED TO PREVENT EXTRA RESULT SETS FROM
+      -- INTERFERING WITH SELECT STATEMENTS.
+      SET NOCOUNT ON
+      -- PROCEDURE STATEMENTS
+      DELETE FROM FFF_REPORTING.FME_TIMESERIES_OBJECT
+	      WHERE TS_ID = @TS_ID
+    END
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = 'PROCEDURE' AND ROUTINE_SCHEMA = 'FFF_REPORTING' AND ROUTINE_NAME = 'DELETE_TIMSERIES_OBJECT')
+          DROP PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_OBJECT
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
