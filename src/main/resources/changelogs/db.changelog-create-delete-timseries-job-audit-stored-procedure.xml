@@ -13,8 +13,8 @@
           -- INTERFERING WITH SELECT STATEMENTS.
           SET NOCOUNT ON
           -- PROCEDURE STATEMENTS
-      	  DELETE 
-          FROM 
+      	  DELETE
+          FROM
             FFF_REPORTING.FME_JOB_AUDIT
       	  WHERE 
             TIME_STARTED < DATEADD(DAY, -@AUDIT_DAYS, GETDATE())
