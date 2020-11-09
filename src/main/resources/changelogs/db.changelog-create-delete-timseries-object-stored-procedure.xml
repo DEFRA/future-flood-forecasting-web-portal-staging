@@ -6,21 +6,20 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="awallace" id="changelog-create-delete-timseries-object-stored-procedure">
     <sql>
-    <![CDATA[
-    CREATE PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_OBJECT 
-    (
-      @TS_ID UNIQUEIDENTIFIER
-    )
-    AS
-    BEGIN
-      -- SET NOCOUNT ON ADDED TO PREVENT EXTRA RESULT SETS FROM
-      -- INTERFERING WITH SELECT STATEMENTS.
-      SET NOCOUNT ON
-      -- PROCEDURE STATEMENTS
-      DELETE FROM FFF_REPORTING.FME_TIMESERIES_OBJECT
-	      WHERE TS_ID = @TS_ID
-    END
-    ]]>
+      <![CDATA[
+        CREATE PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_OBJECT (@TS_ID UNIQUEIDENTIFIER ) AS 
+        BEGIN
+          -- SET NOCOUNT ON ADDED TO PREVENT EXTRA RESULT SETS FROM
+          -- INTERFERING WITH SELECT STATEMENTS.
+          SET NOCOUNT ON 		
+          -- PROCEDURE STATEMENTS
+          DELETE
+          FROM
+            FFF_REPORTING.FME_TIMESERIES_OBJECT 
+          WHERE
+            TS_ID = @TS_ID 
+        END
+      ]]>
     </sql>
     <rollback>
       <sql>
