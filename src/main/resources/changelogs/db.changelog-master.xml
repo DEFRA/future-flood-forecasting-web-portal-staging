@@ -109,4 +109,10 @@
   <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-staging-exception-timeseries-header-for-fme-performance-improvements.xml"/>
   <include file="./changelogs/db.changelog-add-constraint-fk-timeseries-timeseries-header-for-fme-performance-improvements.xml"/>
   <include file="./changelogs/db.changelog-create-task-import-times-view.xml"/>
+  <include file="./changelogs/db.changelog-create-delete-timseries-audit-stored-procedure.xml"/>
+  <include file="./changelogs/db.changelog-create-delete-timseries-job-audit-stored-procedure.xml"/>
+  <include file="./changelogs/db.changelog-create-delete-timseries-object-stored-procedure.xml"/>
+  <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-job-audit-stored-procedure-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-audit-stored-procedure-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-object-stored-procedure-to-reporting-reader-writer-role.xml"/>
 </databaseChangeLog>
