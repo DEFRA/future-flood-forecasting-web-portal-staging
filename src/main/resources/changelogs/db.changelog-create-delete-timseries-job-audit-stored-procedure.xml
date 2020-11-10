@@ -7,7 +7,7 @@
   <changeSet author="awallace" id="changelog-create-delete-timseries-job-audit-stored-procedure">
     <sql>
       <![CDATA[
-        CREATE PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_JOB_AUDIT (@AUDIT_DAYS INT = 30) AS
+        CREATE OR ALTER PROCEDURE FFF_REPORTING.DELETE_TIMSERIES_JOB_AUDIT (@AUDIT_DAYS INT = 30) AS
         BEGIN
           -- SET NOCOUNT ON ADDED TO PREVENT EXTRA RESULT SETS FROM
           -- INTERFERING WITH SELECT STATEMENTS.
