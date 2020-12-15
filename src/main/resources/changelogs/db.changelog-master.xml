@@ -115,4 +115,5 @@
   <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-job-audit-stored-procedure-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-audit-stored-procedure-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-grant-execute-on-delete-timseries-object-stored-procedure-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-add-ignored-workflows-to-workflow-view.xml"/>
 </databaseChangeLog>
