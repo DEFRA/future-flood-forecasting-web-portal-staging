@@ -11,12 +11,10 @@
     </sql>
     <rollback>
       <comment>
-        In the event of a rollback, null values may be present in the datum column. If null values are found in the datum column, the rollback will fail and the table should be truncated manually before re-running rollback. Following truncation and once the rollback has completed, the table should be repopulated.
+        In the event of a rollback, null values may be present in the datum column. If null values are present in the datum column, the rollback will fail and the table requires manual truncation before rerunning the rollback. Following truncation and once the rollback has completed, the table should be repopulated.
       </comment>
       <sql>
         IF EXISTS(SELECT IS_NULLABLE FROM SYS.COLUMNS WHERE OBJECT_ID = OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION') AND NAME = 'DATUM' AND IS_NULLABLE = 1)
-        AND 
-        NOT EXISTS(SELECT 1 FROM FFF_STAGING.FLUVIAL_FORECAST_LOCATION WHERE DATUM IS NULL)  
           ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION ALTER COLUMN DATUM NVARCHAR(64) NOT NULL
       </sql>
     </rollback>
