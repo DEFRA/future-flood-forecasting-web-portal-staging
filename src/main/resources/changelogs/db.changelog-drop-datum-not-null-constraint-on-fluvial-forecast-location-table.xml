@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="awallace" id="changelog-drop-datum-not-null-constraint-on-fluvial_forecast_location-table">
+    <sql>
+      IF EXISTS(SELECT IS_NULLABLE FROM SYS.COLUMNS WHERE OBJECT_ID = OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION') AND NAME = 'DATUM' AND IS_NULLABLE = 0)
+        ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION ALTER COLUMN DATUM NVARCHAR(64) NULL
+    </sql>
+    <rollback>
+      <comment>
+        In the event of a rollback, null values may be present in the datum column. If null values are present in the datum column, the rollback will fail and the table requires manual truncation before rerunning the rollback. Following truncation and once the rollback has completed, the table should be repopulated.
+      </comment>
+      <sql>
+        IF EXISTS(SELECT IS_NULLABLE FROM SYS.COLUMNS WHERE OBJECT_ID = OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION') AND NAME = 'DATUM' AND IS_NULLABLE = 1)
+          ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION ALTER COLUMN DATUM NVARCHAR(64) NOT NULL
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
