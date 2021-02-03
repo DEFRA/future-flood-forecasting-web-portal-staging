@@ -30,6 +30,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: "12.x"
+      - name: Install markdown linting package
+        run: |
+          npm install markdownlint-cli
       - name: Run markdown linting check
         run: |
           node_modules/.bin/markdownlint $PWD --ignore node_modules
