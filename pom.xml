@@ -50,6 +50,7 @@
                     <schemas>FFF_REPORTING,FFF_STAGING</schemas>
                     <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
                     <systemProperties>
+                        <fffsWebPortalStagingDbMsiUsername>${FFFS_WEB_PORTAL_STAGING_DB_MSI_USERNAME}</fffsWebPortalStagingDbMsiUsername>
                         <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
                         <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
                         <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
