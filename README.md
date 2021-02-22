@@ -62,7 +62,7 @@ If using Docker
 
 ### The JDBC Connection String And Microsoft Azure Active Directory Authentication
 
-This component can be configured to use numerous Microsoft Azure Active Directory authentication options (see the [SQL Server JDBC driver documentation](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)). It is recommended that Microsoft Azure Active Directory authentication settings are placed within the JDBC connection string.
+This component can be configured to use numerous Microsoft Azure Active Directory authentication options (see the [SQL Server JDBC driver documentation](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)). Microsoft Azure Active Directory authentication settings should be placed within the JDBC connection string.
 
 ## Docker specific enviroment variables
 
