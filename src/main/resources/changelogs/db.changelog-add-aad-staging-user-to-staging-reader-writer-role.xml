@@ -6,9 +6,12 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-add-aad-staging-user-to-staging-reader-writer-role">
     <preConditions onFail="CONTINUE">
-      <sqlCheck expectedResult="5">
-        SELECT ServerProperty('EngineEdition')
-      </sqlCheck>
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
     </preConditions>
     <comment>Add the account for MSI based authentication to the staging reader/writer role when running on Azure</comment>
     <sql>

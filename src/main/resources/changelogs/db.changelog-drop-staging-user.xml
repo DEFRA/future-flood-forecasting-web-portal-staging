@@ -6,9 +6,12 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-drop-staging-user">
     <preConditions onFail="CONTINUE">
-      <sqlCheck expectedResult="5">
-        SELECT ServerProperty('EngineEdition')
-      </sqlCheck>
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
     </preConditions>
     <comment>Remove the staging user when running on Azure</comment>  
     <sql>

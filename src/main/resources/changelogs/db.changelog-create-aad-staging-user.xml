@@ -6,9 +6,12 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-create-aad-staging-user">
     <preConditions onFail="CONTINUE">
-      <sqlCheck expectedResult="5">
-        SELECT ServerProperty('EngineEdition')
-      </sqlCheck>
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
     </preConditions>
     <comment>Create an account for Microsoft Azure Active Directory based authentication when running on Azure</comment>
     <sql>

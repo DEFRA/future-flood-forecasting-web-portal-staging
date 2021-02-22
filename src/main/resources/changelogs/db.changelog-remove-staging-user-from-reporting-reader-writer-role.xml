@@ -6,9 +6,12 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
   <changeSet author="pwadmore" id="changelog-remove-staging-user-from-reporting-reader-writer-role">
     <preConditions onFail="CONTINUE">
-      <sqlCheck expectedResult="5">
-        SELECT ServerProperty('EngineEdition')
-      </sqlCheck>
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
     </preConditions>
     <comment>Remove the staging user from the reporting reader/writer role when running on Azure</comment>
     <sql>

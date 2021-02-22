@@ -4,11 +4,14 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
-  <changeSet author="pwadmore" id="changelog-add-staging-user-to-staging-writer-reader-role">
+  <changeSet author="pwadmore" id="changelog-remove-staging-user-from-staging-reader-writer-role">
     <preConditions onFail="CONTINUE">
-      <sqlCheck expectedResult="5">
-        SELECT ServerProperty('EngineEdition')
-      </sqlCheck>
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
     </preConditions>
     <comment>Remove the staging user from the staging reader/writer role when running on Azure</comment> 
     <sql>

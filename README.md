@@ -56,7 +56,7 @@ If using Docker
 
 | name                                           | description                                           | required | default | valid       |
 |------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
-| FFFS_WEB_PORTAL_STAGING_DB_AAD_AUTHENTICATION  | A boolean enabling AAD authentication                 | yes      |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD       | A boolean enabling AAD authentication                 | no       |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string (**see below**)       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
