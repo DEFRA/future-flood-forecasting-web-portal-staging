@@ -118,9 +118,9 @@
   <include file="./changelogs/db.changelog-add-ignored-workflows-to-workflow-view.xml"/>
   <include file="./changelogs/db.changelog-create-datetime2-based-task-import-times-view.xml"/>
   <include file="./changelogs/db.changelog-drop-datum-not-null-constraint-on-fluvial-forecast-location-table.xml"/>
-  <include file="./changelogs/db.changelog-create-msi-staging-user.xml"/>
-  <include file="./changelogs/db.changelog-add-msi-staging-user-to-staging-reader-writer-role.xml"/>
-  <include file="./changelogs/db.changelog-add-msi-staging-user-to-reporting-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-create-aad-staging-user.xml"/>
+  <include file="./changelogs/db.changelog-add-aad-staging-user-to-staging-reader-writer-role.xml"/>
+  <include file="./changelogs/db.changelog-add-aad-staging-user-to-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-remove-staging-user-from-staging-reader-writer-role.xml"/>  
   <include file="./changelogs/db.changelog-remove-staging-user-from-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-drop-staging-user.xml"/>
