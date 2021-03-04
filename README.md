@@ -3,7 +3,7 @@
 [![CI](https://github.com/DEFRA/future-flood-forecasting-web-portal-staging/actions/workflows/ci.yml/badge.svg)](https://github.com/DEFRA/future-flood-forecasting-web-portal-staging/actions/workflows/ci.yml)
 
 Version control for the staging database of the Incident Management Forecasting Web Portal.
-The staging database holds data extracted from the [core forecasting engine](https://www.deltares.nl/en/software/flood-forecasting-system-delft-fews-2/) prior to transformation for reporting and visualisation purposes.
+The staging database holds data extracted from the [core forecasting engine](https://www.deltares.nl/en/software/flood-forecasting-system-delft-fews-2/) by [Microsoft Azure functions](https://github.com/DEFRA/future-flood-forecasting-web-portal-importer) prior to transformation for reporting and visualisation purposes.
 
 ## Reporting and visualisation concerns
 
