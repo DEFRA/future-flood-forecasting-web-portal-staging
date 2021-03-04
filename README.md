@@ -1,6 +1,8 @@
-# Future Flood Forecasting Web Portal Staging Database
+# Incident Management Forecasting (Known Previously As Future Flood Forecasting) Web Portal Staging Database
 
-Version control for the staging database of the Future Flood Forecasting Web Portal.
+[![CI](https://github.com/DEFRA/future-flood-forecasting-web-portal-staging/actions/workflows/ci.yml/badge.svg)](https://github.com/DEFRA/future-flood-forecasting-web-portal-staging/actions/workflows/ci.yml)
+
+Version control for the staging database of the Incident Management Forecasting Web Portal.
 The staging database holds data extracted from the core forecasting engine prior to transformation for reporting and visualisation purposes.
 
 ## Reporting and visualisation concerns
