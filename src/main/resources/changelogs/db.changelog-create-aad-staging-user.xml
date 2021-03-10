@@ -7,7 +7,7 @@
   <changeSet author="pwadmore" id="changelog-create-aad-staging-user">
     <preConditions onFail="CONTINUE">
       <and>
-        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad"  value="true"/>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad" value="true"/>
         <sqlCheck expectedResult="5">
           SELECT ServerProperty('EngineEdition')
         </sqlCheck>
