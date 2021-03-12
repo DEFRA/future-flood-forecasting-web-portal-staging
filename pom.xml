@@ -7,13 +7,14 @@
     <groupId>uk.gov.defra.future-flood-forecasting-web-portal</groupId>
     <artifactId>future-flood-forecasting-web-portal-staging-database</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <name>future-flood-forecasting-web-portal-staging-database</name>
     <url>https://github.com/DEFRA/future-flood-forecasting-web-portal</url>
 
     <properties>
-        <liquibase.version>4.3.1</liquibase.version>
-        <sqlserver.version>8.4.1.jre8</sqlserver.version>
+        <liquibase.version>4.3.0</liquibase.version>
+        <sqlserver.version>9.2.0.jre8</sqlserver.version>
+        <azureidentity.version>1.2.3</azureidentity.version>
         <azuread.version>1.6.6</azuread.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -24,6 +25,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>${azureidentity.version}</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
@@ -50,6 +56,8 @@
                     <schemas>FFF_REPORTING,FFF_STAGING</schemas>
                     <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
                     <systemProperties>
+                        <fffsWebPortalStagingDbAuthWithAad>${FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD}</fffsWebPortalStagingDbAuthWithAad>
+                        <fffsWebPortalStagingDbAadUsername>${FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME}</fffsWebPortalStagingDbAadUsername>
                         <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
                         <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
                         <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>

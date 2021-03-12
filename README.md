@@ -26,17 +26,44 @@ If using Docker
 * Docker 18.09 CE or later
 * Docker Compose 1.24 or later
 
-## Common environment variables
+## Authentication
+
+**Either** Microsoft Azure Active Directory (AAD) or database username/password authentication is supported.
+
+* Microsoft Azure Active Directory is recommended in a Microsoft Azure environment.
+* Database username/password authentication is recommended in a unit test environment.
+
+## Microsoft Azure Active Directory Authentication Related Environment Variables
+
+**These environment variables are only required when Microsoft Azure Active Directory authentication is used.**
+
+| name                                           | description                                           | required | default | valid       |
+|------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
+| FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME        | The AAD staging user                                  | yes      |         |             |
+
+## Database Username/Password Authentication Related Environment Variables
+
+**These environment variables are only required when database username/password authentication is used.**
 
 | name                                           | description                                           | required | default | valid       |
 |------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME      | Username for database version control account         | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD      | Password for database version control account         | yes      |         |             |
-| FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string                       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_USERNAME            | The staging schema user                               | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_PASSWORD            | Password for the staging schema user                  | yes      |         |             |
+
+## Common environment variables
+
+| name                                           | description                                           | required | default | valid       |
+|------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
+| FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD       | A boolean enabling AAD authentication                 | no       |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string (**see below**)       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
+
+### The JDBC Connection String And Microsoft Azure Active Directory Authentication
+
+This component can be configured to use numerous Microsoft Azure Active Directory authentication options (see the [SQL Server JDBC driver documentation](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)). Microsoft Azure Active Directory authentication settings should be placed within the JDBC connection string.
 
 ## Docker specific enviroment variables
 
