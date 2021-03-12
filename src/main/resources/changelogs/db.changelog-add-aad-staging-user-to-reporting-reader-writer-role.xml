@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-add-aad-staging-user-to-reporting-reader-writer-role">
+    <preConditions onFail="CONTINUE">
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad" value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
+    </preConditions>
+    <comment>Add the account for MSI based authentication to the reporting reader/writer role when running on Azure</comment>    
+    <sql>
+      IF (NOT EXISTS (
+        SELECT r.* from (
+          SELECT IS_ROLEMEMBER('REPORTING_READER_WRITER', '[${fffsWebPortalStagingDbAadUsername}]') AS ROLE_MEMBER
+        ) r
+        WHERE r.ROLE_MEMBER > 0
+      ))
+        ALTER ROLE REPORTING_READER_WRITER ADD MEMBER [${fffsWebPortalStagingDbAadUsername}]
+    </sql>
+    <rollback>
+      <sql>
+        IF (EXISTS (
+          SELECT r.* from (
+           SELECT IS_ROLEMEMBER('REPORTING_READER_WRITER', '[${fffsWebPortalStagingDbAadUsername}]') AS ROLE_MEMBER
+          ) r
+          WHERE r.ROLE_MEMBER > 0
+        ))
+          ALTER ROLE REPORTING_READER_WRITER DROP MEMBER [${fffsWebPortalStagingDbAadUsername}]
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>

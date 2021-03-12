@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-aad-staging-user">
+    <preConditions onFail="CONTINUE">
+      <and>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad" value="true"/>
+        <sqlCheck expectedResult="5">
+          SELECT ServerProperty('EngineEdition')
+        </sqlCheck>
+      </and>
+    </preConditions>
+    <comment>Create an account for Microsoft Azure Active Directory based authentication when running on Azure</comment>
+    <sql>
+      IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbAadUsername}')
+        CREATE USER [${fffsWebPortalStagingDbAadUsername}] FROM EXTERNAL PROVIDER
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT * FROM sys.database_principals WHERE name = N'${fffsWebPortalStagingDbAadUsername}')
+          DROP USER [${fffsWebPortalStagingDbAadUsername}]
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
