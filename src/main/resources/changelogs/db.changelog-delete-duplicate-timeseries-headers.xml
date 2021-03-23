@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-delete-duplicate-timeseries-headers">
+    <comment>Delete duplicate TIMESERIES_HEADER records so that a unique constraint can be added. Rollback is not applicable.</comment>
+    <sql>
+      <![CDATA[
+        DELETE
+        FROM
+          FFF_STAGING.TIMESERIES_HEADER
+        WHERE ID = (    
+          -- Retain the earliest TIMESERIES_HEADER record for all task
+          -- runs that have multiple TIMESERIES_HEADER records and no associated
+          -- TIMESERIES or TIMESERIES_STAGING_EXCEPTION records.
+          SELECT
+            th.id
+          FROM
+            FFF_STAGING.TIMESERIES_HEADER th INNER JOIN
+            -- The import time of the earliest TIMESERIES_HEADER record for all task
+            -- runs that have multiple TIMESERIES_HEADER records and no associated
+            -- TIMESERIES or TIMESERIES_STAGING_EXCEPTION records.
+            (
+              SELECT
+                th2.TASK_RUN_ID,
+                MIN(th2.IMPORT_TIME) AS IMPORT_TIME
+              FROM
+                FFF_STAGING.TIMESERIES_HEADER th2
+              WHERE
+                NOT EXISTS (
+                SELECT
+                  1
+                FROM
+                  FFF_STAGING.TIMESERIES t
+                WHERE
+                  t.TIMESERIES_HEADER_ID = th2.ID
+              )
+              AND NOT EXISTS (
+                SELECT
+                  1
+                FROM
+                  FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+                WHERE
+                  tse.TIMESERIES_HEADER_ID = th2.ID
+              )
+              AND th2.TASK_RUN_ID IN (
+                SELECT
+                  th3.TASK_RUN_ID
+                FROM
+                  FFF_STAGING.TIMESERIES_HEADER th3
+                GROUP BY
+                  th3.TASK_RUN_ID
+                HAVING
+                  COUNT(th3.ID) > 1
+              )
+              GROUP BY th2.TASK_RUN_ID
+            ) rth ON th.TASK_RUN_ID = rth.TASK_RUN_ID
+            WHERE
+              th.IMPORT_TIME <> rth.IMPORT_TIME
+        )
+      ]]>         
+    </sql>
+    <rollback/>
+  </changeSet>
+</databaseChangeLog> 
