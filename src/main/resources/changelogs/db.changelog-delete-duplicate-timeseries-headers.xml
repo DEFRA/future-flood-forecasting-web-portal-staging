@@ -11,55 +11,58 @@
         DELETE
         FROM
           FFF_STAGING.TIMESERIES_HEADER
-        WHERE ID = (    
-          -- Retain the earliest TIMESERIES_HEADER record for all task
-          -- runs that have multiple TIMESERIES_HEADER records and no associated
-          -- TIMESERIES or TIMESERIES_STAGING_EXCEPTION records.
+        WHERE ID IN (
           SELECT
-            th.id
-          FROM
-            FFF_STAGING.TIMESERIES_HEADER th INNER JOIN
-            -- The import time of the earliest TIMESERIES_HEADER record for all task
-            -- runs that have multiple TIMESERIES_HEADER records and no associated
-            -- TIMESERIES or TIMESERIES_STAGING_EXCEPTION records.
-            (
-              SELECT
-                th2.TASK_RUN_ID,
-                MIN(th2.IMPORT_TIME) AS IMPORT_TIME
-              FROM
-                FFF_STAGING.TIMESERIES_HEADER th2
-              WHERE
-                NOT EXISTS (
+            uth.ID
+          FROM (
+            -- For task runs with multiple TIMESERIES_HEADER records, retrieve all TIMESERIES_HEADER records with no associated TIMESERIES
+            -- or TIMESERIES_STAGING_EXCEPTION records. For each task run calculate the count of affected TIMESERIES_HEADER records and
+            -- rank these records by import time. The count of TIMESERIES_HEADER records for the task run is also retrieved. The two counts
+            -- and the ranking are used to calculate which records should be deleted.
+            SELECT
+              th.ID,
+              th.TASK_RUN_ID,
+              COUNT(th.TASK_RUN_ID) OVER (PARTITION BY th.TASK_RUN_ID) AS UNUSED_TIMESERIES_HEADER_COUNT,
+              TIMESERIES_HEADER_COUNT,
+              RANK() OVER (PARTITION BY th.TASK_RUN_ID ORDER BY IMPORT_TIME) AS UNUSED_TIMESERIES_HEADER_RANK
+            FROM
+              FFF_STAGING.TIMESERIES_HEADER th,
+              (
                 SELECT
-                  1
+                  TASK_RUN_ID,
+                  COUNT(ID) AS TIMESERIES_HEADER_COUNT
                 FROM
-                  FFF_STAGING.TIMESERIES t
-                WHERE
-                  t.TIMESERIES_HEADER_ID = th2.ID
-              )
-              AND NOT EXISTS (
-                SELECT
-                  1
-                FROM
-                  FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
-                WHERE
-                  tse.TIMESERIES_HEADER_ID = th2.ID
-              )
-              AND th2.TASK_RUN_ID IN (
-                SELECT
-                  th3.TASK_RUN_ID
-                FROM
-                  FFF_STAGING.TIMESERIES_HEADER th3
-                GROUP BY
-                  th3.TASK_RUN_ID
-                HAVING
-                  COUNT(th3.ID) > 1
-              )
-              GROUP BY th2.TASK_RUN_ID
-            ) rth ON th.TASK_RUN_ID = rth.TASK_RUN_ID
+                  FFF_STAGING.TIMESERIES_HEADER th2
+                 GROUP BY
+                  TASK_RUN_ID HAVING COUNT(ID) > 1
+              ) mth -- Task runs with multiple TIMESERIES_HEADER records
             WHERE
-              th.IMPORT_TIME <> rth.IMPORT_TIME
-        )
+              th.TASK_RUN_ID = mth.TASK_RUN_ID
+              AND NOT EXISTS (
+                    SELECT
+                      1
+                    FROM
+                      FFF_STAGING.TIMESERIES t
+                    WHERE
+                      t.TIMESERIES_HEADER_ID = th.ID
+                  )
+                  AND NOT EXISTS (
+                    SELECT
+                      1
+                    FROM
+                      FFF_STAGING.TIMESERIES_STAGING_EXCEPTION tse
+                    WHERE
+                      tse.TIMESERIES_HEADER_ID = th.ID
+                  )
+          ) uth -- Unused TIMESERIES_HEADER records (no associated TIMESERIES or TIMESERIES_STAGING_EXCEPTION records).
+          WHERE
+            -- If a task run has a TIMESERIES_HEADER record with an associated TIMESERIES or TIMESERIES_STAGING_EXCEPTION record,
+            -- all TIMESERIES_HEADER records for the task run with no associated TIMESERIES or TIMESERIES_STAGING_EXCEPTION record must be deleted.
+            uth.UNUSED_TIMESERIES_HEADER_COUNT < uth.TIMESERIES_HEADER_COUNT
+            -- If a task run has no TIMESERIES_HEADER record with an associated TIMESERIES or TIMESERIES_STAGING_EXCEPTION, the earliest
+            -- TIMESERIES_HEADER record for the task run must be retained. All other TIMESERIES_HEADER records for the task run must be deleted.
+            OR uth.UNUSED_TIMESERIES_HEADER_RANK > 1
+          ) -- TIMESERIES_HEADER records to be deleted
       ]]>         
     </sql>
     <rollback/>
