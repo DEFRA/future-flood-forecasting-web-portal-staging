@@ -124,4 +124,6 @@
   <include file="./changelogs/db.changelog-remove-staging-user-from-staging-reader-writer-role.xml"/>  
   <include file="./changelogs/db.changelog-remove-staging-user-from-reporting-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-drop-staging-user.xml"/>
+  <include file="./changelogs/db.changelog-delete-duplicate-timeseries-headers.xml"/>
+  <include file="./changelogs/db.changelog-add-constraint-uq-timeseries-header-task-run-id.xml"/>
 </databaseChangeLog>
