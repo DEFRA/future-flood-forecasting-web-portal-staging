@@ -9,7 +9,7 @@
     <sql>
       IF (EXISTS (
         SELECT r.* from (
-         SELECT IS_ROLEMEMBER('REPORTING_READER_WRITER', '${fffsWebPortalStagingDbReportingUsername}') AS ROLE_MEMBER
+         SELECT IS_ROLEMEMBER('STAGING_READER_WRITER', '${fffsWebPortalStagingDbReportingUsername}') AS ROLE_MEMBER
         ) r
         WHERE r.ROLE_MEMBER > 0
       ))
