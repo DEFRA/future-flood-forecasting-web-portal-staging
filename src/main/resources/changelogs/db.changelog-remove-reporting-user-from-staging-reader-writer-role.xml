@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-remove-reporting-user-from-staging-reader-writer-role">
+    <comment>Remove the reporting user from the staging reader/writer role. Rollback is not applicable.</comment> 
+    <sql>
+      IF (EXISTS (
+        SELECT r.* from (
+         SELECT IS_ROLEMEMBER('STAGING_READER_WRITER', '${fffsWebPortalStagingDbReportingUsername}') AS ROLE_MEMBER
+        ) r
+        WHERE r.ROLE_MEMBER > 0
+      ))
+        ALTER ROLE STAGING_READER_WRITER DROP MEMBER ${fffsWebPortalStagingDbReportingUsername}    
+    </sql>
+    <rollback/>
+  </changeSet>
+</databaseChangeLog>
