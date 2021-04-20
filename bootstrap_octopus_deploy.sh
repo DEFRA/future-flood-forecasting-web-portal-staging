@@ -6,7 +6,6 @@ export FFFS_WEB_PORTAL_STAGING_DB_USERNAME='#{webPortalStagingDbUsername}'
 export FFFS_WEB_PORTAL_STAGING_DB_PASSWORD='#{webPortalStagingDbPassword}'
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME='#{webPortalStagingDbReportingUsername}'
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD='#{webPortalStagingDbReportingPassword}'
-export FFFS_WEB_PORTAL_LEGACY_STAGING_DB_USERNAME='#{webPortalLegacyStagingDbUsername}'
 
 
 echo "Executing Maven DB script"

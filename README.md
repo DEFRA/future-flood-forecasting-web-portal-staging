@@ -60,7 +60,6 @@ If using Docker
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string (**see below**)       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
-| FFFS_WEB_PORTAL_LEGACY_STAGING_DB_USERNAME     | The staging schema user linked to configuration drift | yes      |         |             |
 
 ### The JDBC Connection String And Microsoft Azure Active Directory Authentication
 
