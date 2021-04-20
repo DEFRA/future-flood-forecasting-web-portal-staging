@@ -129,4 +129,6 @@
   <include file="./changelogs/db.changelog-remove-reporting-user-from-staging-reader-writer-role.xml"/>
   <include file="./changelogs/db.changelog-alter-staging-schema-authorization.xml"/>
   <include file="./changelogs/db.changelog-drop-legacy-staging-user.xml"/>
+  <include file="./changelogs/db.changelog-grant-permissions-to-staging-reader-role-for-iwp-780.xml"/>
+  <include file="./changelogs/db.changelog-grant-permissions-to-staging-reader-writer-role-for-iwp-780.xml"/>
 </databaseChangeLog>
