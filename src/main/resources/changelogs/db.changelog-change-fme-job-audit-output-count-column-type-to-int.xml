@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-change-fme-job-audit-output-count-column-type-to-int">
+    <comment>Change the type of FFF_REPORTING.FME_JOB_AUDIT.OUTPUT_COUNT to an INT. Rollback is not applicable</comment>
+    <sql>
+      IF EXISTS(
+        SELECT
+          1 
+        FROM
+          INFORMATION_SCHEMA.COLUMNS
+        WHERE 
+          TABLE_NAME = 'FME_JOB_AUDIT' 
+          AND COLUMN_NAME = 'OUTPUT_COUNT'
+          AND DATA_TYPE = 'SMALLINT'
+      )
+        ALTER TABLE FFF_REPORTING.FME_JOB_AUDIT ALTER COLUMN OUTPUT_COUNT INT NULL
+    </sql>
+    <rollback/>
+  </changeSet>
+</databaseChangeLog>
