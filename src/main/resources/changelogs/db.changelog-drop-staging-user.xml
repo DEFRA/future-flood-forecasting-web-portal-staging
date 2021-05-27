@@ -8,6 +8,7 @@
     <preConditions onFail="CONTINUE">
       <and>
         <changeLogPropertyDefined property="fffsWebPortalStagingDbAuthWithAad" value="true"/>
+        <changeLogPropertyDefined property="fffsWebPortalStagingDbRemoveStagingUser" value="true"/>
         <sqlCheck expectedResult="5">
           SELECT ServerProperty('EngineEdition')
         </sqlCheck>

@@ -57,6 +57,7 @@ If using Docker
 | name                                           | description                                           | required | default | valid       |
 |------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
 | FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD       | A boolean enabling AAD authentication                 | no       |         |             |
+| FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER | A boolean for staging schema user removal (**see below**) | no       |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING   | Database JDBC connection string (**see below**)       | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME  | The reporting schema user                             | yes      |         |             |
 | FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD  | Password for the reporting schema user                | yes      |         |             |
@@ -64,6 +65,10 @@ If using Docker
 ### The JDBC Connection String And Microsoft Azure Active Directory Authentication
 
 This component can be configured to use numerous Microsoft Azure Active Directory authentication options (see the [SQL Server JDBC driver documentation](https://docs.microsoft.com/en-us/sql/connect/jdbc/setting-the-connection-properties?view=sql-server-ver15)). Microsoft Azure Active Directory authentication settings should be placed within the JDBC connection string.
+
+### The Staging Schema User And Microsoft Azure Active Directory Authentication
+
+If Microsoft Azure Active Directory authentication replaces database username/password authetication, the staging schema user is redundant and should be removed. Removal is achieved by setting the value of the environment variable FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER to **true**.
 
 ## Docker specific enviroment variables
 
