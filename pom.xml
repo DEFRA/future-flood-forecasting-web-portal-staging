@@ -7,7 +7,7 @@
     <groupId>uk.gov.defra.future-flood-forecasting-web-portal</groupId>
     <artifactId>future-flood-forecasting-web-portal-staging-database</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.10</version>
+    <version>1.2.0</version>
     <name>future-flood-forecasting-web-portal-staging-database</name>
     <url>https://github.com/DEFRA/future-flood-forecasting-web-portal</url>
 
@@ -57,6 +57,7 @@
                     <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
                     <systemProperties>
                         <fffsWebPortalStagingDbAuthWithAad>${FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD}</fffsWebPortalStagingDbAuthWithAad>
+                        <fffsWebPortalStagingDbRemoveStagingUser>${FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER}</fffsWebPortalStagingDbRemoveStagingUser>
                         <fffsWebPortalStagingDbAadUsername>${FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME}</fffsWebPortalStagingDbAadUsername>
                         <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
                         <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
