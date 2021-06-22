@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-csv-refresh-view">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.V_CSV_REFRESH AS
+      SELECT
+        ID,
+        CSV_TYPE,
+        REFRESH_TIME
+      FROM
+        FFF_STAGING.WORKFLOW_REFRESH
+      UNION
+      SELECT
+        ID,
+        CSV_TYPE,
+        REFRESH_TIME
+      FROM
+        FFF_STAGING.NON_WORKFLOW_REFRESH       
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FFF_STAGING' AND TABLE_NAME = 'V_WORKFLOW')
+          DROP VIEW FFF_STAGING.V_CSV_REFRESH
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
