@@ -127,4 +127,6 @@
   <include file="./changelogs/db.changelog-delete-duplicate-timeseries-headers.xml"/>
   <include file="./changelogs/db.changelog-add-constraint-uq-timeseries-header-task-run-id.xml"/>
   <include file="./changelogs/db.changelog-change-fme-job-audit-output-count-column-type-to-int.xml"/>
+  <include file="./changelogs/db.changelog-add-additional-location-columns-to-fluvial-forecast-location-table.xml"/>
+  <include file="./changelogs/db.changelog-add-additional-location-columns-to-coastal-forecast-location-table.xml"/>
 </databaseChangeLog>
