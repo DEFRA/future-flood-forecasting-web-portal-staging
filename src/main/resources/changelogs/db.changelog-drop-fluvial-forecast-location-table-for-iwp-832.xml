@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-drop-fluvial-forecast-location-table-for-iwp-832">
+    <sql>
+      IF OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'U') IS NOT NULL
+        DROP TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION
+          (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_FLUVIAL_FORECAST_LOCATION_ID DEFAULT NEWID(),
+            CENTRE NVARCHAR(64) NOT NULL,
+            MFDO_AREA NVARCHAR(max) NOT NULL,
+            CATCHMENT NVARCHAR(max) NOT NULL,
+            FFFS_LOCATION_ID NVARCHAR(64) NOT NULL,
+            FFFS_LOCATION_NAME NVARCHAR(max) NOT NULL,
+            PLOT_ID NVARCHAR(64) NOT NULL,
+            DRN_ORDER INT NOT NULL,
+            DATUM NVARCHAR(64) NOT NULL,
+            DISPLAY_ORDER INT NOT NULL,
+            CATCHMENT_ORDER INT NOT NULL,
+            CONSTRAINT PK_FLUVIAL_FORECAST_LOCATION PRIMARY KEY CLUSTERED ([ID]),
+            CONSTRAINT UQ_FLUVIAL_FORECAST_LOCATION_DISPLAY_ORDER UNIQUE(DISPLAY_ORDER),
+            CONSTRAINT UQ_FLUVIAL_FORECAST_LOCATION_FFFS_LOCATION_ID_PLOT_ID UNIQUE(FFFS_LOCATION_ID, PLOT_ID)
+          )        
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
