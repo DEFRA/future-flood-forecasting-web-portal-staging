@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-coastal-forecast-location-table-for-iwp-832">
+    <sql>
+      IF OBJECT_ID('FFF_STAGING.COASTAL_FORECAST_LOCATION', 'U') IS NULL
+          CREATE TABLE FFF_STAGING.COASTAL_FORECAST_LOCATION
+          (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_COASTAL_FORECAST_LOCATION_ID DEFAULT NEWID(),
+            FFFS_LOC_ID	NVARCHAR(64) NOT NULL,
+            FFFS_LOC_NAME	NVARCHAR(MAX),
+            COASTAL_ORDER INT NOT NULL,
+            CENTRE NVARCHAR(64) NOT NULL,
+            MFDO_AREA NVARCHAR(64),
+            TA_NAME NVARCHAR(MAX),
+            COASTAL_TYPE NVARCHAR(64) NOT NULL,
+            LOCATION_X DECIMAL(38,8) NOT NULL,
+            LOCATION_Y DECIMAL(38,8) NOT NULL,
+            LOCATION_Z DECIMAL(38,8)
+            CONSTRAINT PK_COASTAL_FORECAST_LOCATION PRIMARY KEY CLUSTERED([ID]),
+            CONSTRAINT CHK_TIDAL_COASTAL_FORECASTING_TYPE CHECK (COASTAL_TYPE = 'Coastal Forecasting'
+            OR ( COASTAL_TYPE = 'Triton' AND ( TA_NAME IS NOT NULL AND MFDO_AREA IS NOT NULL ) )
+            OR ( COASTAL_TYPE = 'Multivariate Thresholds' AND ( TA_NAME IS NOT NULL AND MFDO_AREA IS NOT NULL ) )
+            )
+          )
+    </sql>
+    <rollback>
+      <sql>
+        IF OBJECT_ID('FFF_STAGING.COASTAL_FORECAST_LOCATION', 'U') IS NOT NULL
+          DROP TABLE FFF_STAGING.COASTAL_FORECAST_LOCATION
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
