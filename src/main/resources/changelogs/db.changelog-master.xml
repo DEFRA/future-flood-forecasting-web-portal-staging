@@ -135,4 +135,6 @@
   <include file="./changelogs/db.changelog-create-fluvial-forecast-location-table-for-iwp-832.xml"/>
   <include file="./changelogs/db.changelog-drop-fluvial-forecast-location-table-for-iwp-853.xml"/>
   <include file="./changelogs/db.changelog-create-fluvial-forecast-location-table-for-iwp-853.xml"/>
+  <include file="./changelogs/db.changelog-create-threshold-groups-table.xml"/>
+  <include file="./changelogs/db.changelog-create-location-thresholds-table.xml"/>
 </databaseChangeLog>
