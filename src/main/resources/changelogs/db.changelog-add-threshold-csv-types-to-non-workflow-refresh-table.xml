@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="rdonohoe" id="changelog-add-threshold-csv-types-to-non-workflow-refresh-table">
+    <sql>
+      ALTER TABLE FFF_STAGING.NON_WORKFLOW_REFRESH DROP CONSTRAINT IF EXISTS CHK_NON_WORKFLOW_REFRESH_CSV_TYPE
+
+      ALTER TABLE FFF_STAGING.NON_WORKFLOW_REFRESH ADD CONSTRAINT CHK_NON_WORKFLOW_REFRESH_CSV_TYPE CHECK
+          (CSV_TYPE IN ('CMV', 'CTI', 'CTR', 'FFL', 'MVT', 'TGR', 'LTH'))
+    </sql>
+    <rollback>
+      <sql>
+        ALTER TABLE FFF_STAGING.NON_WORKFLOW_REFRESH DROP CONSTRAINT IF EXISTS CHK_NON_WORKFLOW_REFRESH_CSV_TYPE
+
+        ALTER TABLE FFF_STAGING.NON_WORKFLOW_REFRESH ADD CONSTRAINT CHK_NON_WORKFLOW_REFRESH_CSV_TYPE CHECK
+            (CSV_TYPE IN ('CMV', 'CTI', 'CTR', 'FFL', 'MVT'))
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
