@@ -29,7 +29,7 @@ jobs:
       - name: Install node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "12.x"
+          node-version: "14.x"
       - name: Install markdown linting package
         run: |
           npm install markdownlint-cli
