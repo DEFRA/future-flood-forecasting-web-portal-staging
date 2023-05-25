@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-create-location-thresholds-view">
+    <sql>
+      CREATE OR ALTER VIEW FFF_STAGING.LOCATION_THRESHOLDS AS
+      SELECT
+        ult.*,
+        tg.GROUP_ID AS GROUPID -- Align with the original table created manually.
+      FROM
+        FFF_STAGING.UNGROUPED_LOCATION_THRESHOLDS ult
+        INNER JOIN FFF_STAGING.THRESHOLD_GROUPS tg
+          ON ult.THRESHOLD_ID = tg.THRESHOLD_ID
+    </sql>
+    <rollback>
+      <sql>
+        IF EXISTS (SELECT TABLE_NAME FROM INFORMATION_SCHEMA.VIEWS WHERE TABLE_SCHEMA = 'FFF_STAGING' AND TABLE_NAME = 'LOCATION_THRESHOLDS')
+          DROP VIEW FFF_STAGING.LOCATION_THRESHOLDS
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
