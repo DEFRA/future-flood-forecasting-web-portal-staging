@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd ">
+
+    <changeSet author="takanocap" id="changelog-create-refresh-time-table" >
+        <sql>
+            IF OBJECT_ID('FFF_STAGING.REFRESH_TIMES', 'U') IS NULL
+            CREATE TABLE FFF_STAGING.REFRESH_TIMES
+            (
+            ID UNIQUEIDENTIFIER NOT NULL CONSTRAINT DF_REFRESH_TIMES_ID DEFAULT NEWID(),
+            LATEST_REFRESH_TIMES DATETIMEOFFSET NOT NULL CONSTRAINT DF_REFRESH_TIMES DEFAULT GETUTCDATE() INDEX IX_REFRESH_TIMES,
+            CONSTRAINT PK_LATEST_REFRESH_TIMES PRIMARY KEY CLUSTERED([ID])
+            )
+        </sql>
+        <rollback>
+            <sql>
+                IF OBJECT_ID('FFF_STAGING.REFRESH_TIMES', 'U') IS NOT NULL
+                DROP TABLE FFF_STAGING.REFRESH_TIMES
+            </sql>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
