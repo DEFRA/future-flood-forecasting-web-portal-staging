@@ -11,7 +11,7 @@
         </sql>
         <rollback>
             <sql>
-                IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_NAME') IS NULL
+                IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_NAME') IS NOT NULL
                 ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION DROP COLUMN RIVER_NAME
             </sql>
         </rollback>
