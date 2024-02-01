@@ -6,13 +6,13 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet author="takanocap" id="changelog-add-rivername-to-fluvial-forecast-location-table">
         <sql>
-            IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_NAME') IS NULL
-            ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION ADD RIVER_NAME NVARCHAR(255) NULL
+            IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_LOCAL') IS NULL
+            ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION ADD RIVER_LOCAL NVARCHAR(255) NULL
         </sql>
         <rollback>
             <sql>
-                IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_NAME') IS NOT NULL
-                ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION DROP COLUMN RIVER_NAME
+                IF COL_LENGTH('FFF_STAGING.FLUVIAL_FORECAST_LOCATION', 'RIVER_LOCAL') IS NOT NULL
+                ALTER TABLE FFF_STAGING.FLUVIAL_FORECAST_LOCATION DROP COLUMN RIVER_LOCAL
             </sql>
         </rollback>
     </changeSet>
