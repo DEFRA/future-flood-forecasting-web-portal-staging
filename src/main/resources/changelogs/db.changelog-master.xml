@@ -139,4 +139,5 @@
   <include file="./changelogs/db.changelog-create-ungrouped-location-thresholds-table.xml"/>
   <include file="./changelogs/db.changelog-add-threshold-csv-types-to-non-workflow-refresh-table.xml"/>
   <include file="./changelogs/db.changelog-create-location-thresholds-view.xml"/>
+  <include file="./changelogs/db.changelog-add-river-name-to-fluvial-forecast-location-table.xml"/>
 </databaseChangeLog>
