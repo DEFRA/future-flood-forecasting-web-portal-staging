@@ -8,5 +8,5 @@ export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME='#{webPortalStagingDbReport
 export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD='#{webPortalStagingDbReportingPassword}'
 
 
-echo "Executing Maven DB script to rollback all Liquibase changesets."
-mvn process-resources liquibase:rollback "-Dliquibase.rollbackDate=2020-06-04"  "-Pliquibase-without-update"
+echo "Executing Maven DB script to clear checksums for all Liquibase changesets."
+mvn process-resources liquibase:clearCheckSums  "-Pliquibase-without-update"

@@ -7,7 +7,7 @@
     <groupId>uk.gov.defra.future-flood-forecasting-web-portal</groupId>
     <artifactId>future-flood-forecasting-web-portal-staging-database</artifactId>
     <packaging>jar</packaging>
-    <version>1.7.1</version>
+    <version>1.7.2</version>
     <name>future-flood-forecasting-web-portal-staging-database</name>
     <url>https://github.com/DEFRA/future-flood-forecasting-web-portal</url>
 
@@ -42,39 +42,82 @@
             <version>${azuread.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>${liquibase.version}</version>
-                <configuration>
-                    <changeLogFile>src/main/resources/changelogs/db.changelog-master.xml</changeLogFile>
-                    <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
-                    <username>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME}</username>
-                    <password>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD}</password>
-                    <schemas>FFF_REPORTING,FFF_STAGING</schemas>
-                    <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
-                    <systemProperties>
-                        <fffsWebPortalStagingDbAuthWithAad>${FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD}</fffsWebPortalStagingDbAuthWithAad>
-                        <fffsWebPortalStagingDbRemoveStagingUser>${FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER}</fffsWebPortalStagingDbRemoveStagingUser>
-                        <fffsWebPortalStagingDbAadUsername>${FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME}</fffsWebPortalStagingDbAadUsername>
-                        <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
-                        <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
-                        <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
-                        <fffsWebPortalStagingDbReportingPassword>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD}</fffsWebPortalStagingDbReportingPassword>
-                    </systemProperties>    
-                    <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>liquibase-with-update</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <configuration>
+                            <changeLogFile>src/main/resources/changelogs/db.changelog-master.xml</changeLogFile>
+                            <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+                            <username>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME}</username>
+                            <password>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD}</password>
+                            <schemas>FFF_REPORTING,FFF_STAGING</schemas>
+                            <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
+                            <systemProperties>
+                                <fffsWebPortalStagingDbAuthWithAad>${FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD}</fffsWebPortalStagingDbAuthWithAad>
+                                <fffsWebPortalStagingDbRemoveStagingUser>${FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER}</fffsWebPortalStagingDbRemoveStagingUser>
+                                <fffsWebPortalStagingDbAadUsername>${FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME}</fffsWebPortalStagingDbAadUsername>
+                                <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
+                                <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
+                                <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
+                                <fffsWebPortalStagingDbReportingPassword>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD}</fffsWebPortalStagingDbReportingPassword>
+                            </systemProperties>
+                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>update</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>liquibase-without-update</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.liquibase</groupId>
+                        <artifactId>liquibase-maven-plugin</artifactId>
+                        <version>${liquibase.version}</version>
+                        <configuration>
+                            <changeLogFile>src/main/resources/changelogs/db.changelog-master.xml</changeLogFile>
+                            <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+                            <username>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_USERNAME}</username>
+                            <password>${FFFS_WEB_PORTAL_STAGING_DB_ADMIN_PASSWORD}</password>
+                            <schemas>FFF_REPORTING,FFF_STAGING</schemas>
+                            <url>${FFFS_WEB_PORTAL_STAGING_DB_CONNECTION_STRING}</url>
+                            <systemProperties>
+                                <fffsWebPortalStagingDbAuthWithAad>${FFFS_WEB_PORTAL_STAGING_DB_AUTH_WITH_AAD}</fffsWebPortalStagingDbAuthWithAad>
+                                <fffsWebPortalStagingDbRemoveStagingUser>${FFFS_WEB_PORTAL_STAGING_DB_REMOVE_STAGING_USER}</fffsWebPortalStagingDbRemoveStagingUser>
+                                <fffsWebPortalStagingDbAadUsername>${FFFS_WEB_PORTAL_STAGING_DB_AAD_USERNAME}</fffsWebPortalStagingDbAadUsername>
+                                <fffsWebPortalStagingDbUsername>${FFFS_WEB_PORTAL_STAGING_DB_USERNAME}</fffsWebPortalStagingDbUsername>
+                                <fffsWebPortalStagingDbPassword>${FFFS_WEB_PORTAL_STAGING_DB_PASSWORD}</fffsWebPortalStagingDbPassword>
+                                <fffsWebPortalStagingDbReportingUsername>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_USERNAME}</fffsWebPortalStagingDbReportingUsername>
+                                <fffsWebPortalStagingDbReportingPassword>${FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD}</fffsWebPortalStagingDbReportingPassword>
+                            </systemProperties>
+                            <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>process-resources</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

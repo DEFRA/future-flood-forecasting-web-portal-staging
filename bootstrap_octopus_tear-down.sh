@@ -11,4 +11,4 @@ export FFFS_WEB_PORTAL_STAGING_DB_REPORTING_PASSWORD='#{webPortalStagingDbReport
 # WARNING - This command will drop the schemas defined in pom.xml.
 # Do NOT use in the production environment.
 echo "Executing Maven DB script"
-mvn process-resources liquibase:dropAll
+mvn process-resources liquibase:dropAll  "-Pliquibase-without-update"
