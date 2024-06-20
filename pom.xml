@@ -15,7 +15,6 @@
         <liquibase.version>4.28.0</liquibase.version>
         <sqlserver.version>12.6.1.jre8</sqlserver.version>
         <azureidentity.version>1.12.2</azureidentity.version>
-        <azuread.version>1.6.7</azuread.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
@@ -35,11 +34,6 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>${sqlserver.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>adal4j</artifactId>
-            <version>${azuread.version}</version>
         </dependency>
     </dependencies>
     <profiles>
