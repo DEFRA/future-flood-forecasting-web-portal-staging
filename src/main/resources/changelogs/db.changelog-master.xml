@@ -141,4 +141,5 @@
   <include file="./changelogs/db.changelog-create-location-thresholds-view.xml"/>
   <include file="./changelogs/db.changelog-add-river-name-to-fluvial-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-refactor-task-import-times-view-for-inc2182094.xml"/>
+  <include file="./changelogs/db.changelog-add-in-progress-column-to-fme-timeseries-object-table.xml"/>
 </databaseChangeLog>
