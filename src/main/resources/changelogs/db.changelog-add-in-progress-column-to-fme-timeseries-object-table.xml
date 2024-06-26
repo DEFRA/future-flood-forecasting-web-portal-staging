@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+  <changeSet author="pwadmore" id="changelog-add-in-progress-column-to-fme-timeseries-object-table">
+    <sql>
+      IF COL_LENGTH('FFF_REPORTING.FME_TIMESERIES_OBJECT','IN_PROGRESS') IS NULL
+        ALTER TABLE FFF_REPORTING.FME_TIMESERIES_OBJECT ADD IN_PROGRESS SMALLINT
+    </sql>
+    <rollback>
+      <sql>
+        IF COL_LENGTH('FFF_REPORTING.FME_TIMESERIES_OBJECT','IN_PROGRESS') IS NOT NULL
+          ALTER TABLE FFF_REPORTING.FME_TIMESERIES_OBJECT DROP COLUMN IN_PROGRESS
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog>
