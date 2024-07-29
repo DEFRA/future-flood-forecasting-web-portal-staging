@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        - SA_PASSWORD
+        - MSSQL_SA_PASSWORD
       dockerfile: Dockerfile
     image: "fffs-web-portal-staging/fffs-web-portal-staging-database"
     container_name: "fffs-web-portal-staging-database"

@@ -76,7 +76,7 @@ If Microsoft Azure Active Directory authentication replaces database username/pa
 |------------------------------------------------|-------------------------------------------------------|----------|---------|-------------|
 | FFFS_WEB_PORTAL_STAGING_DB_CONTAINER_PORT      | Container port for the database                       | no       | 1433    |             |
 | FFFS_WEB_PORTAL_STAGING_DB_HOST_PORT           | Host port for the database                            | no       | 1433    |             |
-| SA_PASSWORD                                    | System administrator password                         | yes      |         |             |
+| MSSQL_SA_PASSWORD                              | System administrator password                         | yes      |         |             |
 
 ## Redundant Legacy Environment Variables
 
