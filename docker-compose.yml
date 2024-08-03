@@ -1,4 +1,3 @@
-version: '3.7'
 services:
   fffs-web-portal-staging-database:
     build:
