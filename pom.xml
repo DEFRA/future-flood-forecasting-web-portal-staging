@@ -7,7 +7,7 @@
     <groupId>uk.gov.defra.future-flood-forecasting-web-portal</groupId>
     <artifactId>future-flood-forecasting-web-portal-staging-database</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.7</version>
+    <version>1.8.8</version>
     <name>future-flood-forecasting-web-portal-staging-database</name>
     <url>https://github.com/DEFRA/future-flood-forecasting-web-portal</url>
 
