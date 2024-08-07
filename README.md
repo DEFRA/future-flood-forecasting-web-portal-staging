@@ -24,7 +24,6 @@ The staging database includes a reporting schema for data transformation activit
 If using Docker
 
 * Docker 18.09 CE or later
-* Docker Compose 1.24 or later
 
 ## Authentication
 
