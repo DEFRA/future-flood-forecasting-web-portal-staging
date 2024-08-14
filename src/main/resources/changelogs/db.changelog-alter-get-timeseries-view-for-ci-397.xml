@@ -16,7 +16,7 @@
           INNER JOIN FFF_STAGING.TIMESERIES_HEADER h ON t.TIMESERIES_HEADER_ID = h.ID
           LEFT OUTER JOIN FFF_REPORTING.FME_TIMESERIES_AUDIT fta ON t.ID = fta.TS_ID   
         WHERE
-		      h.IMPORT_TIME &gt; DATEADD(DAY, -1, GETDATE()) AND
+          h.IMPORT_TIME &gt; DATEADD(DAY, -1, GETDATE()) AND
           fta.ID IS NULL
     </sql>
     <rollback>
