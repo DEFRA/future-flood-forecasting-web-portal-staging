@@ -142,4 +142,7 @@
   <include file="./changelogs/db.changelog-add-river-name-to-fluvial-forecast-location-table.xml"/>
   <include file="./changelogs/db.changelog-refactor-task-import-times-view-for-inc2182094.xml"/>
   <include file="./changelogs/db.changelog-add-in-progress-column-to-fme-timeseries-object-table.xml"/>
+  <include file="./changelogs/db.changelog-alter-delete-timseries-audit-stored-procedure-for-ci-397.xml"/>
+  <include file="./changelogs/db.changelog-alter-timeseries-view-for-ci-397.xml"/>
+  <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-ci-397.xml"/>
 </databaseChangeLog>
