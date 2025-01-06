@@ -145,4 +145,5 @@
   <include file="./changelogs/db.changelog-alter-delete-timseries-audit-stored-procedure-for-ci-397.xml"/>
   <include file="./changelogs/db.changelog-alter-timeseries-view-for-ci-397.xml"/>
   <include file="./changelogs/db.changelog-alter-get-timeseries-view-for-ci-397.xml"/>
+  <include file="./changelogs/db.changelog-refactor-task-import-times-view-for-ci-409.xml"/>
 </databaseChangeLog>
