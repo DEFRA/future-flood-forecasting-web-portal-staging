@@ -39,7 +39,7 @@
               MIN(JOB_STATUS) JOB_STATUS,
               MIN(DESCRIPTION) DESCRIPTION
             FROM
-		          FFF_REPORTING.TIMESERIES_JOB
+              FFF_REPORTING.TIMESERIES_JOB
             GROUP BY
               TIMESERIES_ID
           ) AS TJ ON T.ID = TJ.TIMESERIES_ID INNER JOIN
@@ -50,7 +50,7 @@
               MAX(JOB_STATUS) JOB_STATUS,
               MAX(DESCRIPTION) DESCRIPTION
             FROM
-		          FFF_REPORTING.TIMESERIES_JOB
+              FFF_REPORTING.TIMESERIES_JOB
             GROUP BY
               TIMESERIES_ID
           ) AS TJ2 ON TJ.TIMESERIES_ID = TJ2.TIMESERIES_ID
