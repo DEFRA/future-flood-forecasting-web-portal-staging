@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<databaseChangeLog 
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd"> 
+  <changeSet author="pwadmore" id="changelog-refactor-task-import-times-view-for-ci-409">
+    <sql>
+      <![CDATA[
+        CREATE OR ALTER VIEW FFF_REPORTING.TASK_IMPORT_TIMES AS
+        SELECT
+          TH.TASK_RUN_ID,
+          TH.WORKFLOW_ID,
+          T.ID AS TS_ID,
+          LEN(T.FEWS_DATA) AS SIZE,
+          CONVERT(DATETIME2, TH.TASK_COMPLETION_TIME, 1) AS TASK_COMPLETION_TIME,
+          DATEDIFF(s, TH.TASK_COMPLETION_TIME, TH.IMPORT_TIME) AS STAGING_TIME,
+          CONVERT(DATETIME2, TH.IMPORT_TIME, 1) AS IMPORT_TIME,
+          DATEDIFF(s, TH.IMPORT_TIME, TJ.JOB_STATUS_TIME) AS FME_QUEUE_TIME,
+          CONVERT(DATETIME2, TJ.JOB_STATUS_TIME, 1) AS FME_START_TIME,
+          TJ.ID AS JOB_ID,
+          DATEDIFF(s, TJ.JOB_STATUS_TIME, TJ2.JOB_STATUS_TIME) AS FME_PROCESS_TIME,
+          CONVERT(DATETIME2, TJ2.JOB_STATUS_TIME, 1) AS FME_END_TIME,
+          TJ2.JOB_STATUS,
+          TJ2.DESCRIPTION,
+          CONVERT(DATETIME2, T.IMPORT_TIME, 1) AS TIMESERIES_IMPORT_TIME,
+          DATEDIFF(s, TH.IMPORT_TIME, T.IMPORT_TIME) AS TIMESERIES_STAGING_TIME,
+          DATEDIFF(s, TH.TASK_COMPLETION_TIME, T.IMPORT_TIME) AS TOTAL_STAGING_TIME,
+          T.SOURCE_ID,
+          T.SOURCE_TYPE
+        FROM
+          FFF_STAGING.TIMESERIES AS T INNER JOIN
+          FFF_STAGING.TIMESERIES_HEADER AS TH ON T.TIMESERIES_HEADER_ID = TH.ID INNER JOIN
+          (
+            SELECT
+              TIMESERIES_ID,
+              MIN(ID) AS ID,
+              MIN(JOB_STATUS_TIME) JOB_STATUS_TIME,
+              MIN(JOB_STATUS) JOB_STATUS,
+              MIN(DESCRIPTION) DESCRIPTION
+            FROM
+		          FFF_REPORTING.TIMESERIES_JOB
+            GROUP BY
+              TIMESERIES_ID
+          ) AS TJ ON T.ID = TJ.TIMESERIES_ID INNER JOIN
+          (
+            SELECT
+              TIMESERIES_ID,
+              MAX(JOB_STATUS_TIME) JOB_STATUS_TIME,
+              MAX(JOB_STATUS) JOB_STATUS,
+              MAX(DESCRIPTION) DESCRIPTION
+            FROM
+		          FFF_REPORTING.TIMESERIES_JOB
+            GROUP BY
+              TIMESERIES_ID
+          ) AS TJ2 ON TJ.TIMESERIES_ID = TJ2.TIMESERIES_ID
+        WHERE
+          TJ.JOB_STATUS = 1 AND TJ2.JOB_STATUS <> 1
+      ]]>
+    </sql>
+    <rollback>
+      <sql>
+        <![CDATA[
+          CREATE OR ALTER VIEW FFF_REPORTING.TASK_IMPORT_TIMES AS
+          SELECT
+            TH.TASK_RUN_ID,
+            TH.WORKFLOW_ID,
+            T.ID AS TS_ID,
+            LEN(T.FEWS_DATA) AS SIZE,
+            CONVERT(DATETIME2, TH.TASK_COMPLETION_TIME, 1) AS TASK_COMPLETION_TIME,
+            DATEDIFF(s, TH.TASK_COMPLETION_TIME, TH.IMPORT_TIME) AS STAGING_TIME,
+            CONVERT(DATETIME2, TH.IMPORT_TIME, 1) AS IMPORT_TIME,
+            DATEDIFF(s, TH.IMPORT_TIME, TJ.JOB_STATUS_TIME) AS FME_QUEUE_TIME,
+            CONVERT(DATETIME2, TJ.JOB_STATUS_TIME, 1) AS FME_START_TIME,
+            TJ.ID AS JOB_ID,
+            DATEDIFF(s, TJ.JOB_STATUS_TIME, TJ2.JOB_STATUS_TIME) AS FME_PROCESS_TIME,
+            CONVERT(DATETIME2, TJ2.JOB_STATUS_TIME, 1) AS FME_END_TIME,
+            TJ2.JOB_STATUS,
+            TJ2.DESCRIPTION,
+            CONVERT(DATETIME2, T.IMPORT_TIME, 1) AS TIMESERIES_IMPORT_TIME,
+            DATEDIFF(s, TH.IMPORT_TIME, T.IMPORT_TIME) AS TIMESERIES_STAGING_TIME,
+            DATEDIFF(s, TH.TASK_COMPLETION_TIME, T.IMPORT_TIME) AS TOTAL_STAGING_TIME,
+            T.SOURCE_ID,
+            T.SOURCE_TYPE
+          FROM
+            FFF_STAGING.TIMESERIES AS T INNER JOIN
+            FFF_STAGING.TIMESERIES_HEADER AS TH ON T.TIMESERIES_HEADER_ID = TH.ID INNER JOIN
+            FFF_REPORTING.TIMESERIES_JOB AS TJ ON T.ID = TJ.TIMESERIES_ID INNER JOIN
+            FFF_REPORTING.TIMESERIES_JOB AS TJ2 ON TJ.TIMESERIES_ID = TJ2.TIMESERIES_ID
+          WHERE
+            TJ.JOB_STATUS = 1 AND TJ2.JOB_STATUS <> 1
+        ]]>
+      </sql>
+    </rollback>
+  </changeSet>
+</databaseChangeLog> 
