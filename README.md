@@ -95,16 +95,21 @@ accordingly.
 ## Azure SQL based clean build (NON-PRODUCTION USE ONLY)
 
 * Ensure the required environment variables are set.
-* Run ./tear-down.sh from the directory containing this file. The reporting and staging schemas
-  will be **dropped** allowing a fresh run of all associated Liquibase changesets. Note that tear down does
-  **not** drop things that cannot be included in a snapshot (such as users and user defined functions). Items
-  excluded from tear down **must** be rolled back separately.
+* Run ./rollback.sh from the directory containing this file to rollback all Liquibase changsets.
 * Run ./bootstrap.sh from the directory containing this file. All Liquibase changesets will be run.
+
+### Teardown Functionality (NON-PRODUCTION USE ONLY)
+
+* Liquibase teardown functionality is provided through the script tear-down.sh in the directory containing this file.
+  Teardown causes the reporting and staging schemas to be **dropped** allowing a fresh run of all associated
+  Liquibase changesets. Note that teardown does **not** drop things that cannot be included in a snapshot
+  (such as users and user defined functions). Items excluded from teardown **must** be rolled back separately.
+  * Rollback functionality is recommended in preference to teardown functionality accordingly.
   
 ## Local Linux Host Based Docker Build
 
 * Ensure the required environment variables are set.
-* Run ./local-bootstrap.sh from  the directory containing this file. This creates a SQL Server 2017 instance containing a database called
+* Run ./local-bootstrap.sh from  the directory containing this file. This creates a SQL Server 2022 instance containing a database called
   **fffswebportalstaging** running in a Docker container. Volumes are not used at present. All Liquibase changesets will be run.
 
 ## Contributing to this project
