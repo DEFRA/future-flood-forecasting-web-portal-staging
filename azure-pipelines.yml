@@ -11,8 +11,8 @@ trigger:
 
 steps:
   - script: |
-    sudo apt update
-    sudo apt install -y mono-runtime
+      sudo apt update
+      sudo apt install -y mono-runtime
     displayName: 'Install mono'
 
   - task: NuGetCommand@2
