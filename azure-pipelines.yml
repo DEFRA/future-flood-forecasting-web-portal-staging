@@ -12,7 +12,7 @@ trigger:
 steps:
   - script: |
       sudo apt update
-      sudo apt install -y mono-runtime
+      sudo apt install -y mono-complete
     displayName: 'Install mono'
 
   - task: NuGetCommand@2
